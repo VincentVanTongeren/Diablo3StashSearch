@@ -1,0 +1,7 @@
+<input type="text" [(value)]="apiKey" placeholder="battle.net api key" required />
+<input type="text" [(value)]="profile" placeholder="pro-1234" required />
+<select type="text" [(value)]="locale" >
+    <option value="eu">Europe</option>
+    <option value="us">US</option>
+</select>
+<button (click)="updateProfile()">Update profile</button>

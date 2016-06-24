@@ -17,7 +17,7 @@ var AppComponent = (function () {
         core_1.Component({
             selector: 'my-app',
             directives: [profile_loader_1.ProfileLoader],
-            templateUrl: './html/main.html'
+            templateUrl: '../app/html/main.html'
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

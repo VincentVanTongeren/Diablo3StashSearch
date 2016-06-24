@@ -3,23 +3,30 @@ import { FORM_PROVIDERS } from '@angular/common';
 import { LocalStorageService } from './services/localstorageservice'
 @Component({
   selector: 'profile-loader',
-  template: `<input type="text" [value]="apiKey" placeholder="battle.net api key" />
-  <input type="text" [value]="profile" placeholder="pro-1234" />
-  <select type="text" [value]="locale" >
-    <option value="eu">Europe</option>
-    <option value="us">US</option>
-    </select>`
+  templateUrl: '../app/html/profile.loader.html'
 })
 export class ProfileLoader {
     public apiKey: string = "";
     public profile: string = "";
     public locale: string = "eu";
 
+private _localStorageService: LocalStorageService;
+
     constructor(){
-        var localStorageService = new LocalStorageService();
-        this.apiKey = localStorageService.getItem<string>("apikey");
-        this.profile = localStorageService.getItem<string>("profile");
-        this.locale = localStorageService.getItem<string>("locale");
+        this._localStorageService = new LocalStorageService();
+        this.resetProfileLoader();
+    }
+
+    private resetProfileLoader(): void{
+        this.apiKey = this._localStorageService.getItemAsString("apikey");
+        this.profile = this._localStorageService.getItemAsString("profile");
+        this.locale = this._localStorageService.getItemAsString("locale");
         if (!this.locale) this.locale = "eu";
+    }
+
+    public updateProfile(): void{
+        this._localStorageService.storeItemAsString("apikey", this.apiKey);
+        this._localStorageService.storeItemAsString("profile", this.profile);
+        this._localStorageService.storeItemAsString("locale", this.locale);
     }
 }
