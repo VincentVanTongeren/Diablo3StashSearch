@@ -9,13 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var profile_loader_1 = require('./profile.loader');
 var AppComponent = (function () {
     function AppComponent() {
     }
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: '<h1>My First Angular 2 App</h1>'
+            directives: [profile_loader_1.ProfileLoader],
+            templateUrl: './html/main.html'
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

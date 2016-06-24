@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
+import { ProfileLoader } from './profile.loader'
+
 @Component({
   selector: 'my-app',
-  template: '<h1>My First Angular 2 App</h1>'
+  directives: [ProfileLoader],
+  templateUrl: './html/main.html'
 })
-export class AppComponent { }
+export class AppComponent { 
+}

@@ -2,8 +2,7 @@ export class LocalStorageService {
     public getItem<T>(key: string): T
     {
         var itemJson = localStorage.getItem(key);
-        var item = JSON.parse(itemJson) as T;
-        return item;
+        return itemJson ? JSON.parse(itemJson) as T : null;
     }
 
     public storeItem<T>(key: string, item: T): void{
