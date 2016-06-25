@@ -1,5 +1,5 @@
 <input #apiKeyText [(value)]="apiKey" (blur)="apiKey=apiKeyText.value" placeholder="battle.net api key" required />
-<input #profileText [(value)]="profile" (blur)="profile=profileText.value" placeholder="pro-1234" required />
+<input #profileText [(value)]="profileKey" (blur)="profileKey=profileText.value" placeholder="pro-1234" required />
 <select [(value)]="locale" (change)="locale=($event.target.value)" >
     <option value="eu">Europe</option>
     <option value="us">US</option>

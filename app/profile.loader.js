@@ -10,32 +10,51 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var localstorageservice_1 = require('./services/localstorageservice');
+var profile_service_1 = require('./services/profile.service');
 var ProfileLoader = (function () {
-    function ProfileLoader(localStorageService) {
+    function ProfileLoader(localStorageService, profileService) {
         this.apiKey = "";
-        this.profile = "";
+        this.profileKey = "";
         this.locale = "eu";
         this._localStorageService = localStorageService;
+        this._profileService = profileService;
         this.resetProfileLoader();
     }
     ProfileLoader.prototype.resetProfileLoader = function () {
         this.apiKey = this._localStorageService.getItemAsString("apikey");
-        this.profile = this._localStorageService.getItemAsString("profile");
+        this.profileKey = this._localStorageService.getItemAsString("profileKey");
         this.locale = this._localStorageService.getItemAsString("locale");
         if (!this.locale)
             this.locale = "eu";
     };
     ProfileLoader.prototype.updateProfile = function () {
+        var _this = this;
         this._localStorageService.storeItemAsString("apikey", this.apiKey);
-        this._localStorageService.storeItemAsString("profile", this.profile);
+        this._localStorageService.storeItemAsString("profileKey", this.profileKey);
         this._localStorageService.storeItemAsString("locale", this.locale);
+        this.getProfile().then(function (profile) {
+            debugger;
+            _this.profile = profile;
+        });
+    };
+    ProfileLoader.prototype.getProfile = function () {
+        var _this = this;
+        var cachedProfile = this._localStorageService.getItem(this.profileKey);
+        if (cachedProfile)
+            return new Promise(function () { return cachedProfile; });
+        var profilePromise = this._profileService.getProfile(this.locale, this.profileKey, this.apiKey);
+        profilePromise.then(function (profile) {
+            if (profile)
+                _this._localStorageService.storeItem(_this.profileKey, profile);
+        });
+        return profilePromise;
     };
     ProfileLoader = __decorate([
         core_1.Component({
             selector: 'profile-loader',
             templateUrl: '../app/html/profile.loader.html'
         }), 
-        __metadata('design:paramtypes', [localstorageservice_1.LocalStorageService])
+        __metadata('design:paramtypes', [localstorageservice_1.LocalStorageService, profile_service_1.ProfileService])
     ], ProfileLoader);
     return ProfileLoader;
 }());

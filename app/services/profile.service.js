@@ -9,26 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var profile_loader_1 = require('../profile.loader');
 var http_1 = require('@angular/http');
 require('rxjs/add/operator/toPromise');
 var ProfileService = (function () {
-    function ProfileService(http, profileLoader) {
-        this.profileLoader = profileLoader;
-        debugger;
-        this._profileLoader = profileLoader;
+    function ProfileService(http) {
         this._http = http;
     }
-    ProfileService.prototype.getProfile = function () {
-        var url = "https://" + this._profileLoader.locale + ".api.battle.net/d3/profile/" + this._profileLoader.profile + "}/?locale=en_GB&apikey=" + this._profileLoader.apiKey;
+    ProfileService.prototype.getProfile = function (locale, profile, apiKey) {
+        var url = "https://" + locale + ".api.battle.net/d3/profile/" + profile + "/?locale=en_GB&apikey=" + apiKey;
         return this._http.get(url)
             .toPromise()
-            .then(function (response) { return response.json().data; })
-            .catch(function () { });
+            .then(function (response) { return response.json(); })
+            .catch(function (error) {
+            debugger;
+        });
     };
     ProfileService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, profile_loader_1.ProfileLoader])
+        __metadata('design:paramtypes', [http_1.Http])
     ], ProfileService);
     return ProfileService;
 }());

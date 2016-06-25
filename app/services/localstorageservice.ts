@@ -5,7 +5,6 @@ export class LocalStorageService {
     public getItem<T>(key: string): T
     {
         var itemJson = this.getItemAsString(key);
-        debugger;
         return itemJson ? JSON.parse(itemJson) as T : null;
     }
 

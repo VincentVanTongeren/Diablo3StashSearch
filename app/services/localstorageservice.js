@@ -14,7 +14,6 @@ var LocalStorageService = (function () {
     }
     LocalStorageService.prototype.getItem = function (key) {
         var itemJson = this.getItemAsString(key);
-        debugger;
         return itemJson ? JSON.parse(itemJson) : null;
     };
     LocalStorageService.prototype.getItemAsString = function (key) {
