@@ -1,0 +1,1 @@
+//# sourceMappingURL=heroViewModel.js.map
