@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { FORM_PROVIDERS } from '@angular/common';
 import { LocalStorageService } from './services/localstorageservice'
 import { ProfileService } from './services/profile.service'
+import { ProfileViewModel } from './viewmodels/profileviewmodel'
 import { Profile } from './interfaces/profile'
 
 @Component({
+    directives: [ProfileViewModel],
   selector: 'profile-loader',
   templateUrl: '../app/html/profile.loader.html'
 })
@@ -13,7 +15,7 @@ export class ProfileLoader {
     public profileKey: string = "";
     public locale: string = "eu";
 
-    public profile: Profile;
+    public profileViewModel: ProfileViewModel;
 
     private _localStorageService: LocalStorageService;
     private _profileService: ProfileService;
@@ -22,6 +24,13 @@ export class ProfileLoader {
         this._localStorageService = localStorageService;
         this._profileService = profileService;
         this.resetProfileLoader();
+
+        if (this.profileKey)
+        {
+            var profile = this._localStorageService.getItem<Profile>(this.profileKey);
+            if (profile)
+                this.profileViewModel = new ProfileViewModel(profile);
+        }
     }
 
     private resetProfileLoader(): void{
@@ -38,7 +47,7 @@ export class ProfileLoader {
 
         this.getProfile().then((profile: Profile) => {
             debugger;
-            this.profile = profile;
+            this.profileViewModel = new ProfileViewModel(profile);
         })
     }
 

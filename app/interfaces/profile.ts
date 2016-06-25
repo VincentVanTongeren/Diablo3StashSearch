@@ -1,4 +1,3 @@
-
     export interface Kills {
         monsters: number;
         elites: number;
@@ -39,15 +38,7 @@
         progression: ProfileProgression;
     }
 
-    export interface SeasonalProfiles {
-        season4: Season;
-        season6: Season;
-        season5: Season;
-        season0: Season;
-        season2: Season;
-    }
-
-    export interface Profile {
+    export class Profile {
         battleTag: string;
         paragonLevel: number;
         paragonLevelHardcore: number;
@@ -74,7 +65,7 @@
         blacksmithSeasonHardcore: Artisan;
         jewelerSeasonHardcore: Artisan;
         mysticSeasonHardcore: Artisan;
-        seasonalProfiles: SeasonalProfiles;
+        seasonalProfiles: Season[];
     }
 
     export interface Skill {
@@ -115,7 +106,7 @@
         passive: Passive[];
     }
 
-    export interface Item {
+    export class Item {
         id: string;
         name: string;
         icon: string;
@@ -245,7 +236,7 @@
         act5: ActProgression;
     }
 
-    export interface Hero {
+    export class Hero {
         id: number;
         name: string;
         class: string;

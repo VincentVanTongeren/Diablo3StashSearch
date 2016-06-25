@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var localstorageservice_1 = require('./services/localstorageservice');
 var profile_service_1 = require('./services/profile.service');
+var profileviewmodel_1 = require('./viewmodels/profileviewmodel');
 var ProfileLoader = (function () {
     function ProfileLoader(localStorageService, profileService) {
         this.apiKey = "";
@@ -19,6 +20,11 @@ var ProfileLoader = (function () {
         this._localStorageService = localStorageService;
         this._profileService = profileService;
         this.resetProfileLoader();
+        if (this.profileKey) {
+            var profile = this._localStorageService.getItem(this.profileKey);
+            if (profile)
+                this.profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
+        }
     }
     ProfileLoader.prototype.resetProfileLoader = function () {
         this.apiKey = this._localStorageService.getItemAsString("apikey");
@@ -34,7 +40,7 @@ var ProfileLoader = (function () {
         this._localStorageService.storeItemAsString("locale", this.locale);
         this.getProfile().then(function (profile) {
             debugger;
-            _this.profile = profile;
+            _this.profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
         });
     };
     ProfileLoader.prototype.getProfile = function () {
@@ -51,6 +57,7 @@ var ProfileLoader = (function () {
     };
     ProfileLoader = __decorate([
         core_1.Component({
+            directives: [profileviewmodel_1.ProfileViewModel],
             selector: 'profile-loader',
             templateUrl: '../app/html/profile.loader.html'
         }), 
