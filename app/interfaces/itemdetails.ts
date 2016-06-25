@@ -1,4 +1,3 @@
-declare module namespace {
 
     export interface Type {
         twoHanded: boolean;
@@ -45,5 +44,5 @@ declare module namespace {
         description?: any;
         blockChance: string;
     }
-}
+
 

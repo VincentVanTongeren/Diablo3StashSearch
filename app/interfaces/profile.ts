@@ -1,4 +1,3 @@
-declare module namespace {
 
     export interface Kills {
         monsters: number;
@@ -23,21 +22,7 @@ declare module namespace {
         act5: boolean;
     }
 
-    export interface Blacksmith {
-        slug: string;
-        level: number;
-        stepCurrent: number;
-        stepMax: number;
-    }
-
-    export interface Jeweler {
-        slug: string;
-        level: number;
-        stepCurrent: number;
-        stepMax: number;
-    }
-
-    export interface Mystic {
+    export interface Artisan {
         slug: string;
         level: number;
         stepCurrent: number;
@@ -62,7 +47,7 @@ declare module namespace {
         season2: Season;
     }
 
-    export interface Career {
+    export interface Profile {
         battleTag: string;
         paragonLevel: number;
         paragonLevelHardcore: number;
@@ -77,20 +62,19 @@ declare module namespace {
         timePlayed: TimePlayed;
         progression: ProfileProgression;
         fallenHeroes: Hero[];
-        blacksmith: Blacksmith;
-        jeweler: Jeweler;
-        mystic: Mystic;
-        blacksmithHardcore: Blacksmith;
-        jewelerHardcore: Jeweler;
-        mysticHardcore: Mystic;
-        blacksmithSeason: Blacksmith;
-        jewelerSeason: Jeweler;
-        mysticSeason: Mystic;
-        blacksmithSeasonHardcore: Blacksmith;
-        jewelerSeasonHardcore: Jeweler;
-        mysticSeasonHardcore: Mystic;
+        blacksmith: Artisan;
+        jeweler: Artisan;
+        mystic: Artisan;
+        blacksmithHardcore: Artisan;
+        jewelerHardcore: Artisan;
+        mysticHardcore: Artisan;
+        blacksmithSeason: Artisan;
+        jewelerSeason: Artisan;
+        mysticSeason: Artisan;
+        blacksmithSeasonHardcore: Artisan;
+        jewelerSeasonHardcore: Artisan;
+        mysticSeasonHardcore: Artisan;
         seasonalProfiles: SeasonalProfiles;
     }
 
-}
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FORM_PROVIDERS } from '@angular/common';
 import { LocalStorageService } from './services/localstorageservice'
+
 @Component({
   selector: 'profile-loader',
   templateUrl: '../app/html/profile.loader.html'
@@ -10,10 +11,10 @@ export class ProfileLoader {
     public profile: string = "";
     public locale: string = "eu";
 
-private _localStorageService: LocalStorageService;
+    private _localStorageService: LocalStorageService;
 
-    constructor(){
-        this._localStorageService = new LocalStorageService();
+    constructor(localStorageService: LocalStorageService){
+        this._localStorageService = localStorageService;
         this.resetProfileLoader();
     }
 

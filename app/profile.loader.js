@@ -11,11 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var localstorageservice_1 = require('./services/localstorageservice');
 var ProfileLoader = (function () {
-    function ProfileLoader() {
+    function ProfileLoader(localStorageService) {
         this.apiKey = "";
         this.profile = "";
         this.locale = "eu";
-        this._localStorageService = new localstorageservice_1.LocalStorageService();
+        this._localStorageService = localStorageService;
         this.resetProfileLoader();
     }
     ProfileLoader.prototype.resetProfileLoader = function () {
@@ -35,7 +35,7 @@ var ProfileLoader = (function () {
             selector: 'profile-loader',
             templateUrl: '../app/html/profile.loader.html'
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [localstorageservice_1.LocalStorageService])
     ], ProfileLoader);
     return ProfileLoader;
 }());

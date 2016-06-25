@@ -1,5 +1,3 @@
-declare module namespace {
-
     export interface Skill {
         slug: string;
         name: string;
@@ -188,5 +186,5 @@ declare module namespace {
         dead: boolean;
         'last-updated': number;
     }
-}
+
 

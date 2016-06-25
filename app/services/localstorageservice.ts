@@ -1,3 +1,6 @@
+import { Component, Injectable } from '@angular/core';
+
+@Injectable()
 export class LocalStorageService { 
     public getItem<T>(key: string): T
     {
