@@ -3,7 +3,7 @@ import { FORM_PROVIDERS } from '@angular/common';
 import { LocalStorageService } from './services/localstorageservice'
 import { ProfileService } from './services/profile.service'
 import { ProfileViewModel } from './viewmodels/profileviewmodel'
-import { Profile } from './interfaces/profile'
+import { Profile, Hero } from './interfaces/profile'
 
 @Component({
     directives: [ProfileViewModel],
@@ -15,13 +15,18 @@ import { Profile } from './interfaces/profile'
 #app-main {
     height: 90%;
 }
-.profile-pane {
+#profile-pane {
     height: 100%;
     color: red;
 }
-.profile-pane .hero-tab {
+#profile-pane .hero-tab {
     color: green;
     height: 50px;
+    border: 1px solid black;
+}
+#profile-pane .hero-tab span {
+{
+    margin: 5px 10px;
 }
 `],
   templateUrl: '../app/html/profile.loader.html'
@@ -32,6 +37,7 @@ export class ProfileLoader {
     public locale: string = "eu";
 
     public profileViewModel: ProfileViewModel;
+    public selectedHero: Hero;
 
     private _localStorageService: LocalStorageService;
     private _profileService: ProfileService;

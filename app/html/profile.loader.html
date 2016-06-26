@@ -1,40 +1,45 @@
 <div class="col col-xs-12">
 
     <div class="row app-header" id="app-header">
-        <div class="col col-xs-2">Logo</div>
-        <div class="col col-xs-8">
-            <h1>Diablo 3 Stash Search</h1>
-            <input #apiKeyText [(value)]="apiKey" (blur)="apiKey=apiKeyText.value" placeholder="battle.net api key" required />
-            <input #profileText [(value)]="profileKey" (blur)="profileKey=profileText.value" placeholder="pro-1234" required />
-            <select [(value)]="locale" (change)="locale=($event.target.value)" >
-                <option value="eu">Europe</option>
-                <option value="us">US</option>
-            </select>
-            <button (click)="updateProfile()">Update profile</button>
+        <div class="col col-xs-2">
+            <h3>Diablo 3 Stash Search</h3>
         </div>
-        <div class="col col-xs-2">Empty</div>
+        <div class="col col-xs-8" id="search-pane">
+        </div>
+        <div class="col col-xs-2">
+            <div class="row">
+                <input #apiKeyText [(value)]="apiKey" (blur)="apiKey=apiKeyText.value" placeholder="battle.net api key" required />
+                <input #profileText [(value)]="profileKey" (blur)="profileKey=profileText.value" placeholder="pro-1234" required />
+            </div>
+            <div class="row">
+                <select [(value)]="locale" (change)="locale=($event.target.value)" >
+                    <option value="eu">Europe</option>
+                    <option value="us">US</option>
+                </select>
+                <button (click)="updateProfile()">Update profile</button>
+            </div>
+        </div>
     </div>
 
     <div class="row" id="app-main">
-        <div class="col col-xs-2 profile-pane">
+        <div class="col col-xs-2" id="profile-pane">
             <div class="row">
                 <div class="col col-xs-12">
                     <span>{{ profileViewModel.profile.battleTag }}</span><span>{{ profileViewModel.profile.guildName }}</span>
                 </div>
             </div>
 
-            <div *ngFor="let hero of profileViewModel.profile.heroes" class="row hero-tab">
-                <span>{{hero.name}}</span>
+            <div *ngFor="let hero of profileViewModel.profile.heroes" class="row hero-tab" (click)="selectHero(hero)">
+                <div>{{hero.name}}</div>
             </div>
         </div>
-        <div class="col col-xs-2">
+        <div class="col col-xs-2" id="hero-pane">
             <h1>Profile-side</h1>
         </div>
-        <div class="col col-xs-6">
+        <div class="col col-xs-5" id="hero-main">
             <h1>Profile</h1>
         </div>
-        <div class="col col-xs-2">
-            <h1>Item</h1>
+        <div class="col col-xs-3" id="item-detail">
         </div>
     </div>
 
