@@ -7,4 +7,4 @@ import { Http, HTTP_PROVIDERS } from '@angular/http'
 import { LocalStorageService } from './services/localstorageservice'
 import { ProfileService } from './services/profile.service'
 
-bootstrap(AppComponent, [LocalStorageService, ProfileService, HTTP_PROVIDERS, ROUTER_PROVIDERS, FORM_PROVIDERS]);
+bootstrap(AppComponent, [ LocalStorageService, ProfileService, HTTP_PROVIDERS, ROUTER_PROVIDERS, FORM_PROVIDERS]);

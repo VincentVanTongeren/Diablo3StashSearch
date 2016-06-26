@@ -19,6 +19,7 @@ var ProfileViewModel = (function () {
     ProfileViewModel = __decorate([
         core_1.Component({
             selector: 'profile-viewmodel',
+            providers: [profile_1.Profile],
             templateUrl: '../app/html/profile.viewmodel.html'
         }), 
         __metadata('design:paramtypes', [profile_1.Profile])

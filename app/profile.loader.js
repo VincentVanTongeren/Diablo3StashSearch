@@ -39,7 +39,6 @@ var ProfileLoader = (function () {
         this._localStorageService.storeItemAsString("profileKey", this.profileKey);
         this._localStorageService.storeItemAsString("locale", this.locale);
         this.getProfile().then(function (profile) {
-            debugger;
             _this.profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
         });
     };

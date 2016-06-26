@@ -46,7 +46,6 @@ export class ProfileLoader {
         this._localStorageService.storeItemAsString("locale", this.locale);
 
         this.getProfile().then((profile: Profile) => {
-            debugger;
             this.profileViewModel = new ProfileViewModel(profile);
         })
     }

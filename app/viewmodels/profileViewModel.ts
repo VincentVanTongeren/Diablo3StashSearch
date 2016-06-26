@@ -4,6 +4,7 @@ import { Profile } from '../interfaces/profile'
 
 @Component({
   selector: 'profile-viewmodel',
+  providers: [Profile],
   templateUrl: '../app/html/profile.viewmodel.html'
 })
 export class ProfileViewModel{
@@ -12,6 +13,5 @@ export class ProfileViewModel{
 
     constructor(public profile: Profile)
     {
-
     }
 }

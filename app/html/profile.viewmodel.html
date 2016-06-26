@@ -1,3 +1,10 @@
-<div>
-    heyo
+<div class="row">
+    <div class="col col-xs-12">
+        <span>{{ profileViewModel.battleTag }}</span><span>{{ profileViewModel.guildName }}</span><button (click)="ta.value=this;" >Click</button>
+        <textarea #ta></textarea>
+    </div>
+</div>
+
+<div *ngFor="let hero of profileViewModel.heroes" class="row">
+    <span>{{hero.name}}</span>
 </div>
