@@ -25,6 +25,11 @@ import { Profile, Hero } from './interfaces/profile'
     height: 50px;
     border: 1px solid black;
 }
+#profile-pane .hero-tab.is-selected {
+    background-color: #ddd;
+    height: 50px;
+    border: 1px solid black;
+}
 #profile-pane .hero-tab .hero-name {
     margin: 5px 10px;
 }
@@ -40,7 +45,7 @@ export class ProfileLoader {
     public locale: string = "eu";
 
     public profileViewModel: ProfileViewModel;
-    public selectedHero: Hero;
+    public selectedHeroViewModel: HeroViewModel;
 
     private _localStorageService: LocalStorageService;
     private _profileService: ProfileService;
@@ -95,5 +100,9 @@ export class ProfileLoader {
                 this._localStorageService.storeItem(this.profileKey, profile);
         });
         return profilePromise;
+    }
+
+    public selectHero(heroViewModel: HeroViewModel): void{
+        this.selectedHeroViewModel = heroViewModel;
     }
 }

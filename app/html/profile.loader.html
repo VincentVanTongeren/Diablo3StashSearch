@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <div *ngFor="let heroViewModel of profileViewModel.heroes" class="row hero-tab" (click)="selectHero(heroViewModel)">
+            <div *ngFor="let heroViewModel of profileViewModel.heroes" class="row hero-tab" [ngClass]="{'is-selected':heroViewModel == selectedHeroViewModel }" (click)="selectHero(heroViewModel)">
                 <div class="hero-name" [ngClass]="{'has-details':heroViewModel.hasDetails}">{{heroViewModel.hero.name}}</div>
             </div>
         </div>
