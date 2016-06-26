@@ -1,7 +1,7 @@
 import { Hero } from '../interfaces/profile'
 export class HeroViewModel{
 
-    constructor(public hero: Hero){
+    constructor(public hero: Hero, public hasDetails: boolean){
         
     }
 }

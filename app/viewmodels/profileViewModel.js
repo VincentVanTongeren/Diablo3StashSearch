@@ -10,11 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var profile_1 = require('../interfaces/profile');
-//import { HeroViewModel } from './heroViewModel'
 var ProfileViewModel = (function () {
-    //public heroes: HeroViewModel[];
     function ProfileViewModel(profile) {
         this.profile = profile;
+        this.heroes = [];
     }
     ProfileViewModel = __decorate([
         core_1.Component({

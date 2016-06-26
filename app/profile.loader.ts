@@ -3,6 +3,7 @@ import { FORM_PROVIDERS } from '@angular/common';
 import { LocalStorageService } from './services/localstorageservice'
 import { ProfileService } from './services/profile.service'
 import { ProfileViewModel } from './viewmodels/profileviewmodel'
+import { HeroViewModel } from './viewmodels/heroviewmodel'
 import { Profile, Hero } from './interfaces/profile'
 
 @Component({
@@ -20,13 +21,15 @@ import { Profile, Hero } from './interfaces/profile'
     color: red;
 }
 #profile-pane .hero-tab {
-    color: green;
+    color: red;
     height: 50px;
     border: 1px solid black;
 }
-#profile-pane .hero-tab span {
-{
+#profile-pane .hero-tab .hero-name {
     margin: 5px 10px;
+}
+#profile-pane .hero-tab .hero-name.has-details {
+    color: blue;
 }
 `],
   templateUrl: '../app/html/profile.loader.html'
@@ -51,7 +54,16 @@ export class ProfileLoader {
         {
             var profile = this._localStorageService.getItem<Profile>(this.profileKey);
             if (profile)
+            {
                 this.profileViewModel = new ProfileViewModel(profile);
+                if (profile.heroes && profile.heroes.length)
+                {
+                    profile.heroes.forEach(hero => {
+                        var cachedHero = this._localStorageService.getItem<Hero>("hero" + hero.id);
+                        this.profileViewModel.heroes.push(new HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero))); 
+                    });
+                }
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Profile } from '../interfaces/profile'
-//import { HeroViewModel } from './heroViewModel'
+import { HeroViewModel } from './heroViewModel'
 
 @Component({
   selector: 'profile-viewmodel',
@@ -9,9 +9,10 @@ import { Profile } from '../interfaces/profile'
 })
 export class ProfileViewModel{
 
-    //public heroes: HeroViewModel[];
+    public heroes: HeroViewModel[];
 
     constructor(public profile: Profile)
     {
+      this.heroes = [];
     }
 }

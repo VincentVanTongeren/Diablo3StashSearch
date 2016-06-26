@@ -12,8 +12,10 @@ var core_1 = require('@angular/core');
 var localstorageservice_1 = require('./services/localstorageservice');
 var profile_service_1 = require('./services/profile.service');
 var profileviewmodel_1 = require('./viewmodels/profileviewmodel');
+var heroviewmodel_1 = require('./viewmodels/heroviewmodel');
 var ProfileLoader = (function () {
     function ProfileLoader(localStorageService, profileService) {
+        var _this = this;
         this.apiKey = "";
         this.profileKey = "";
         this.locale = "eu";
@@ -22,8 +24,15 @@ var ProfileLoader = (function () {
         this.resetProfileLoader();
         if (this.profileKey) {
             var profile = this._localStorageService.getItem(this.profileKey);
-            if (profile)
+            if (profile) {
                 this.profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
+                if (profile.heroes && profile.heroes.length) {
+                    profile.heroes.forEach(function (hero) {
+                        var cachedHero = _this._localStorageService.getItem("hero" + hero.id);
+                        _this.profileViewModel.heroes.push(new heroviewmodel_1.HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero)));
+                    });
+                }
+            }
         }
     }
     ProfileLoader.prototype.resetProfileLoader = function () {
@@ -58,7 +67,7 @@ var ProfileLoader = (function () {
         core_1.Component({
             directives: [profileviewmodel_1.ProfileViewModel],
             selector: 'profile-loader',
-            styles: ["\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#profile-pane {\n    height: 100%;\n    color: red;\n}\n#profile-pane .hero-tab {\n    color: green;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab span {\n{\n    margin: 5px 10px;\n}\n"],
+            styles: ["\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#profile-pane {\n    height: 100%;\n    color: red;\n}\n#profile-pane .hero-tab {\n    color: red;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab .hero-name {\n    margin: 5px 10px;\n}\n#profile-pane .hero-tab .hero-name.has-details {\n    color: blue;\n}\n"],
             templateUrl: '../app/html/profile.loader.html'
         }), 
         __metadata('design:paramtypes', [localstorageservice_1.LocalStorageService, profile_service_1.ProfileService])

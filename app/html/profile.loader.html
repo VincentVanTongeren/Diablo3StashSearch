@@ -29,8 +29,8 @@
                 </div>
             </div>
 
-            <div *ngFor="let hero of profileViewModel.profile.heroes" class="row hero-tab" (click)="selectHero(hero)">
-                <div>{{hero.name}}</div>
+            <div *ngFor="let heroViewModel of profileViewModel.heroes" class="row hero-tab" (click)="selectHero(heroViewModel)">
+                <div class="hero-name" [ngClass]="{'has-details':heroViewModel.hasDetails}">{{heroViewModel.hero.name}}</div>
             </div>
         </div>
         <div class="col col-xs-2" id="hero-pane">
