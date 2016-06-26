@@ -34,7 +34,8 @@
             </div>
         </div>
         <div class="col col-xs-2" id="hero-pane">
-            <h1>Profile-side</h1>
+            <div *ngIf="selectedHeroViewModel && !selectedHeroViewModel.hasDetails">Loading</div>
+            <div *ngIf="selectedHeroViewModel && selectedHeroViewModel.hasDetails">Loaded!</div>
         </div>
         <div class="col col-xs-5" id="hero-main">
             <h1>Profile</h1>

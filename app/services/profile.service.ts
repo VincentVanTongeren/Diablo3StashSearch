@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Profile } from '../interfaces/profile'
+import { Profile, Hero } from '../interfaces/profile'
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
@@ -24,4 +24,15 @@ export class ProfileService
                         debugger;
                     });
     }
+
+    public getHero(locale: string, profile: string, apiKey: string, heroId: number): Promise<Hero> {
+    var url = `https://${locale}.api.battle.net/d3/profile/${profile}/hero/${heroId}?locale=en_GB&apikey=${apiKey}`;
+    return this._http.get(url)
+                .toPromise()
+                .then(response => response.json() as Hero)
+                .catch((error: any) => {
+                    debugger;
+                });
+    }
+
 }

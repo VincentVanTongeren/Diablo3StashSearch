@@ -24,6 +24,15 @@ var ProfileService = (function () {
             debugger;
         });
     };
+    ProfileService.prototype.getHero = function (locale, profile, apiKey, heroId) {
+        var url = "https://" + locale + ".api.battle.net/d3/profile/" + profile + "/hero/" + heroId + "?locale=en_GB&apikey=" + apiKey;
+        return this._http.get(url)
+            .toPromise()
+            .then(function (response) { return response.json(); })
+            .catch(function (error) {
+            debugger;
+        });
+    };
     ProfileService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

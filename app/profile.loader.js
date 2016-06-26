@@ -63,14 +63,35 @@ var ProfileLoader = (function () {
         });
         return profilePromise;
     };
+    ProfileLoader.prototype.getHero = function (heroId) {
+        var _this = this;
+        var cachedHero = this._localStorageService.getItem("hero" + heroId);
+        if (cachedHero)
+            return new Promise(function () { return cachedHero; });
+        var heroPromise = this._profileService.getHero(this.locale, this.profileKey, this.apiKey, heroId);
+        heroPromise.then(function (hero) {
+            if (hero)
+                _this._localStorageService.storeItem("hero" + heroId, hero);
+        });
+        return heroPromise;
+    };
     ProfileLoader.prototype.selectHero = function (heroViewModel) {
+        var _this = this;
         this.selectedHeroViewModel = heroViewModel;
+        if (!heroViewModel.hasDetails) {
+            this.getHero(heroViewModel.hero.id).then(function (hero) {
+                var detailedHeroViewModel = new heroviewmodel_1.HeroViewModel(hero, true);
+                var index = _this.profileViewModel.heroes.indexOf(heroViewModel);
+                _this.profileViewModel.heroes[index] = detailedHeroViewModel;
+                _this.selectedHeroViewModel = detailedHeroViewModel;
+            });
+        }
     };
     ProfileLoader = __decorate([
         core_1.Component({
             directives: [profileviewmodel_1.ProfileViewModel],
             selector: 'profile-loader',
-            styles: ["\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#profile-pane {\n    height: 100%;\n    color: red;\n}\n#profile-pane .hero-tab {\n    color: red;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab.is-selected {\n    background-color: #ddd;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab .hero-name {\n    margin: 5px 10px;\n}\n#profile-pane .hero-tab .hero-name.has-details {\n    color: blue;\n}\n"],
+            styles: ["\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#profile-pane {\n    height: 100%;\n    color: red;\n}\n#profile-pane .hero-tab {\n    color: red;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab.is-selected {\n    background-color: #222;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab .hero-name {\n    margin: 5px 10px;\n}\n#profile-pane .hero-tab .hero-name.has-details {\n    color: blue;\n}\n"],
             templateUrl: '../app/html/profile.loader.html'
         }), 
         __metadata('design:paramtypes', [localstorageservice_1.LocalStorageService, profile_service_1.ProfileService])

@@ -26,7 +26,7 @@ import { Profile, Hero } from './interfaces/profile'
     border: 1px solid black;
 }
 #profile-pane .hero-tab.is-selected {
-    background-color: #ddd;
+    background-color: #222;
     height: 50px;
     border: 1px solid black;
 }
@@ -102,7 +102,29 @@ export class ProfileLoader {
         return profilePromise;
     }
 
+    public getHero(heroId: number): Promise<Hero> {
+        var cachedHero = this._localStorageService.getItem<Profile>("hero" + heroId);
+        if (cachedHero)
+            return new Promise<Hero>(() => { return cachedHero });
+
+        var heroPromise = this._profileService.getHero(this.locale, this.profileKey, this.apiKey, heroId);
+        heroPromise.then((hero: Hero) => {
+            if (hero)
+                this._localStorageService.storeItem("hero" + heroId, hero);
+        });
+        return heroPromise;
+    }
+
+
     public selectHero(heroViewModel: HeroViewModel): void{
         this.selectedHeroViewModel = heroViewModel;
+        if (!heroViewModel.hasDetails){
+            this.getHero(heroViewModel.hero.id).then((hero: Hero) => {
+                var detailedHeroViewModel = new HeroViewModel(hero, true);
+                var index = this.profileViewModel.heroes.indexOf(heroViewModel);
+                this.profileViewModel.heroes[index] = detailedHeroViewModel;
+                this.selectedHeroViewModel = detailedHeroViewModel;
+            });
+        }
     }
 }
