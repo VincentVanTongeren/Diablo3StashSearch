@@ -8,6 +8,22 @@ import { Profile } from './interfaces/profile'
 @Component({
     directives: [ProfileViewModel],
   selector: 'profile-loader',
+  styles: [`
+#app-header {
+    height: 10%;
+}
+#app-main {
+    height: 90%;
+}
+.profile-pane {
+    height: 100%;
+    color: red;
+}
+.profile-pane .hero-tab {
+    color: green;
+    height: 50px;
+}
+`],
   templateUrl: '../app/html/profile.loader.html'
 })
 export class ProfileLoader {
