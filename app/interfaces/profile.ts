@@ -184,7 +184,7 @@
         tooltipParams: string;
     }
 
-    export interface HeroStats {
+    export class HeroStats {
         life: number;
         damage: number;
         toughness: number;
@@ -216,6 +216,11 @@
         lifeOnHit: number;
         primaryResource: number;
         secondaryResource: number;
+    }
+
+    export class HeroStat {
+        name: string;
+        value: number;
     }
 
     export interface CompletedQuest {

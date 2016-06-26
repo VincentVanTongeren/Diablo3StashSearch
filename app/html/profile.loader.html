@@ -35,7 +35,16 @@
         </div>
         <div class="col col-xs-2" id="hero-pane">
             <div *ngIf="selectedHeroViewModel && !selectedHeroViewModel.hasDetails">Loading</div>
-            <div *ngIf="selectedHeroViewModel && selectedHeroViewModel.hasDetails">Loaded!</div>
+            <div *ngIf="selectedHeroViewModel && selectedHeroViewModel.hasDetails">
+                <div *ngFor="let stat of selectedHeroViewModel.getStats()" class="row">
+                    <div class="col col-xs-6">
+                        {{stat.name}}
+                    </div>
+                    <div class="col col-xs-6">
+                        {{stat.value}}
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col col-xs-5" id="hero-main">
             <h1>Profile</h1>

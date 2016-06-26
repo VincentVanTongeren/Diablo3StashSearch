@@ -11,6 +11,18 @@ var Item = (function () {
     return Item;
 }());
 exports.Item = Item;
+var HeroStats = (function () {
+    function HeroStats() {
+    }
+    return HeroStats;
+}());
+exports.HeroStats = HeroStats;
+var HeroStat = (function () {
+    function HeroStat() {
+    }
+    return HeroStat;
+}());
+exports.HeroStat = HeroStat;
 var Hero = (function () {
     function Hero() {
     }
