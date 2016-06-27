@@ -3,7 +3,7 @@ import { CharacterType } from '../interfaces/enum'
 import { ItemViewModel } from '../viewmodels/itemViewModel'
 export class HeroViewModel{
 
-    private _items: Array<ItemViewModel>
+    public items: Array<ItemViewModel>
 
     constructor(public hero: Hero, public hasDetails: boolean){
         
@@ -20,16 +20,5 @@ export class HeroViewModel{
                 stats.push(stat);
         }
         return stats;
-    }
-
-    public getItems(type: string): Array<ItemViewModel>{
-        var items = new Array<ItemViewModel>();
-        for (var i = 0; i < Object.keys(this.hero.items).length; i++){
-            var item = new ItemViewModel(Object.values(this.hero.items)[i] as Item, false);
-            var slotName = Object.keys(this.hero.items)[i];
-            item.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
-            items.push(item);
-        }
-        return items;
     }
 }

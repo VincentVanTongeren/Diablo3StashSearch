@@ -106,15 +106,6 @@
         passive: Passive[];
     }
 
-    export class Item {
-        id: string;
-        name: string;
-        icon: string;
-        displayColor: string;
-        tooltipParams: string;
-        setItemsEquipped: string[];
-    }
-
     export interface Items {
         head: Item;
         torso: Item;
@@ -279,12 +270,13 @@
         passive: any[];
     }
 
-    export interface ItemDetails {
+    export class Item {
         id: string;
         name: string;
         icon: string;
         displayColor: string;
         tooltipParams: string;
+        setItemsEquipped: string[];
         requiredLevel: number;
         itemLevel: number;
         stackSizeMax: number;
@@ -296,16 +288,28 @@
         type: Type;
         damageRange: string;
         slots: string[];
-        attributes: Attributes;
+        attributes: any[];
         attributesRaw: any[];
         randomAffixes: any[];
-        gems: any[];
+        gems: Gem[];
         socketEffects: any[];
         craftedBy: any[];
         seasonRequiredToDrop: number;
         isSeasonRequiredToDrop: boolean;
-        description?: any;
+        description: any;
         blockChance: string;
     }
+
+    export interface Gem {
+        item: Item;
+        isGem: boolean;
+        isJewel: boolean;
+        jewelRank: number;
+        jewelSecondaryEffectUnlockRank: number;
+        jewelSecondaryEffect: string;
+        attributes: any[];
+        attributesRaw: any[];
+    }
+
 
 

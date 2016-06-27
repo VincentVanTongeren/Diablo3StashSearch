@@ -5,12 +5,6 @@ var Profile = (function () {
     return Profile;
 }());
 exports.Profile = Profile;
-var Item = (function () {
-    function Item() {
-    }
-    return Item;
-}());
-exports.Item = Item;
 var HeroStats = (function () {
     function HeroStats() {
     }
@@ -29,4 +23,10 @@ var Hero = (function () {
     return Hero;
 }());
 exports.Hero = Hero;
+var Item = (function () {
+    function Item() {
+    }
+    return Item;
+}());
+exports.Item = Item;
 //# sourceMappingURL=profile.js.map

@@ -13,6 +13,7 @@ var localstorageservice_1 = require('./services/localstorageservice');
 var profile_service_1 = require('./services/profile.service');
 var profileviewmodel_1 = require('./viewmodels/profileviewmodel');
 var heroviewmodel_1 = require('./viewmodels/heroviewmodel');
+var itemviewmodel_1 = require('./viewmodels/itemviewmodel');
 var ProfileLoader = (function () {
     function ProfileLoader(localStorageService, profileService) {
         var _this = this;
@@ -75,15 +76,55 @@ var ProfileLoader = (function () {
         });
         return heroPromise;
     };
+    ProfileLoader.prototype.getItem = function (uniqueId) {
+        var _this = this;
+        var cachedItem = this._localStorageService.getItem("item" + uniqueId);
+        if (cachedItem)
+            return new Promise(function () { return cachedItem; });
+        var itemPromise = this._profileService.getItem(this.locale, this.profileKey, this.apiKey, uniqueId);
+        itemPromise.then(function (item) {
+            if (item)
+                _this._localStorageService.storeItem("item" + uniqueId, item);
+        });
+        return itemPromise;
+    };
     ProfileLoader.prototype.selectHero = function (heroViewModel) {
         var _this = this;
         this.selectedHeroViewModel = heroViewModel;
-        if (!heroViewModel.hasDetails) {
+        if (heroViewModel.hasDetails) {
+            this.addItemsToHero(this.selectedHeroViewModel);
+        }
+        else {
             this.getHero(heroViewModel.hero.id).then(function (hero) {
                 var detailedHeroViewModel = new heroviewmodel_1.HeroViewModel(hero, true);
+                _this.addItemsToHero(detailedHeroViewModel);
                 var index = _this.profileViewModel.heroes.indexOf(heroViewModel);
                 _this.profileViewModel.heroes[index] = detailedHeroViewModel;
                 _this.selectedHeroViewModel = detailedHeroViewModel;
+            });
+        }
+    };
+    ProfileLoader.prototype.addItemsToHero = function (heroViewModel) {
+        var items = new Array();
+        for (var i = 0; i < Object.keys(heroViewModel.hero.items).length; i++) {
+            var item = new itemviewmodel_1.ItemViewModel(Object.values(heroViewModel.hero.items)[i], false);
+            var slotName = Object.keys(heroViewModel.hero.items)[i];
+            item.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
+            items.push(item);
+        }
+        heroViewModel.items = items;
+    };
+    ProfileLoader.prototype.selectItem = function (itemViewModel) {
+        var _this = this;
+        this.selectedItemViewModel = itemViewModel;
+        if (!itemViewModel.hasDetails) {
+            this.getItem(itemViewModel.uniqueId).then(function (item) {
+                var detailedItemViewModel = new itemviewmodel_1.ItemViewModel(item, true);
+                var slotName = item.slots[0];
+                detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
+                var index = _this.selectedHeroViewModel.items.indexOf(itemViewModel);
+                _this.selectedHeroViewModel.items[index] = detailedItemViewModel;
+                _this.selectedItemViewModel = detailedItemViewModel;
             });
         }
     };
@@ -91,7 +132,7 @@ var ProfileLoader = (function () {
         core_1.Component({
             directives: [profileviewmodel_1.ProfileViewModel],
             selector: 'profile-loader',
-            styles: ["\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#profile-pane {\n    height: 100%;\n    color: red;\n}\n#profile-pane .hero-tab {\n    color: red;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab.is-selected {\n    background-color: #222;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab .hero-name {\n    margin: 5px 10px;\n}\n#profile-pane .hero-tab .hero-name.has-details {\n    color: blue;\n}\n"],
+            styles: ["\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#profile-pane {\n    height: 100%;\n    color: red;\n}\n#profile-pane .hero-tab {\n    color: red;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab.is-selected {\n    background-color: #222;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab .hero-name {\n    margin: 5px 10px;\n}\n#profile-pane .hero-tab .hero-name.has-details {\n    color: blue;\n}\n#hero-pane {\n    height: 100%;\n}\n#hero-main {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n"],
             templateUrl: '../app/html/profile.loader.html'
         }), 
         __metadata('design:paramtypes', [localstorageservice_1.LocalStorageService, profile_service_1.ProfileService])

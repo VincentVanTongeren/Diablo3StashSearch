@@ -4,7 +4,8 @@ import { LocalStorageService } from './services/localstorageservice'
 import { ProfileService } from './services/profile.service'
 import { ProfileViewModel } from './viewmodels/profileviewmodel'
 import { HeroViewModel } from './viewmodels/heroviewmodel'
-import { Profile, Hero } from './interfaces/profile'
+import { ItemViewModel } from './viewmodels/itemviewmodel'
+import { Profile, Hero, Item } from './interfaces/profile'
 
 @Component({
     directives: [ProfileViewModel],
@@ -42,6 +43,15 @@ import { Profile, Hero } from './interfaces/profile'
 #profile-pane .hero-tab .hero-name.has-details {
     color: blue;
 }
+#hero-pane {
+    height: 100%;
+}
+#hero-main {
+    height: 100%;
+}
+#item-detail {
+    height: 100%;
+}
 `],
   templateUrl: '../app/html/profile.loader.html'
 })
@@ -52,6 +62,8 @@ export class ProfileLoader {
 
     public profileViewModel: ProfileViewModel;
     public selectedHeroViewModel: HeroViewModel;
+    public selectedItemViewModel: ItemViewModel;
+    public itemDetailsHtml: string;
 
     private _localStorageService: LocalStorageService;
     private _profileService: ProfileService;
@@ -121,15 +133,57 @@ export class ProfileLoader {
         return heroPromise;
     }
 
+    public getItem(uniqueId: string): Promise<Item> {
+        var cachedItem = this._localStorageService.getItem<Profile>("item" + uniqueId);
+        if (cachedItem)
+            return new Promise<Item>(() => { return cachedItem });
+
+        var itemPromise = this._profileService.getItem(this.locale, this.profileKey, this.apiKey, uniqueId);
+        itemPromise.then((item: Item) => {
+            if (item)
+                this._localStorageService.storeItem("item" + uniqueId, item);
+        });
+        return itemPromise;
+    }
 
     public selectHero(heroViewModel: HeroViewModel): void{
         this.selectedHeroViewModel = heroViewModel;
-        if (!heroViewModel.hasDetails){
+        if (heroViewModel.hasDetails){
+            this.addItemsToHero(this.selectedHeroViewModel);
+        }
+        else{
             this.getHero(heroViewModel.hero.id).then((hero: Hero) => {
                 var detailedHeroViewModel = new HeroViewModel(hero, true);
+                this.addItemsToHero(detailedHeroViewModel);
                 var index = this.profileViewModel.heroes.indexOf(heroViewModel);
                 this.profileViewModel.heroes[index] = detailedHeroViewModel;
                 this.selectedHeroViewModel = detailedHeroViewModel;
+            });
+        }
+    }
+
+    private addItemsToHero(heroViewModel: HeroViewModel){
+        var items = new Array<ItemViewModel>();
+        for (var i = 0; i < Object.keys(heroViewModel.hero.items).length; i++){
+            var item = new ItemViewModel(Object.values(heroViewModel.hero.items)[i] as Item, false);
+            var slotName = Object.keys(heroViewModel.hero.items)[i];
+            item.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
+            items.push(item);
+        }
+        heroViewModel.items = items;
+    }
+
+    public selectItem(itemViewModel: ItemViewModel): void {
+        this.selectedItemViewModel = itemViewModel;
+        if (!itemViewModel.hasDetails){
+            this.getItem(itemViewModel.uniqueId).then((item: Item) => {
+                var detailedItemViewModel = new ItemViewModel(item, true);
+                var slotName = item.slots[0];
+                detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
+                var index = this.selectedHeroViewModel.items.indexOf(itemViewModel);
+                this.selectedHeroViewModel.items[index] = detailedItemViewModel;
+                this.selectedItemViewModel = detailedItemViewModel;
+
             });
         }
     }
