@@ -14,9 +14,11 @@ var profile_service_1 = require('./services/profile.service');
 var profileviewmodel_1 = require('./viewmodels/profileviewmodel');
 var heroviewmodel_1 = require('./viewmodels/heroviewmodel');
 var itemviewmodel_1 = require('./viewmodels/itemviewmodel');
+var platform_browser_1 = require('@angular/platform-browser');
 var ProfileLoader = (function () {
-    function ProfileLoader(localStorageService, profileService) {
+    function ProfileLoader(localStorageService, profileService, _sanitizationService) {
         var _this = this;
+        this._sanitizationService = _sanitizationService;
         this.apiKey = "";
         this.profileKey = "";
         this.locale = "eu";
@@ -114,9 +116,14 @@ var ProfileLoader = (function () {
         }
         heroViewModel.items = items;
     };
+    ProfileLoader.prototype.show = function (obj) {
+        alert(JSON.stringify(obj));
+    };
     ProfileLoader.prototype.selectItem = function (itemViewModel) {
         var _this = this;
         this.selectedItemViewModel = itemViewModel;
+        var trustedUrl = "url('http://media.blizzard.com/d3/icons/items/large/" + itemViewModel.item.icon + ".png')";
+        itemViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustStyle(trustedUrl);
         if (!itemViewModel.hasDetails) {
             this.getItem(itemViewModel.uniqueId).then(function (item) {
                 var detailedItemViewModel = new itemviewmodel_1.ItemViewModel(item, true);
@@ -135,7 +142,7 @@ var ProfileLoader = (function () {
             styles: ["\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#profile-pane {\n    height: 100%;\n    color: red;\n}\n#profile-pane .hero-tab {\n    color: red;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab.is-selected {\n    background-color: #222;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab .hero-name {\n    margin: 5px 10px;\n}\n#profile-pane .hero-tab .hero-name.has-details {\n    color: blue;\n}\n#hero-pane {\n    height: 100%;\n}\n#hero-main {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n"],
             templateUrl: '../app/html/profile.loader.html'
         }), 
-        __metadata('design:paramtypes', [localstorageservice_1.LocalStorageService, profile_service_1.ProfileService])
+        __metadata('design:paramtypes', [localstorageservice_1.LocalStorageService, profile_service_1.ProfileService, platform_browser_1.DomSanitizationService])
     ], ProfileLoader);
     return ProfileLoader;
 }());

@@ -6,6 +6,7 @@ import { ProfileViewModel } from './viewmodels/profileviewmodel'
 import { HeroViewModel } from './viewmodels/heroviewmodel'
 import { ItemViewModel } from './viewmodels/itemviewmodel'
 import { Profile, Hero, Item } from './interfaces/profile'
+import { DomSanitizationService } from '@angular/platform-browser';
 
 @Component({
     directives: [ProfileViewModel],
@@ -68,7 +69,7 @@ export class ProfileLoader {
     private _localStorageService: LocalStorageService;
     private _profileService: ProfileService;
 
-    constructor(localStorageService: LocalStorageService, profileService: ProfileService){
+    constructor(localStorageService: LocalStorageService, profileService: ProfileService, private _sanitizationService: DomSanitizationService){
         this._localStorageService = localStorageService;
         this._profileService = profileService;
         this.resetProfileLoader();
@@ -173,8 +174,15 @@ export class ProfileLoader {
         heroViewModel.items = items;
     }
 
+public show(obj: any){
+    alert(JSON.stringify(obj));
+}
+
     public selectItem(itemViewModel: ItemViewModel): void {
         this.selectedItemViewModel = itemViewModel;
+        var trustedUrl = `url('http://media.blizzard.com/d3/icons/items/large/${itemViewModel.item.icon}.png')`;
+        itemViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustStyle(trustedUrl);
+
         if (!itemViewModel.hasDetails){
             this.getItem(itemViewModel.uniqueId).then((item: Item) => {
                 var detailedItemViewModel = new ItemViewModel(item, true);

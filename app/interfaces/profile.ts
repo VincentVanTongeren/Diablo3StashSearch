@@ -288,7 +288,7 @@
         type: Type;
         damageRange: string;
         slots: string[];
-        attributes: any[];
+        attributes: Attributes;
         attributesRaw: any[];
         randomAffixes: any[];
         gems: Gem[];
@@ -307,7 +307,7 @@
         jewelRank: number;
         jewelSecondaryEffectUnlockRank: number;
         jewelSecondaryEffect: string;
-        attributes: any[];
+        attributes: Attributes;
         attributesRaw: any[];
     }
 
