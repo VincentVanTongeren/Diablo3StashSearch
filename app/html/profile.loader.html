@@ -47,7 +47,16 @@
             </div>
         </div>
         <div class="col col-xs-5" id="hero-main">
-            <h1>Profile</h1>
+            <div *ngIf="selectedHeroViewModel && selectedHeroViewModel.hasDetails">
+                <div *ngFor="let item of selectedHeroViewModel.getItems('player')" class="row">
+                    <div class="col col-xs-1">
+                        {{item.slotName}}
+                    </div>
+                    <div class="col col-xs-3">
+                        {{item.item.name}}
+                    </div>
+                </div>
+            <div>
         </div>
         <div class="col col-xs-3" id="item-detail">
         </div>
