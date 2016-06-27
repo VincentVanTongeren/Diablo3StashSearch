@@ -22,7 +22,8 @@ var HeroViewModel = (function () {
         var items = new Array();
         for (var i = 0; i < Object.keys(this.hero.items).length; i++) {
             var item = new itemViewModel_1.ItemViewModel(Object.values(this.hero.items)[i], false);
-            item.slotName = Object.keys(this.hero.items)[i];
+            var slotName = Object.keys(this.hero.items)[i];
+            item.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
             items.push(item);
         }
         return items;

@@ -10,6 +10,12 @@ import { Profile, Hero } from './interfaces/profile'
     directives: [ProfileViewModel],
   selector: 'profile-loader',
   styles: [`
+.bold {
+    font-weight: bold;
+}
+.white {
+    color: #eee;
+}
 #app-header {
     height: 10%;
 }

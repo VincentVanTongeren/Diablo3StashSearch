@@ -1,8 +1,11 @@
 body {
   margin: 2em;
   background-color: black;
+  color: #eee;
 }
-
+input, textarea, keygen, select, button{
+  color: #333;
+}
  /*
   * See https://github.com/angular/angular.io/blob/master/public/docs/_examples/styles.css
   * for the full set of master styles used by the documentation samples

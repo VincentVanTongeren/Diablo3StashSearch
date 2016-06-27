@@ -26,7 +26,8 @@ export class HeroViewModel{
         var items = new Array<ItemViewModel>();
         for (var i = 0; i < Object.keys(this.hero.items).length; i++){
             var item = new ItemViewModel(Object.values(this.hero.items)[i] as Item, false);
-            item.slotName = Object.keys(this.hero.items)[i];
+            var slotName = Object.keys(this.hero.items)[i];
+            item.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
             items.push(item);
         }
         return items;
