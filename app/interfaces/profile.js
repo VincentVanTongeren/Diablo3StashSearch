@@ -39,4 +39,10 @@ var Item = (function () {
     return Item;
 }());
 exports.Item = Item;
+var Gem = (function () {
+    function Gem() {
+    }
+    return Gem;
+}());
+exports.Gem = Gem;
 //# sourceMappingURL=profile.js.map

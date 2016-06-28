@@ -290,8 +290,15 @@
         typeName: string;
         type: Type;
         damageRange: string;
+        dps: MinMax;
+        attacksPerSecond: MinMax;
+        attacksPerSecondText: string;
+        minDamage: MinMax;
+        maxDamage: MinMax;
+        elementalType: string;
         armor: MinMax;
         slots: string[];
+        augmentation: string;
         attributes: Attributes;
         attributesRaw: any[];
         randomAffixes: any[];
@@ -304,7 +311,7 @@
         blockChance: string;
     }
 
-    export interface Gem {
+    export class Gem {
         item: Item;
         isGem: boolean;
         isJewel: boolean;

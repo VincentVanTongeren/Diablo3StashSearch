@@ -5,10 +5,14 @@ var ItemViewModel = (function () {
         this.item = item;
         this.hasDetails = hasDetails;
         this.uniqueId = item.tooltipParams.split('/')[1];
-        this.isAncient = hasDetails && Boolean(item.attributesRaw["Ancient_Rank"]);
-        this.sockets = hasDetails && Boolean(item.attributesRaw["Sockets"]) ? item.attributesRaw["Sockets"].min : 0;
-        if (hasDetails && Boolean(item.attributesRaw["Armor_Item"]) && item.attributesRaw["Armor_Item"].min > 0) {
-            this.baseValue = new profile_1.NameValue("Armor", item.armor.min);
+        if (hasDetails) {
+            this.isAncient = Boolean(item.attributesRaw["Ancient_Rank"]);
+            this.sockets = Boolean(item.attributesRaw["Sockets"]) ? item.attributesRaw["Sockets"].min : 0;
+            if (Boolean(item.attributesRaw["Armor_Item"]) && item.attributesRaw["Armor_Item"].min > 0) {
+                this.baseValue = new profile_1.NameValue("Armor", item.armor.min);
+            }
+            this.augment = Boolean(item.attributesRaw["CubeEnchantedGemRank"]) ? item.attributesRaw["CubeEnchantedGemRank"].min : 0;
+            this.gems = new Array();
         }
     }
     ItemViewModel.prototype.matches = function (search) {

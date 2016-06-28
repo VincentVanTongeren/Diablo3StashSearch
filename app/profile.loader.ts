@@ -5,6 +5,7 @@ import { ProfileService } from './services/profile.service'
 import { ProfileViewModel } from './viewmodels/profileviewmodel'
 import { HeroViewModel } from './viewmodels/heroviewmodel'
 import { ItemViewModel } from './viewmodels/itemviewmodel'
+import { GemViewModel } from './viewmodels/gemviewmodel'
 import { Profile, Hero, Item } from './interfaces/profile'
 import { DomSanitizationService } from '@angular/platform-browser';
 
@@ -29,14 +30,11 @@ import { DomSanitizationService } from '@angular/platform-browser';
     color: red;
 }
 #profile-pane .hero-tab {
-    color: red;
     height: 50px;
-    border: 1px solid black;
+    border: 1px solid #222;
 }
 #profile-pane .hero-tab.is-selected {
-    background-color: #222;
-    height: 50px;
-    border: 1px solid black;
+    border: 1px solid #555;
 }
 #profile-pane .hero-tab .hero-name {
     margin: 5px 10px;
@@ -84,7 +82,11 @@ export class ProfileLoader {
                 {
                     profile.heroes.forEach(hero => {
                         var cachedHero = this._localStorageService.getItem<Hero>("hero" + hero.id);
-                        this.profileViewModel.heroes.push(new HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero))); 
+                        var heroViewModel = new HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero));
+                        var heroPart = (hero.class == "crusader" ? "x1_" : "") + hero.class.replace("-", "") + "_" + (hero.gender ? "female" : "male");
+                        var trustedUrl = `http://media.blizzard.com/d3/icons/portraits/42/${heroPart}.png`;
+                        heroViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
+                        this.profileViewModel.heroes.push(heroViewModel); 
                     });
                 }
             }
@@ -186,6 +188,14 @@ public show(obj: any){
         if (!itemViewModel.hasDetails){
             this.getItem(itemViewModel.uniqueId).then((item: Item) => {
                 var detailedItemViewModel = new ItemViewModel(item, true);
+                for (var i = 0; i < item.gems.length; i++)
+                {
+                    var gem = new GemViewModel(item.gems[i]);
+                    var trustedUrl = `http://media.blizzard.com/d3/icons/items/small/${item.gems[i].item.icon}.png`;
+                    gem.iconUrl = this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
+                    detailedItemViewModel.gems.push(gem);
+                }
+
                 var slotName = item.slots[0];
                 detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
                 var index = this.selectedHeroViewModel.items.indexOf(itemViewModel);

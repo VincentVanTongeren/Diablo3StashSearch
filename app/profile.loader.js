@@ -14,6 +14,7 @@ var profile_service_1 = require('./services/profile.service');
 var profileviewmodel_1 = require('./viewmodels/profileviewmodel');
 var heroviewmodel_1 = require('./viewmodels/heroviewmodel');
 var itemviewmodel_1 = require('./viewmodels/itemviewmodel');
+var gemviewmodel_1 = require('./viewmodels/gemviewmodel');
 var platform_browser_1 = require('@angular/platform-browser');
 var ProfileLoader = (function () {
     function ProfileLoader(localStorageService, profileService, _sanitizationService) {
@@ -32,7 +33,11 @@ var ProfileLoader = (function () {
                 if (profile.heroes && profile.heroes.length) {
                     profile.heroes.forEach(function (hero) {
                         var cachedHero = _this._localStorageService.getItem("hero" + hero.id);
-                        _this.profileViewModel.heroes.push(new heroviewmodel_1.HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero)));
+                        var heroViewModel = new heroviewmodel_1.HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero));
+                        var heroPart = (hero.class == "crusader" ? "x1_" : "") + hero.class.replace("-", "") + "_" + (hero.gender ? "female" : "male");
+                        var trustedUrl = "http://media.blizzard.com/d3/icons/portraits/42/" + heroPart + ".png";
+                        heroViewModel.iconUrl = _this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
+                        _this.profileViewModel.heroes.push(heroViewModel);
                     });
                 }
             }
@@ -127,6 +132,12 @@ var ProfileLoader = (function () {
         if (!itemViewModel.hasDetails) {
             this.getItem(itemViewModel.uniqueId).then(function (item) {
                 var detailedItemViewModel = new itemviewmodel_1.ItemViewModel(item, true);
+                for (var i = 0; i < item.gems.length; i++) {
+                    var gem = new gemviewmodel_1.GemViewModel(item.gems[i]);
+                    var trustedUrl = "http://media.blizzard.com/d3/icons/items/small/" + item.gems[i].item.icon + ".png";
+                    gem.iconUrl = _this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
+                    detailedItemViewModel.gems.push(gem);
+                }
                 var slotName = item.slots[0];
                 detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
                 var index = _this.selectedHeroViewModel.items.indexOf(itemViewModel);
@@ -139,7 +150,7 @@ var ProfileLoader = (function () {
         core_1.Component({
             directives: [profileviewmodel_1.ProfileViewModel],
             selector: 'profile-loader',
-            styles: ["\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#profile-pane {\n    height: 100%;\n    color: red;\n}\n#profile-pane .hero-tab {\n    color: red;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab.is-selected {\n    background-color: #222;\n    height: 50px;\n    border: 1px solid black;\n}\n#profile-pane .hero-tab .hero-name {\n    margin: 5px 10px;\n}\n#profile-pane .hero-tab .hero-name.has-details {\n    color: blue;\n}\n#hero-pane {\n    height: 100%;\n}\n#hero-main {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n"],
+            styles: ["\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#profile-pane {\n    height: 100%;\n    color: red;\n}\n#profile-pane .hero-tab {\n    height: 50px;\n    border: 1px solid #222;\n}\n#profile-pane .hero-tab.is-selected {\n    border: 1px solid #555;\n}\n#profile-pane .hero-tab .hero-name {\n    margin: 5px 10px;\n}\n#profile-pane .hero-tab .hero-name.has-details {\n    color: blue;\n}\n#hero-pane {\n    height: 100%;\n}\n#hero-main {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n"],
             templateUrl: '../app/html/profile.loader.html'
         }), 
         __metadata('design:paramtypes', [localstorageservice_1.LocalStorageService, profile_service_1.ProfileService, platform_browser_1.DomSanitizationService])
