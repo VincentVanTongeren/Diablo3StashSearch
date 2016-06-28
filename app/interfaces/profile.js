@@ -11,12 +11,22 @@ var HeroStats = (function () {
     return HeroStats;
 }());
 exports.HeroStats = HeroStats;
-var HeroStat = (function () {
-    function HeroStat() {
+var NameValue = (function () {
+    function NameValue(name, value) {
+        this.name = name;
+        this.value = value;
     }
-    return HeroStat;
+    return NameValue;
 }());
-exports.HeroStat = HeroStat;
+exports.NameValue = NameValue;
+var MinMax = (function () {
+    function MinMax(min, max) {
+        this.min = min;
+        this.max = max;
+    }
+    return MinMax;
+}());
+exports.MinMax = MinMax;
 var Hero = (function () {
     function Hero() {
     }

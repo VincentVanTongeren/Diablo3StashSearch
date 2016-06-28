@@ -1,4 +1,4 @@
-import { Hero, HeroStat, Item } from '../interfaces/profile'
+import { Hero, NameValue, Item } from '../interfaces/profile'
 import { CharacterType } from '../interfaces/enum'
 import { ItemViewModel } from '../viewmodels/itemViewModel'
 export class HeroViewModel{
@@ -9,13 +9,14 @@ export class HeroViewModel{
         
     }
 
-    public getStats(): Array<HeroStat>{
-        var stats = new Array<HeroStat>();
+    public getStats(): Array<NameValue>{
+        var stats = new Array<NameValue>();
         for (var i = 0; i < Object.keys(this.hero.stats).length; i++){
-            var stat = new HeroStat();
-            var name = Object.keys(this.hero.stats)[i];
-            stat.name = name.substring(0, 1).toUpperCase() + name.substring(1).replace(/(?=[A-Z])/, " ");
-            stat.value = Object.values(this.hero.stats)[i];
+            
+            var statName = Object.keys(this.hero.stats)[i];
+            statName = statName.substring(0, 1).toUpperCase() + statName.substring(1).replace(/(?=[A-Z])/, " ");
+            var statValue = Object.values(this.hero.stats)[i];
+            var stat = new NameValue(statName, statValue);
             if (stat.value > 0)
                 stats.push(stat);
         }

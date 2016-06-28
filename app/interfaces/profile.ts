@@ -209,9 +209,12 @@
         secondaryResource: number;
     }
 
-    export class HeroStat {
-        name: string;
-        value: number;
+    export class NameValue {
+        constructor(public name: string, public value: number){}
+    }
+
+    export class MinMax {
+        constructor(public min: number, public max: number){ }
     }
 
     export interface CompletedQuest {
@@ -287,6 +290,7 @@
         typeName: string;
         type: Type;
         damageRange: string;
+        armor: MinMax;
         slots: string[];
         attributes: Attributes;
         attributesRaw: any[];
