@@ -14,6 +14,7 @@ import { DomSanitizationService } from '@angular/platform-browser';
 
 import 'rxjs/add/operator/toPromise';
 
+
 @Injectable()
 export class ProfileService
 {  
@@ -27,7 +28,7 @@ export class ProfileService
     private getProfile(locale: string, profileKey: string, apiKey: string): Promise<Profile> {
         var cachedProfile = this._localStorageService.getItem<Profile>(profileKey);
         if (cachedProfile)
-            return new Promise<Profile>(() => { return cachedProfile });
+            return new Promise<Profile>(() => { cachedProfile });
 
         var url = `https://${locale}.api.battle.net/d3/profile/${profileKey}/?locale=en_GB&apikey=${apiKey}`;
         var profilePromise =  this._http.get(url)
@@ -45,22 +46,7 @@ export class ProfileService
     }
 
 
-    public getProfileViewModel(locale: string, profileKey: string, apiKey: string): Promise<ProfileViewModel> {
-
-        return this.getProfile(locale, profileKey, apiKey).then((profile: Profile) => {
-            var profileViewModel = new ProfileViewModel(profile);
-            if (profile.heroes && profile.heroes.length)
-            {
-                profile.heroes.forEach(hero => {
-                    var cachedHero = this._localStorageService.getItem<Hero>("hero" + hero.id);
-                    var heroViewModel = new HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero));
-                    var heroPart = (hero.class == "crusader" ? "x1_" : "") + hero.class.replace("-", "") + "_" + (hero.gender ? "female" : "male");
-                    var trustedUrl = `http://media.blizzard.com/d3/icons/portraits/42/${heroPart}.png`;
-                    heroViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
-                    profileViewModel.heroes.push(heroViewModel); 
-                });
-            }
-            return profileViewModel;
-        });
+    public getProfileViewModel(locale: string, profileKey: string, apiKey: string): Promise<Profile> {
+        return this.getProfile(locale, profileKey, apiKey);
     }
 }

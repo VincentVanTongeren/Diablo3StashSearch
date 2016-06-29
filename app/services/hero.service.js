@@ -41,7 +41,7 @@ var HeroService = (function () {
         });
         return heroPromise;
     };
-    HeroService.prototype.addItemsToHero = function (heroViewModel) {
+    HeroService.prototype.enrichHero = function (heroViewModel) {
         var items = new Array();
         for (var i = 0; i < Object.keys(heroViewModel.hero.items).length; i++) {
             var item = new itemviewmodel_1.ItemViewModel(Object.values(heroViewModel.hero.items)[i], false);
@@ -51,11 +51,25 @@ var HeroService = (function () {
         }
         heroViewModel.items = items;
     };
+    HeroService.prototype.setIconUrl = function (heroViewModel) {
+        var heroPart = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");
+        var trustedUrl = "http://media.blizzard.com/d3/icons/portraits/42/" + heroPart + ".png";
+        heroViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
+    };
+    HeroService.prototype.createHeroViewModel = function (hero) {
+        var cachedHero = this._localStorageService.getItem("hero" + hero.id);
+        var heroViewModel = new heroviewmodel_1.HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero));
+        this.setIconUrl(heroViewModel);
+        if (cachedHero)
+            this.enrichHero(heroViewModel);
+        return heroViewModel;
+    };
     HeroService.prototype.getHeroViewModel = function (heroes, heroViewModel, locale, profileKey, apiKey) {
         var _this = this;
         return this.getHero(locale, profileKey, apiKey, heroViewModel.hero.id).then(function (hero) {
             var detailedHeroViewModel = new heroviewmodel_1.HeroViewModel(hero, true);
-            _this.addItemsToHero(detailedHeroViewModel);
+            _this.setIconUrl(detailedHeroViewModel);
+            _this.enrichHero(detailedHeroViewModel);
             var index = heroes.indexOf(heroViewModel);
             heroes[index] = detailedHeroViewModel;
             return detailedHeroViewModel;

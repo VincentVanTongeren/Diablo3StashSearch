@@ -41,8 +41,6 @@ var ItemService = (function () {
     };
     ItemService.prototype.getDetailedItemViewModel = function (items, itemViewModel, locale, profileKey, apiKey) {
         var _this = this;
-        var trustedUrl = "url('http://media.blizzard.com/d3/icons/items/large/" + itemViewModel.item.icon + ".png')";
-        itemViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustStyle(trustedUrl);
         return this.getItem(locale, profileKey, apiKey, itemViewModel.uniqueId).then(function (item) {
             var detailedItemViewModel = new itemviewmodel_1.ItemViewModel(item, true);
             for (var i = 0; i < item.gems.length; i++) {
@@ -51,6 +49,8 @@ var ItemService = (function () {
                 gem.iconUrl = _this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
                 detailedItemViewModel.gems.push(gem);
             }
+            var trustedStyle = "url('http://media.blizzard.com/d3/icons/items/large/" + itemViewModel.item.icon + ".png')";
+            detailedItemViewModel.iconUrl = _this._sanitizationService.bypassSecurityTrustStyle(trustedStyle);
             var slotName = item.slots[0];
             detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
             var index = items.indexOf(itemViewModel);

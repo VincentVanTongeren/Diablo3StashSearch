@@ -41,8 +41,6 @@ export class ItemService
     }
 
     public getDetailedItemViewModel(items: ItemViewModel[], itemViewModel: ItemViewModel, locale: string, profileKey: string, apiKey: string): Promise<ItemViewModel>{
-        var trustedUrl = `url('http://media.blizzard.com/d3/icons/items/large/${itemViewModel.item.icon}.png')`;
-        itemViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustStyle(trustedUrl);
 
         return this.getItem(locale, profileKey, apiKey, itemViewModel.uniqueId).then((item: Item) => {
             var detailedItemViewModel = new ItemViewModel(item, true);
@@ -53,6 +51,9 @@ export class ItemService
                 gem.iconUrl = this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
                 detailedItemViewModel.gems.push(gem);
             }
+
+            var trustedStyle = `url('http://media.blizzard.com/d3/icons/items/large/${itemViewModel.item.icon}.png')`;
+            detailedItemViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustStyle(trustedStyle);
 
             var slotName = item.slots[0];
             detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");

@@ -44,7 +44,7 @@ export class HeroService
         return heroPromise;
     }
 
-    private addItemsToHero(heroViewModel: HeroViewModel){
+    private enrichHero(heroViewModel: HeroViewModel){
         var items = new Array<ItemViewModel>();
         for (var i = 0; i < Object.keys(heroViewModel.hero.items).length; i++){
             var item = new ItemViewModel(Object.values(heroViewModel.hero.items)[i] as Item, false);
@@ -55,10 +55,26 @@ export class HeroService
         heroViewModel.items = items;
     }
 
+    private setIconUrl(heroViewModel: HeroViewModel){
+        var heroPart = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");
+        var trustedUrl = `http://media.blizzard.com/d3/icons/portraits/42/${heroPart}.png`;
+        heroViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
+    }
+
+    public createHeroViewModel(hero: Hero){
+        var cachedHero = this._localStorageService.getItem<Hero>("hero" + hero.id);
+        var heroViewModel = new HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero));
+        this.setIconUrl(heroViewModel);
+        if (cachedHero)
+            this.enrichHero(heroViewModel);
+        return heroViewModel;
+    }
+
     public getHeroViewModel(heroes: HeroViewModel[], heroViewModel: HeroViewModel, locale: string, profileKey: string, apiKey: string): Promise<HeroViewModel>{
         return this.getHero(locale, profileKey, apiKey, heroViewModel.hero.id).then((hero: Hero) => {
                 var detailedHeroViewModel = new HeroViewModel(hero, true);
-                this.addItemsToHero(detailedHeroViewModel);
+                this.setIconUrl(detailedHeroViewModel);
+                this.enrichHero(detailedHeroViewModel);
                 var index = heroes.indexOf(heroViewModel);
                 heroes[index] = detailedHeroViewModel;
                 return detailedHeroViewModel;

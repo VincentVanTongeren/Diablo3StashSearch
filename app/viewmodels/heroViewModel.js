@@ -20,4 +20,4 @@ var HeroViewModel = (function () {
     return HeroViewModel;
 }());
 exports.HeroViewModel = HeroViewModel;
-//# sourceMappingURL=heroViewModel.js.map
+//# sourceMappingURL=heroviewmodel.js.map

@@ -26,8 +26,8 @@ var ProfileLoader = (function () {
         this.locale = "eu";
         this.resetProfileLoader();
         if (this.profileKey) {
-            this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then(function (profileViewModel) {
-                _this.profileViewModel = profileViewModel;
+            this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then(function (profile) {
+                _this.loadProfile(profile);
             });
         }
     }
@@ -43,9 +43,20 @@ var ProfileLoader = (function () {
         this._localStorageService.storeItemAsString("apikey", this.apiKey);
         this._localStorageService.storeItemAsString("profileKey", this.profileKey);
         this._localStorageService.storeItemAsString("locale", this.locale);
-        this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then(function (profileViewModel) {
-            _this.profileViewModel = profileViewModel;
+        this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then(function (profile) {
+            _this.loadProfile(profile);
         });
+    };
+    ProfileLoader.prototype.loadProfile = function (profile) {
+        var _this = this;
+        var profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
+        if (profile.heroes && profile.heroes.length) {
+            profile.heroes.forEach(function (hero) {
+                var heroViewModel = _this._heroService.createHeroViewModel(hero);
+                profileViewModel.heroes.push(heroViewModel);
+            });
+        }
+        this.profileViewModel = profileViewModel;
     };
     ProfileLoader.prototype.selectHero = function (heroViewModel) {
         var _this = this;
@@ -66,7 +77,7 @@ var ProfileLoader = (function () {
         core_1.Component({
             directives: [profileviewmodel_1.ProfileViewModel],
             selector: 'profile-loader',
-            styles: ["\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane .input-row {\n    margin: 3px;\n}\n#profile-pane {\n    height: 100%;\n    color: red;\n}\n#profile-pane .hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n#profile-pane .hero-tab.is-selected {\n    border: 1px solid #555;\n}\n#profile-pane .hero-tab .hero-name {\n    margin: 5px 10px;\n}\n#profile-pane .hero-tab .hero-name.has-details {\n    color: blue;\n}\n#hero-pane {\n    height: 100%;\n}\n#hero-main {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n"],
+            styles: ["\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane .input-row {\n    margin: 3px;\n}\n#profile-pane {\n    height: 100%;\n}\n#profile-pane ul {\n    padding: 0;\n}\n#profile-pane li {\n    list-style-type:none\n}\n#profile-pane .hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n#profile-pane .hero-tab.is-selected {\n    border: 1px solid #555;\n}\n#profile-pane .hero-tab .hero-name {\n    margin: 5px 10px;\n}\n#profile-pane .hero-tab .hero-name.has-details {\n    color: blue;\n}\n#hero-pane {\n    height: 100%;\n}\n#hero-main {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n"],
             templateUrl: '../app/html/profile.loader.html'
         }), 
         __metadata('design:paramtypes', [profile_service_1.ProfileService, item_service_1.ItemService, hero_service_1.HeroService, localstorageservice_1.LocalStorageService])

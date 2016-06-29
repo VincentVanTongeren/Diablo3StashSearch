@@ -31,7 +31,12 @@ import { Profile, Hero, Item } from './interfaces/profile'
 }
 #profile-pane {
     height: 100%;
-    color: red;
+}
+#profile-pane ul {
+    padding: 0;
+}
+#profile-pane li {
+    list-style-type:none
 }
 #profile-pane .hero-tab {
     height: 44px;
@@ -80,8 +85,8 @@ export class ProfileLoader {
 
         if (this.profileKey)
         {
-            this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then((profileViewModel: ProfileViewModel) =>{
-                this.profileViewModel = profileViewModel
+            this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then((profile: Profile) =>{
+                this.loadProfile(profile);
             });
         }
     }
@@ -98,9 +103,21 @@ export class ProfileLoader {
         this._localStorageService.storeItemAsString("profileKey", this.profileKey);
         this._localStorageService.storeItemAsString("locale", this.locale);
 
-        this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then((profileViewModel: ProfileViewModel) =>{
-            this.profileViewModel = profileViewModel
+        this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then((profile: Profile) =>{
+            this.loadProfile(profile);
         });
+    }
+
+    private loadProfile(profile: Profile){
+        var profileViewModel = new ProfileViewModel(profile);
+        if (profile.heroes && profile.heroes.length)
+        {
+            profile.heroes.forEach(hero => {
+                var heroViewModel = this._heroService.createHeroViewModel(hero);
+                profileViewModel.heroes.push(heroViewModel); 
+            });
+        }
+        this.profileViewModel = profileViewModel
     }
 
     public selectHero(heroViewModel: HeroViewModel): void{
