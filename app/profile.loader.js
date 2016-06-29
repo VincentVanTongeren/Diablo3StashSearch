@@ -11,36 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var localstorageservice_1 = require('./services/localstorageservice');
 var profile_service_1 = require('./services/profile.service');
+var hero_service_1 = require('./services/hero.service');
+var item_service_1 = require('./services/item.service');
 var profileviewmodel_1 = require('./viewmodels/profileviewmodel');
-var heroviewmodel_1 = require('./viewmodels/heroviewmodel');
-var itemviewmodel_1 = require('./viewmodels/itemviewmodel');
-var gemviewmodel_1 = require('./viewmodels/gemviewmodel');
-var platform_browser_1 = require('@angular/platform-browser');
 var ProfileLoader = (function () {
-    function ProfileLoader(localStorageService, profileService, _sanitizationService) {
+    function ProfileLoader(_profileService, _itemService, _heroService, _localStorageService) {
         var _this = this;
-        this._sanitizationService = _sanitizationService;
+        this._profileService = _profileService;
+        this._itemService = _itemService;
+        this._heroService = _heroService;
+        this._localStorageService = _localStorageService;
         this.apiKey = "";
         this.profileKey = "";
         this.locale = "eu";
-        this._localStorageService = localStorageService;
-        this._profileService = profileService;
         this.resetProfileLoader();
         if (this.profileKey) {
-            var profile = this._localStorageService.getItem(this.profileKey);
-            if (profile) {
-                this.profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
-                if (profile.heroes && profile.heroes.length) {
-                    profile.heroes.forEach(function (hero) {
-                        var cachedHero = _this._localStorageService.getItem("hero" + hero.id);
-                        var heroViewModel = new heroviewmodel_1.HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero));
-                        var heroPart = (hero.class == "crusader" ? "x1_" : "") + hero.class.replace("-", "") + "_" + (hero.gender ? "female" : "male");
-                        var trustedUrl = "http://media.blizzard.com/d3/icons/portraits/42/" + heroPart + ".png";
-                        heroViewModel.iconUrl = _this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
-                        _this.profileViewModel.heroes.push(heroViewModel);
-                    });
-                }
-            }
+            this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then(function (profileViewModel) {
+                _this.profileViewModel = profileViewModel;
+            });
         }
     }
     ProfileLoader.prototype.resetProfileLoader = function () {
@@ -55,96 +43,24 @@ var ProfileLoader = (function () {
         this._localStorageService.storeItemAsString("apikey", this.apiKey);
         this._localStorageService.storeItemAsString("profileKey", this.profileKey);
         this._localStorageService.storeItemAsString("locale", this.locale);
-        this.getProfile().then(function (profile) {
-            _this.profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
+        this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then(function (profileViewModel) {
+            _this.profileViewModel = profileViewModel;
         });
-    };
-    ProfileLoader.prototype.getProfile = function () {
-        var _this = this;
-        var cachedProfile = this._localStorageService.getItem(this.profileKey);
-        if (cachedProfile)
-            return new Promise(function () { return cachedProfile; });
-        var profilePromise = this._profileService.getProfile(this.locale, this.profileKey, this.apiKey);
-        profilePromise.then(function (profile) {
-            if (profile)
-                _this._localStorageService.storeItem(_this.profileKey, profile);
-        });
-        return profilePromise;
-    };
-    ProfileLoader.prototype.getHero = function (heroId) {
-        var _this = this;
-        var cachedHero = this._localStorageService.getItem("hero" + heroId);
-        if (cachedHero)
-            return new Promise(function () { return cachedHero; });
-        var heroPromise = this._profileService.getHero(this.locale, this.profileKey, this.apiKey, heroId);
-        heroPromise.then(function (hero) {
-            if (hero)
-                _this._localStorageService.storeItem("hero" + heroId, hero);
-        });
-        return heroPromise;
-    };
-    ProfileLoader.prototype.getItem = function (uniqueId) {
-        var _this = this;
-        var cachedItem = this._localStorageService.getItem("item" + uniqueId);
-        if (cachedItem)
-            return new Promise(function () { return cachedItem; });
-        var itemPromise = this._profileService.getItem(this.locale, this.profileKey, this.apiKey, uniqueId);
-        itemPromise.then(function (item) {
-            if (item)
-                _this._localStorageService.storeItem("item" + uniqueId, item);
-        });
-        return itemPromise;
     };
     ProfileLoader.prototype.selectHero = function (heroViewModel) {
         var _this = this;
-        this.selectedHeroViewModel = heroViewModel;
-        if (heroViewModel.hasDetails) {
-            this.addItemsToHero(this.selectedHeroViewModel);
-        }
-        else {
-            this.getHero(heroViewModel.hero.id).then(function (hero) {
-                var detailedHeroViewModel = new heroviewmodel_1.HeroViewModel(hero, true);
-                _this.addItemsToHero(detailedHeroViewModel);
-                var index = _this.profileViewModel.heroes.indexOf(heroViewModel);
-                _this.profileViewModel.heroes[index] = detailedHeroViewModel;
-                _this.selectedHeroViewModel = detailedHeroViewModel;
-            });
-        }
-    };
-    ProfileLoader.prototype.addItemsToHero = function (heroViewModel) {
-        var items = new Array();
-        for (var i = 0; i < Object.keys(heroViewModel.hero.items).length; i++) {
-            var item = new itemviewmodel_1.ItemViewModel(Object.values(heroViewModel.hero.items)[i], false);
-            var slotName = Object.keys(heroViewModel.hero.items)[i];
-            item.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
-            items.push(item);
-        }
-        heroViewModel.items = items;
+        this._heroService.getHeroViewModel(this.profileViewModel.heroes, heroViewModel, this.locale, this.profileKey, this.apiKey).then(function (selectedHeroViewModel) {
+            _this.selectedHeroViewModel = selectedHeroViewModel;
+        });
     };
     ProfileLoader.prototype.show = function (obj) {
         alert(JSON.stringify(obj));
     };
     ProfileLoader.prototype.selectItem = function (itemViewModel) {
         var _this = this;
-        this.selectedItemViewModel = itemViewModel;
-        var trustedUrl = "url('http://media.blizzard.com/d3/icons/items/large/" + itemViewModel.item.icon + ".png')";
-        itemViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustStyle(trustedUrl);
-        if (!itemViewModel.hasDetails) {
-            this.getItem(itemViewModel.uniqueId).then(function (item) {
-                var detailedItemViewModel = new itemviewmodel_1.ItemViewModel(item, true);
-                for (var i = 0; i < item.gems.length; i++) {
-                    var gem = new gemviewmodel_1.GemViewModel(item.gems[i]);
-                    var trustedUrl = "http://media.blizzard.com/d3/icons/items/small/" + item.gems[i].item.icon + ".png";
-                    gem.iconUrl = _this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
-                    detailedItemViewModel.gems.push(gem);
-                }
-                var slotName = item.slots[0];
-                detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
-                var index = _this.selectedHeroViewModel.items.indexOf(itemViewModel);
-                _this.selectedHeroViewModel.items[index] = detailedItemViewModel;
-                _this.selectedItemViewModel = detailedItemViewModel;
-            });
-        }
+        this._itemService.getDetailedItemViewModel(this.selectedHeroViewModel.items, itemViewModel, this.locale, this.profileKey, this.apiKey).then(function (selectedItemViewModel) {
+            _this.selectedItemViewModel = selectedItemViewModel;
+        });
     };
     ProfileLoader = __decorate([
         core_1.Component({
@@ -153,7 +69,7 @@ var ProfileLoader = (function () {
             styles: ["\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane .input-row {\n    margin: 3px;\n}\n#profile-pane {\n    height: 100%;\n    color: red;\n}\n#profile-pane .hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n#profile-pane .hero-tab.is-selected {\n    border: 1px solid #555;\n}\n#profile-pane .hero-tab .hero-name {\n    margin: 5px 10px;\n}\n#profile-pane .hero-tab .hero-name.has-details {\n    color: blue;\n}\n#hero-pane {\n    height: 100%;\n}\n#hero-main {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n"],
             templateUrl: '../app/html/profile.loader.html'
         }), 
-        __metadata('design:paramtypes', [localstorageservice_1.LocalStorageService, profile_service_1.ProfileService, platform_browser_1.DomSanitizationService])
+        __metadata('design:paramtypes', [profile_service_1.ProfileService, item_service_1.ItemService, hero_service_1.HeroService, localstorageservice_1.LocalStorageService])
     ], ProfileLoader);
     return ProfileLoader;
 }());

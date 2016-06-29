@@ -30,22 +30,26 @@
     </div>
 
     <div class="row" id="app-main">
-        <div class="col col-xs-2" id="profile-pane">
+        <div *ngIf="profileViewModel" class="col col-xs-2" id="profile-pane">
             <div class="row">
                 <div class="col col-xs-12">
                     <span>{{ profileViewModel.profile.battleTag }}</span><span>{{ profileViewModel.profile.guildName }}</span>
                 </div>
             </div>
 
-            <div *ngFor="let heroViewModel of profileViewModel.heroes" class="row hero-tab" [ngClass]="{'is-selected':heroViewModel == selectedHeroViewModel }" (click)="selectHero(heroViewModel)">
-                <div class="col col-xs-2">
-                    <img [src]="heroViewModel.iconUrl" />
-                </div>
-                
-                <div class="col col-xs-3 hero-name" [ngClass]="{'has-details':heroViewModel.hasDetails}">
-                    {{heroViewModel.hero.name}}
-                </div>
-            </div>
+            <ul *ngIf="profileViewModel.heroes">
+                <li  *ngFor="let heroViewModel of profileViewModel.heroes" class="hero-tab" [ngClass]="{'is-selected':heroViewModel == selectedHeroViewModel }" (click)="selectHero(heroViewModel)">
+                    <div class="row">
+                        <div class="col col-xs-2">
+                            <img [src]="heroViewModel.iconUrl" />
+                        </div>
+                        
+                        <div class="col col-xs-3 hero-name" [ngClass]="{'has-details':heroViewModel.hasDetails}">
+                            {{heroViewModel.hero.name}}
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
         <div class="col col-xs-2" id="hero-pane">
             <div *ngIf="selectedHeroViewModel && !selectedHeroViewModel.hasDetails">Loading</div>

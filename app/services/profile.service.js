@@ -10,50 +10,57 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
+var hero_service_1 = require('./hero.service');
+var profileviewmodel_1 = require('../viewmodels/profileviewmodel');
+var heroviewmodel_1 = require('../viewmodels/heroviewmodel');
+var localstorageservice_1 = require('./localstorageservice');
+var platform_browser_1 = require('@angular/platform-browser');
 require('rxjs/add/operator/toPromise');
 var ProfileService = (function () {
-    function ProfileService(http) {
-        this._http = http;
+    function ProfileService(_http, _heroService, _localStorageService, _sanitizationService) {
+        this._http = _http;
+        this._heroService = _heroService;
+        this._localStorageService = _localStorageService;
+        this._sanitizationService = _sanitizationService;
     }
-    ProfileService.prototype.getProfile = function (locale, profile, apiKey) {
-        var url = "https://" + locale + ".api.battle.net/d3/profile/" + profile + "/?locale=en_GB&apikey=" + apiKey;
-        return this._http.get(url)
+    ProfileService.prototype.getProfile = function (locale, profileKey, apiKey) {
+        var _this = this;
+        var cachedProfile = this._localStorageService.getItem(profileKey);
+        if (cachedProfile)
+            return new Promise(function () { return cachedProfile; });
+        var url = "https://" + locale + ".api.battle.net/d3/profile/" + profileKey + "/?locale=en_GB&apikey=" + apiKey;
+        var profilePromise = this._http.get(url)
             .toPromise()
             .then(function (response) { return response.json(); })
             .catch(function (error) {
             debugger;
         });
-    };
-    ProfileService.prototype.getHero = function (locale, profile, apiKey, heroId) {
-        var url = "https://" + locale + ".api.battle.net/d3/profile/" + profile + "/hero/" + heroId + "?locale=en_GB&apikey=" + apiKey;
-        return this._http.get(url)
-            .toPromise()
-            .then(function (response) { return response.json(); })
-            .catch(function (error) {
-            debugger;
+        profilePromise.then(function (profile) {
+            if (profile)
+                _this._localStorageService.storeItem(profileKey, profile);
         });
+        return profilePromise;
     };
-    ProfileService.prototype.getItem = function (locale, profile, apiKey, uniqueId) {
-        var url = "https://" + locale + ".api.battle.net/d3/data/item/" + uniqueId + "?locale=en_GB&apikey=" + apiKey;
-        return this._http.get(url)
-            .toPromise()
-            .then(function (response) { return response.json(); })
-            .catch(function (error) {
-            debugger;
-        });
-    };
-    ProfileService.prototype.getItemDetail = function (locale, uniqueId) {
-        var url = "http://" + locale + ".battle.net/d3/en/tooltip/item/" + uniqueId;
-        return this._http.get(url)
-            .toPromise()
-            .then(function (response) { return response.json(); })
-            .catch(function (error) {
-            debugger;
+    ProfileService.prototype.getProfileViewModel = function (locale, profileKey, apiKey) {
+        var _this = this;
+        return this.getProfile(locale, profileKey, apiKey).then(function (profile) {
+            var profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
+            if (profile.heroes && profile.heroes.length) {
+                profile.heroes.forEach(function (hero) {
+                    var cachedHero = _this._localStorageService.getItem("hero" + hero.id);
+                    var heroViewModel = new heroviewmodel_1.HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero));
+                    var heroPart = (hero.class == "crusader" ? "x1_" : "") + hero.class.replace("-", "") + "_" + (hero.gender ? "female" : "male");
+                    var trustedUrl = "http://media.blizzard.com/d3/icons/portraits/42/" + heroPart + ".png";
+                    heroViewModel.iconUrl = _this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
+                    profileViewModel.heroes.push(heroViewModel);
+                });
+            }
+            return profileViewModel;
         });
     };
     ProfileService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, hero_service_1.HeroService, localstorageservice_1.LocalStorageService, platform_browser_1.DomSanitizationService])
     ], ProfileService);
     return ProfileService;
 }());
