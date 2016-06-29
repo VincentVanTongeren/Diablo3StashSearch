@@ -12,12 +12,12 @@
 .d3-item-properties ul li.bump { margin-top: 10px; }
 .d3-item-properties p { margin: 0 !important; }
 .d3-item-properties .indent { padding-left: 18px; }
-.d3-item-properties .value { color: #ded2ab; }
+/*.d3-item-properties .value { color: #ded2ab; }*/
 .d3-item-properties .big .value { font-size: 400%; line-height: 100%; font-family: "Palatino Linotype", "Times", serif; text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black; }
 .d3-item-properties .item-requirement { color: #A99877 }
-.d3-item-properties .d3-color-lightblue .value { color: #99bbff !important; }
+/*.d3-item-properties .d3-color-lightblue .value { color: #99bbff !important; }
 .d3-item-properties .d3-color-blue .value { color: #bda6db !important; }
-.d3-item-properties .d3-color-gold .value { color: white !important; }
+.d3-item-properties .d3-color-gold .value { color: white !important; }*/
 .d3-item-properties .item-jewel-rank { color: #909090; }
 .d3-item-properties .item-property-category { color: #909090; }
 .d3-item-properties .item-type,
@@ -73,7 +73,7 @@
 	.d3-tooltip { padding: 2px; font: normal 12px/1.5 Arial, sans-serif; color: #c7b377; }
 	.d3-tooltip * { margin: 0; padding: 0; background: none; }
 	.d3-tooltip ul { list-style-type: none; }
-	.d3-tooltip .value { color: white; }
+	/*.d3-tooltip .value { color: white; }*/
 
 	/* head */
 	.d3-tooltip .tooltip-head { height: 40px; width: 320px; padding: 0 15px; background: url("http://eu.battle.net/d3/static/images/ui/tooltip-title.jpg") no-repeat; }

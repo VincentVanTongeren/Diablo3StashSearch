@@ -25,13 +25,18 @@ import { DomSanitizationService } from '@angular/platform-browser';
 #app-main {
     height: 90%;
 }
+#input-pane .input-row {
+    margin: 3px;
+}
 #profile-pane {
     height: 100%;
     color: red;
 }
 #profile-pane .hero-tab {
-    height: 50px;
+    height: 44px;
+    margin: 3px;
     border: 1px solid #222;
+    border-radius: 3px;
 }
 #profile-pane .hero-tab.is-selected {
     border: 1px solid #555;
