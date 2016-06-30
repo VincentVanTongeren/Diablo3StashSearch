@@ -53,8 +53,7 @@ var HeroService = (function () {
         heroViewModel.items = items;
     };
     HeroService.prototype.setIconUrl = function (heroViewModel) {
-        var heroPart = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");
-        heroViewModel.iconUrl = "http://media.blizzard.com/d3/icons/portraits/42/" + heroPart + ".png";
+        heroViewModel.iconName = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");
     };
     HeroService.prototype.createHeroViewModel = function (hero) {
         var cachedHero = this._localStorageService.getItem("hero" + hero.id);

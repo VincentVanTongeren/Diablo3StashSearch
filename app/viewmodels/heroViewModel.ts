@@ -1,12 +1,11 @@
 import { Hero, NameValue, Item } from '../interfaces/profile'
 import { CharacterType } from '../interfaces/enum'
 import { ItemViewModel } from '../viewmodels/itemViewModel'
-import { SafeUrl } from '@angular/platform-browser';
 
 export class HeroViewModel{
 
     public items: Array<ItemViewModel>
-    public iconUrl: SafeUrl;
+    public iconName: string;
 
     constructor(public hero: Hero, public hasDetails: boolean){
     }

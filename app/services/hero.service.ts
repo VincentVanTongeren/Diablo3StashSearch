@@ -57,8 +57,7 @@ export class HeroService
     }
 
     private setIconUrl(heroViewModel: HeroViewModel){
-        var heroPart = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");
-        heroViewModel.iconUrl = `http://media.blizzard.com/d3/icons/portraits/42/${heroPart}.png`;
+        heroViewModel.iconName = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");
     }
 
     public createHeroViewModel(hero: Hero){

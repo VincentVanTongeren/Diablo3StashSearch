@@ -17,7 +17,6 @@ var ItemViewModel = (function () {
             }
             this.elementalType = Boolean(this.item.elementalType) ? this.item.elementalType : "default";
             this.augment = Boolean(item.attributesRaw["CubeEnchantedGemRank"]) ? item.attributesRaw["CubeEnchantedGemRank"].min : 0;
-            this.gems = new Array();
             this.effect = this.elementalType != "default" ? this.elementalType : this.baseValue.name;
         }
     }

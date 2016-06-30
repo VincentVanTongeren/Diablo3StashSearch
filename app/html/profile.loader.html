@@ -40,12 +40,15 @@
             <ul *ngIf="profileViewModel.heroes">
                 <li *ngFor="let heroViewModel of profileViewModel.heroes" class="hero-tab" [ngClass]="{'active':heroViewModel == selectedHeroViewModel }" (click)="selectHero(heroViewModel)">
                     <div class="row">
-                        <div class="col col-xs-2">
-                            <img [src]="heroViewModel.iconUrl | safeUrl" />
+                        <div class="col col-xs-1">
+                            <img [src]="'http://media.blizzard.com/d3/icons/portraits/42/' + heroViewModel.iconName + '.png' | safeUrl" />
                         </div>
                         
                         <div class="col col-xs-3 hero-name" [ngClass]="{'has-details':heroViewModel.hasDetails}">
                             {{heroViewModel.hero.name}}
+                        </div>
+
+                        <div class="col col-xs-4 skills">
                         </div>
                     </div>
                 </li>
@@ -94,7 +97,7 @@
                     <div class="tooltip-body effect-bg effect-bg-{{selectedItemViewModel.effect}}">
                         <span class="d3-icon d3-icon-item d3-icon-item-large d3-icon-item-{{selectedItemViewModel.item.displayColor}}">
                             <span class="icon-item-gradient">
-                                <span class="icon-item-inner icon-item-default" [style.background-image]="selectedItemViewModel.iconStyle | safeStyle"></span>
+                                <span class="icon-item-inner icon-item-default" [style.background-image]="'url(http://media.blizzard.com/d3/icons/items/large/' + selectedItemViewModel.item.icon + '.png)' | safeStyle"></span>
                             </span>
                         </span>
                         <div class="d3-item-properties">
@@ -142,10 +145,9 @@
                                             <span class="value">{{ att.text }}</span>
                                         </p>
                                     </li>
-                                    <li *ngFor="let gemViewModel of selectedItemViewModel.gems" class="d3-color-white full-socket">
-                                        <!--<img class="gem" [src]="gemViewModel.iconUrl" />-->
-                                        <img class="gem" [src]="gemViewModel.iconUrl | safeUrl" />
-                                        <span class="socket-effect" *ngFor="let att of gemViewModel.gem.attributes.primary">
+                                    <li *ngFor="let gem of selectedItemViewModel.item.gems" class="d3-color-white full-socket">
+                                        <img class="gem" [src]="'http://media.blizzard.com/d3/icons/items/small/' + gem.item.icon + '.png' | safeUrl" />
+                                        <span (click)="show(gem)" class="socket-effect" *ngFor="let att of gem.attributes.primary">
                                             {{att.text}}
                                         </span>
                                     </li>

@@ -50,7 +50,7 @@ import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
     border: 1px solid #555;
 }
 #profile-pane .hero-tab .hero-name {
-    margin: 3px 10px;
+    margin: 3px;
     color: #ad835a
 }
 #profile-pane .hero-tab.active .hero-name {

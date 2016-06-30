@@ -1,5 +1,4 @@
 import { Item, Gem, NameValue } from '../interfaces/profile'
-import { GemViewModel } from '../viewmodels/gemviewmodel'
 import { CharacterType } from '../interfaces/enum'
 import { SafeStyle } from '@angular/platform-browser';
 
@@ -11,11 +10,9 @@ export class ItemViewModel{
     public uniqueId: string;
     public isAncient: boolean;
     public sockets: number;
-    public iconStyle: string;
     public baseValue: NameValue;
     public elementalType: string;
     public augment: number;
-    public gems: GemViewModel[];
     public effect: string;
 
     constructor(public item: Item, public hasDetails: boolean){
@@ -32,11 +29,8 @@ export class ItemViewModel{
             }
             this.elementalType = Boolean(this.item.elementalType) ? this.item.elementalType : "default";
             this.augment = Boolean(item.attributesRaw["CubeEnchantedGemRank"]) ? item.attributesRaw["CubeEnchantedGemRank"].min : 0;
-            this.gems = new Array<GemViewModel>();
             this.effect = this.elementalType != "default" ? this.elementalType : this.baseValue.name;
         }
-
-
     }
 
     public matches(search: string): boolean{

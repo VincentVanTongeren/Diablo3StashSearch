@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var itemviewmodel_1 = require('../viewmodels/itemviewmodel');
-var gemviewmodel_1 = require('../viewmodels/gemviewmodel');
 var localstorageservice_1 = require('./localstorageservice');
 require('rxjs/add/operator/toPromise');
 var ItemService = (function () {
@@ -43,12 +42,6 @@ var ItemService = (function () {
     ItemService.prototype.getDetailedItemViewModel = function (items, itemViewModel, locale, profileKey, apiKey) {
         return this.getItem(locale, profileKey, apiKey, itemViewModel.uniqueId).then(function (item) {
             var detailedItemViewModel = new itemviewmodel_1.ItemViewModel(item, true);
-            for (var i = 0; i < item.gems.length; i++) {
-                var gem = new gemviewmodel_1.GemViewModel(item.gems[i]);
-                gem.iconUrl = "http://media.blizzard.com/d3/icons/items/small/" + item.gems[i].item.icon + ".png";
-                detailedItemViewModel.gems.push(gem);
-            }
-            detailedItemViewModel.iconStyle = "url('http://media.blizzard.com/d3/icons/items/large/" + itemViewModel.item.icon + ".png')";
             var slotName = item.slots[0];
             detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
             var index = items.indexOf(itemViewModel);

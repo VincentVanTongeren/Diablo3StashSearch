@@ -4,7 +4,6 @@ import { Item } from '../interfaces/profile'
 import { Headers, Http } from '@angular/http';
 
 import { ItemViewModel } from '../viewmodels/itemviewmodel'
-import { GemViewModel } from '../viewmodels/gemviewmodel'
 
 import { LocalStorageService } from './localstorageservice'
 
@@ -45,15 +44,7 @@ export class ItemService
 
         return this.getItem(locale, profileKey, apiKey, itemViewModel.uniqueId).then((item: Item) => {
             var detailedItemViewModel = new ItemViewModel(item, true);
-            for (var i = 0; i < item.gems.length; i++)
-            {
-                var gem = new GemViewModel(item.gems[i]);
-                gem.iconUrl = `http://media.blizzard.com/d3/icons/items/small/${item.gems[i].item.icon}.png`;
-                detailedItemViewModel.gems.push(gem);
-            }
-
-            detailedItemViewModel.iconStyle = `url('http://media.blizzard.com/d3/icons/items/large/${itemViewModel.item.icon}.png')`;
-
+            
             var slotName = item.slots[0];
             detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
             var index = items.indexOf(itemViewModel);
