@@ -24,8 +24,11 @@ var ItemService = (function () {
     ItemService.prototype.getItem = function (locale, profile, apiKey, uniqueId) {
         var _this = this;
         var cachedItem = this._localStorageService.getItem("item" + uniqueId);
-        if (cachedItem)
-            return new Promise(function () { return cachedItem; });
+        if (cachedItem) {
+            return new Promise(function (resolve, reject) {
+                resolve(cachedItem);
+            });
+        }
         var url = "https://" + locale + ".api.battle.net/d3/data/item/" + uniqueId + "?locale=en_GB&apikey=" + apiKey;
         var itemPromise = this._http.get(url)
             .toPromise()

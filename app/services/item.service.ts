@@ -22,8 +22,11 @@ export class ItemService
 
     public getItem(locale: string, profile: string, apiKey: string, uniqueId: string): Promise<Item> {
         var cachedItem = this._localStorageService.getItem<Item>("item" + uniqueId);
-        if (cachedItem)
-            return new Promise<Item>(() => { return cachedItem });
+        if (cachedItem){
+            return new Promise<Item>((resolve, reject) => {
+                resolve(cachedItem);
+            })
+        }
 
         var url = `https://${locale}.api.battle.net/d3/data/item/${uniqueId}?locale=en_GB&apikey=${apiKey}`;
         var itemPromise = this._http.get(url)

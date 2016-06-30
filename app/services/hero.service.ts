@@ -26,8 +26,11 @@ export class HeroService
     private getHero(locale: string, profile: string, apiKey: string, heroId: number): Promise<Hero> {
 
         var cachedHero = this._localStorageService.getItem<Hero>("hero" + heroId);
-        if (cachedHero)
-            return new Promise<Hero>(() => { return cachedHero });
+        if (cachedHero){
+            return new Promise<Hero>((resolve, reject) => {
+                resolve(cachedHero);
+            })
+        }
 
         var url = `https://${locale}.api.battle.net/d3/profile/${profile}/hero/${heroId}?locale=en_GB&apikey=${apiKey}`;
         var heroPromise = this._http.get(url)

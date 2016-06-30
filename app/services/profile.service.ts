@@ -12,7 +12,7 @@ import { HeroViewModel } from '../viewmodels/heroviewmodel'
 import { LocalStorageService } from './localstorageservice'
 import { DomSanitizationService } from '@angular/platform-browser';
 
-import 'rxjs/add/operator/toPromise';
+// import 'rxjs/add/operator/toPromise';
 
 
 @Injectable()
@@ -27,8 +27,11 @@ export class ProfileService
     
     private getProfile(locale: string, profileKey: string, apiKey: string): Promise<Profile> {
         var cachedProfile = this._localStorageService.getItem<Profile>(profileKey);
-        if (cachedProfile)
-            return new Promise<Profile>(() => { cachedProfile });
+        if (cachedProfile){
+            return new Promise<Profile>((resolve, reject) => {
+                resolve(cachedProfile);
+            })
+        }
 
         var url = `https://${locale}.api.battle.net/d3/profile/${profileKey}/?locale=en_GB&apikey=${apiKey}`;
         var profilePromise =  this._http.get(url)
@@ -46,7 +49,18 @@ export class ProfileService
     }
 
 
-    public getProfileViewModel(locale: string, profileKey: string, apiKey: string): Promise<Profile> {
-        return this.getProfile(locale, profileKey, apiKey);
+    public getProfileViewModel(locale: string, profileKey: string, apiKey: string): Promise<ProfileViewModel> {
+        var promise = this.getProfile(locale, profileKey, apiKey);
+        return promise.then((profile: Profile) => {
+            var profileViewModel = new ProfileViewModel(profile);
+            if (profile.heroes && profile.heroes.length)
+            {
+                profile.heroes.forEach(hero => {
+                    var heroViewModel = this._heroService.createHeroViewModel(hero);
+                    profileViewModel.heroes.push(heroViewModel); 
+                });
+            }
+            return profileViewModel;
+        });
     }
 }

@@ -38,7 +38,7 @@
             </div>
 
             <ul *ngIf="profileViewModel.heroes">
-                <li *ngFor="let heroViewModel of profileViewModel.heroes" class="hero-tab" [ngClass]="{'is-selected':heroViewModel == selectedHeroViewModel }" (click)="selectHero(heroViewModel)">
+                <li *ngFor="let heroViewModel of profileViewModel.heroes" class="hero-tab" [ngClass]="{'active':heroViewModel == selectedHeroViewModel }" (click)="selectHero(heroViewModel)">
                     <div class="row">
                         <div class="col col-xs-2">
                             <img [src]="heroViewModel.iconUrl" />

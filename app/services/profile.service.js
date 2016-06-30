@@ -11,9 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var hero_service_1 = require('./hero.service');
+var profileviewmodel_1 = require('../viewmodels/profileviewmodel');
 var localstorageservice_1 = require('./localstorageservice');
 var platform_browser_1 = require('@angular/platform-browser');
-require('rxjs/add/operator/toPromise');
+// import 'rxjs/add/operator/toPromise';
 var ProfileService = (function () {
     function ProfileService(_http, _heroService, _localStorageService, _sanitizationService) {
         this._http = _http;
@@ -24,8 +25,11 @@ var ProfileService = (function () {
     ProfileService.prototype.getProfile = function (locale, profileKey, apiKey) {
         var _this = this;
         var cachedProfile = this._localStorageService.getItem(profileKey);
-        if (cachedProfile)
-            return new Promise(function () { cachedProfile; });
+        if (cachedProfile) {
+            return new Promise(function (resolve, reject) {
+                resolve(cachedProfile);
+            });
+        }
         var url = "https://" + locale + ".api.battle.net/d3/profile/" + profileKey + "/?locale=en_GB&apikey=" + apiKey;
         var profilePromise = this._http.get(url)
             .toPromise()
@@ -40,7 +44,18 @@ var ProfileService = (function () {
         return profilePromise;
     };
     ProfileService.prototype.getProfileViewModel = function (locale, profileKey, apiKey) {
-        return this.getProfile(locale, profileKey, apiKey);
+        var _this = this;
+        var promise = this.getProfile(locale, profileKey, apiKey);
+        return promise.then(function (profile) {
+            var profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
+            if (profile.heroes && profile.heroes.length) {
+                profile.heroes.forEach(function (hero) {
+                    var heroViewModel = _this._heroService.createHeroViewModel(hero);
+                    profileViewModel.heroes.push(heroViewModel);
+                });
+            }
+            return profileViewModel;
+        });
     };
     ProfileService = __decorate([
         core_1.Injectable(), 

@@ -26,8 +26,11 @@ var HeroService = (function () {
     HeroService.prototype.getHero = function (locale, profile, apiKey, heroId) {
         var _this = this;
         var cachedHero = this._localStorageService.getItem("hero" + heroId);
-        if (cachedHero)
-            return new Promise(function () { return cachedHero; });
+        if (cachedHero) {
+            return new Promise(function (resolve, reject) {
+                resolve(cachedHero);
+            });
+        }
         var url = "https://" + locale + ".api.battle.net/d3/profile/" + profile + "/hero/" + heroId + "?locale=en_GB&apikey=" + apiKey;
         var heroPromise = this._http.get(url)
             .toPromise()

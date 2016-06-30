@@ -44,14 +44,15 @@ import { Profile, Hero, Item } from './interfaces/profile'
     border: 1px solid #222;
     border-radius: 3px;
 }
-#profile-pane .hero-tab.is-selected {
+#profile-pane .hero-tab.active {
     border: 1px solid #555;
 }
 #profile-pane .hero-tab .hero-name {
-    margin: 5px 10px;
+    margin: 3px 10px;
+    color: #ad835a
 }
-#profile-pane .hero-tab .hero-name.has-details {
-    color: blue;
+#profile-pane .hero-tab.active .hero-name {
+    color: #fff;
 }
 #hero-pane {
     height: 100%;
@@ -85,8 +86,8 @@ export class ProfileLoader {
 
         if (this.profileKey)
         {
-            this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then((profile: Profile) =>{
-                this.loadProfile(profile);
+            this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then((profileViewModel: ProfileViewModel) =>{
+                this.profileViewModel = profileViewModel;
             });
         }
     }
@@ -103,8 +104,8 @@ export class ProfileLoader {
         this._localStorageService.storeItemAsString("profileKey", this.profileKey);
         this._localStorageService.storeItemAsString("locale", this.locale);
 
-        this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then((profile: Profile) =>{
-            this.loadProfile(profile);
+        this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then((profileViewModel: ProfileViewModel) =>{
+            this.profileViewModel = profileViewModel;
         });
     }
 
@@ -123,6 +124,7 @@ export class ProfileLoader {
     public selectHero(heroViewModel: HeroViewModel): void{
         this._heroService.getHeroViewModel(this.profileViewModel.heroes, heroViewModel, this.locale, this.profileKey, this.apiKey).then((selectedHeroViewModel: HeroViewModel) => {
             this.selectedHeroViewModel = selectedHeroViewModel;
+            this.selectedItemViewModel = null;
         });
     }
 
