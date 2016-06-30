@@ -68,104 +68,151 @@
             </div>
         </div>-->
         <div class="col col-xs-5" id="hero-main">
-            <div *ngIf="selectedHeroViewModel && selectedHeroViewModel.hasDetails">
-                <div *ngFor="let item of selectedHeroViewModel.items" class="row">
-                    <div class="col col-xs-2">
-                        <small class="bold">{{item.slotName}}</small>
-                    </div>
-                    <div class="col col-xs-3" (click)="selectItem(item)">
-                        {{item.item.name}}
-                    </div>
+            <div class="row" *ngIf="selectedHeroViewModel">
+                <div class="col col-xs-12">
+                    <span>
+                        Character
+                    </span>
                 </div>
             </div>
+
+            <div *ngIf="selectedHeroViewModel && selectedHeroViewModel.hasDetails" class="row">
+                
+                <div *ngFor="let itemSlot of selectedHeroViewModel.items" class="col col-xs-4">
+                    <ul class="item-properties" (click)="selectItem(itemSlot)">
+                        <li class="item-slot">
+                            <span>{{ itemSlot.slotName }}</span><span *ngIf="itemSlot.isAncient">*</span>
+                        </li>
+                        <li *ngIf="itemSlot && itemSlot.item" class="d3-color-{{itemSlot.item.displayColor}}">
+                            <span>{{ itemSlot.item.name }}</span><span *ngIf="itemSlot.augment">(+{{ itemSlot.augment }})</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row empty-row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col col-xs-4" *ngIf="selectedHeroViewModel">
+                    <span>
+                        Templar
+                    </span>
+                </div>
+                <div class="col col-xs-4" *ngIf="selectedHeroViewModel">
+                    <span>
+                        Scoundrel
+                    </span>
+                </div>
+                <div class="col col-xs-4" *ngIf="selectedHeroViewModel">
+                    <span>
+                        Enchantress
+                    </span>
+                </div>
+            </div>
+            <div *ngIf="selectedHeroViewModel && selectedHeroViewModel.hasDetails" class="row">
+
+                <div *ngFor="let followerItems of [selectedHeroViewModel.templarItems, selectedHeroViewModel.scoundrelItems, selectedHeroViewModel.enchantressItems]" class="col col-xs-4">
+                    <ul class="item-properties" *ngFor="let itemSlot of followerItems" (click)="selectItem(itemSlot)">
+                        <li class="item-slot">
+                            {{ itemSlot.slotName }}
+                        </li>
+                        <li *ngIf="itemSlot && itemSlot.item" class="d3-color-{{itemSlot.item.displayColor}}">
+                            {{ itemSlot.item.name }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
         <div class="col col-xs-3" id="item-detail">
-            <div *ngIf="selectedItemViewModel">
-                <div class="d3-tooltip d3-tooltip-item">
-                    <div [ngClass]="{ 'd3-tooltip-item-wrapper-AncientLegendary':selectedItemViewModel.isAncient }" class="d3-tooltip-item-wrapper">
-                    <div class="d3-tooltip-item-border d3-tooltip-item-border-left"></div>
-                    <div class="d3-tooltip-item-border d3-tooltip-item-border-right"></div>
-                    <div class="d3-tooltip-item-border d3-tooltip-item-border-top"></div>
-                    <div class="d3-tooltip-item-border d3-tooltip-item-border-bottom"></div>
-                    <div class="d3-tooltip-item-border d3-tooltip-item-border-top-left"></div>
-                    <div class="d3-tooltip-item-border d3-tooltip-item-border-top-right"></div>
-                    <div class="d3-tooltip-item-border d3-tooltip-item-border-bottom-left"></div>
-                    <div class="d3-tooltip-item-border d3-tooltip-item-border-bottom-right"></div>
-                    <div class="tooltip-head tooltip-head-{{selectedItemViewModel.item.displayColor}}">
-                        <h3 class="d3-color-{{selectedItemViewModel.item.displayColor}}">{{ selectedItemViewModel.item.name }}</h3>
-                    </div>
-                    <div class="tooltip-body effect-bg effect-bg-{{selectedItemViewModel.effect}}">
-                        <span class="d3-icon d3-icon-item d3-icon-item-large d3-icon-item-{{selectedItemViewModel.item.displayColor}}">
-                            <span class="icon-item-gradient">
-                                <span class="icon-item-inner icon-item-default" [style.background-image]="'url(http://media.blizzard.com/d3/icons/items/large/' + selectedItemViewModel.item.icon + '.png)' | safeStyle"></span>
+            <div class="row">
+                <div *ngIf="selectedItemViewModel">
+                    <div class="d3-tooltip d3-tooltip-item">
+                        <div [ngClass]="{ 'd3-tooltip-item-wrapper-AncientLegendary':selectedItemViewModel.isAncient }" class="d3-tooltip-item-wrapper">
+                        <div class="d3-tooltip-item-border d3-tooltip-item-border-left"></div>
+                        <div class="d3-tooltip-item-border d3-tooltip-item-border-right"></div>
+                        <div class="d3-tooltip-item-border d3-tooltip-item-border-top"></div>
+                        <div class="d3-tooltip-item-border d3-tooltip-item-border-bottom"></div>
+                        <div class="d3-tooltip-item-border d3-tooltip-item-border-top-left"></div>
+                        <div class="d3-tooltip-item-border d3-tooltip-item-border-top-right"></div>
+                        <div class="d3-tooltip-item-border d3-tooltip-item-border-bottom-left"></div>
+                        <div class="d3-tooltip-item-border d3-tooltip-item-border-bottom-right"></div>
+                        <div class="tooltip-head tooltip-head-{{selectedItemViewModel.item.displayColor}}">
+                            <h3 class="d3-color-{{selectedItemViewModel.item.displayColor}}">{{ selectedItemViewModel.item.name }}</h3>
+                        </div>
+                        <div class="tooltip-body effect-bg effect-bg-{{selectedItemViewModel.effect}}">
+                            <span class="d3-icon d3-icon-item d3-icon-item-large d3-icon-item-{{selectedItemViewModel.item.displayColor}}">
+                                <span class="icon-item-gradient">
+                                    <span class="icon-item-inner icon-item-default" [style.background-image]="'url(http://media.blizzard.com/d3/icons/items/large/' + selectedItemViewModel.item.icon + '.png)' | safeStyle"></span>
+                                </span>
                             </span>
-                        </span>
-                        <div class="d3-item-properties">
-                            <ul class="item-type-right">
-                                <li class="item-slot">{{selectedItemViewModel.slotName}}</li>
-                                <li class="item-class-specific d3-color-white" *ngIf="selectedItemViewModel.item.type && selectedItemViewModel.item.type.id.split('_').length > 1" >{{selectedItemViewModel.item.type.id.split('_')[1]}}</li>
-                            </ul>
-                            <ul class="item-type">
-                                <li>
-                                    <span class="d3-color-{{selectedItemViewModel.item.displayColor}}">{{selectedItemViewModel.item.typeName}}</span>
-                                </li>
-                            </ul>
-                            <ul *ngIf="selectedItemViewModel.baseValue.value" class="item-armor-weapon item-armor-armor">
-                                <li class="big">
-                                    <p>
-                                        <span class="value">{{selectedItemViewModel.baseValue.value}}</span>
-                                    </p>
-                                </li>
-                                <li>{{selectedItemViewModel.baseValue.name}}</li>
-                                <li *ngIf="selectedItemViewModel.item.damageRange && selectedItemViewModel.item.damageRange.min > 0">{{selectedItemViewModel.item.damageRange}}</li>
-                                <li *ngIf="selectedItemViewModel.item.attacksPerSecondText">{{selectedItemViewModel.item.attacksPerSecondText}}</li>
-                            </ul>
-                            <div class="item-before-effects"></div>
-                            <div *ngIf="selectedItemViewModel.item.attributes">
-                                <ul class="item-effects">
-                                    <p class="item-property-category">Primary</p>
-                                    <li *ngFor="let att of selectedItemViewModel.item.attributes.primary" class="d3-color-{{att.color}} d3-item-property-{{att.affixType}}">
-                                        <p>
-                                            <span class="value">{{ att.text }}</span>
-                                        </p>
-                                    </li>
-                                    <li *ngIf="selectedItemViewModel.item.augmentation" class="d3-color-blue d3-item-property-default">
-                                        <p>
-                                            <span class="value">{{ selectedItemViewModel.item.augmentation }}</span>
-                                        </p>
-                                    </li>
-                                    <p class="item-property-category">Secondary</p>
-                                    <li *ngFor="let att of selectedItemViewModel.item.attributes.secondary" class="d3-color-{{att.color}} d3-item-property-{{att.affixType}}">
-                                        <p>
-                                            <span class="value">{{ att.text }}</span>
-                                        </p>
-                                    </li>
-                                    <li *ngFor="let att of selectedItemViewModel.item.attributes.passive" class="d3-color-{{att.color}} d3-item-property-{{att.affixType}}">
-                                        <p>
-                                            <span class="value">{{ att.text }}</span>
-                                        </p>
-                                    </li>
-                                    <li *ngFor="let gem of selectedItemViewModel.item.gems" class="d3-color-white full-socket">
-                                        <img class="gem" [src]="'http://media.blizzard.com/d3/icons/items/small/' + gem.item.icon + '.png' | safeUrl" />
-                                        <span (click)="show(gem)" class="socket-effect" *ngFor="let att of gem.attributes.primary">
-                                            {{att.text}}
-                                        </span>
-                                        <span class="d3-color-orange">Bane of the Stricken</span>
-                                        <span class="item-jewel-rank">&#x2013; Rank {{ gem.jewelRank }}</span>
-                                        <ul>
-                                            <li *ngFor="let passive of gem.attributes.passive" class="jewel-effect d3-color-{{passive.color}}">
-                                                <p>{{passive.text}}</p>
-                                            </li>
-                                        </ul>
-                                    </li>
-			
+                            <div class="d3-item-properties">
+                                <ul class="item-type-right">
+                                    <li class="item-slot">{{selectedItemViewModel.slotName}}</li>
+                                    <li class="item-class-specific d3-color-white" *ngIf="selectedItemViewModel.item.type && selectedItemViewModel.item.type.id.split('_').length > 1" >{{selectedItemViewModel.item.type.id.split('_')[1]}}</li>
                                 </ul>
+                                <ul class="item-type">
+                                    <li>
+                                        <span class="d3-color-{{selectedItemViewModel.item.displayColor}}">{{selectedItemViewModel.item.typeName}}</span>
+                                    </li>
+                                </ul>
+                                <ul *ngIf="selectedItemViewModel.baseValue.value" class="item-armor-weapon item-armor-armor">
+                                    <li class="big">
+                                        <p>
+                                            <span class="value">{{selectedItemViewModel.baseValue.value}}</span>
+                                        </p>
+                                    </li>
+                                    <li>{{selectedItemViewModel.baseValue.name}}</li>
+                                    <li *ngIf="selectedItemViewModel.item.damageRange && selectedItemViewModel.item.damageRange.min > 0">{{selectedItemViewModel.item.damageRange}}</li>
+                                    <li *ngIf="selectedItemViewModel.item.attacksPerSecondText">{{selectedItemViewModel.item.attacksPerSecondText}}</li>
+                                </ul>
+                                <div class="item-before-effects"></div>
+                                <div *ngIf="selectedItemViewModel.item.attributes">
+                                    <ul class="item-effects">
+                                        <p class="item-property-category">Primary</p>
+                                        <li *ngFor="let att of selectedItemViewModel.item.attributes.primary" class="d3-color-{{att.color}} d3-item-property-{{att.affixType}}">
+                                            <p>
+                                                <span class="value">{{ att.text }}</span>
+                                            </p>
+                                        </li>
+                                        <li *ngIf="selectedItemViewModel.item.augmentation" class="d3-color-blue d3-item-property-default">
+                                            <p>
+                                                <span class="value">{{ selectedItemViewModel.item.augmentation }}</span>
+                                            </p>
+                                        </li>
+                                        <p class="item-property-category">Secondary</p>
+                                        <li *ngFor="let att of selectedItemViewModel.item.attributes.secondary" class="d3-color-{{att.color}} d3-item-property-{{att.affixType}}">
+                                            <p>
+                                                <span class="value">{{ att.text }}</span>
+                                            </p>
+                                        </li>
+                                        <li *ngFor="let att of selectedItemViewModel.item.attributes.passive" class="d3-color-{{att.color}} d3-item-property-{{att.affixType}}">
+                                            <p>
+                                                <span class="value">{{ att.text }}</span>
+                                            </p>
+                                        </li>
+                                        <li *ngFor="let gem of selectedItemViewModel.item.gems" class="d3-color-white full-socket">
+                                            <img class="gem" [src]="'http://media.blizzard.com/d3/icons/items/small/' + gem.item.icon + '.png' | safeUrl" />
+                                            <span (click)="show(gem)" class="socket-effect" *ngFor="let att of gem.attributes.primary">
+                                                {{att.text}}
+                                            </span>
+                                            <span *ngIf="gem.isJewel" class="d3-color-orange">{{ gem.item.name }}</span>
+                                            <span *ngIf="gem.isJewel" class="item-jewel-rank">&#x2013; Rank {{ gem.jewelRank }}</span>
+                                            <ul>
+                                                <li *ngFor="let passive of gem.attributes.passive" class="jewel-effect d3-color-{{passive.color}}">
+                                                    <p>{{passive.text}}</p>
+                                                </li>
+                                            </ul>
+                                        </li>
+                
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tooltip-extension ">
-                        <div class="flavor">
-                            {{selectedItemViewModel.item.flavorText}}
+                        <div class="tooltip-extension ">
+                            <div class="flavor">
+                                {{selectedItemViewModel.item.flavorText}}
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,8 @@ var ItemViewModel = (function () {
     function ItemViewModel(item, hasDetails) {
         this.item = item;
         this.hasDetails = hasDetails;
+        if (!item)
+            return;
         this.uniqueId = item.tooltipParams.split('/')[1];
         this.baseValue = new profile_1.NameValue("", null);
         if (hasDetails) {

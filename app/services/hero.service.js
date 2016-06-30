@@ -43,14 +43,36 @@ var HeroService = (function () {
         return heroPromise;
     };
     HeroService.prototype.enrichHero = function (heroViewModel) {
-        var items = new Array();
-        for (var i = 0; i < Object.keys(heroViewModel.hero.items).length; i++) {
-            var item = new itemviewmodel_1.ItemViewModel(Object.values(heroViewModel.hero.items)[i], false);
-            var slotName = Object.keys(heroViewModel.hero.items)[i];
-            item.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
-            items.push(item);
-        }
+        var topToBottomSlots = ["shoulders", "head", "neck",
+            "hands", "torso", "bracers",
+            "leftFinger", "waist", "rightFinger",
+            "mainHand", "legs", "offHand",
+            "", "feet", ""
+        ];
+        var items = this.createItems(heroViewModel.hero.items, topToBottomSlots);
+        heroViewModel.templarItems = this.setFollowerItems(heroViewModel.hero.followers.templar, ["offHand"]);
+        heroViewModel.scoundrelItems = this.setFollowerItems(heroViewModel.hero.followers.scoundrel, null);
+        heroViewModel.enchantressItems = this.setFollowerItems(heroViewModel.hero.followers.enchantress, null);
         heroViewModel.items = items;
+    };
+    HeroService.prototype.setFollowerItems = function (follower, extraSlots) {
+        var followerSlots = ["special", "neck", "leftFinger", "rightFinger", "mainHand"];
+        if (extraSlots)
+            extraSlots.forEach(function (slot) {
+                followerSlots.push(slot);
+            });
+        return this.createItems(follower.items, followerSlots);
+    };
+    HeroService.prototype.createItems = function (items, topToBottomSlots) {
+        var itemViewModels = new Array();
+        for (var i = 0; i < topToBottomSlots.length; i++) {
+            var item = items[topToBottomSlots[i]];
+            var itemViewModel = new itemviewmodel_1.ItemViewModel(item, false);
+            var slotName = topToBottomSlots[i];
+            itemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
+            itemViewModels.push(itemViewModel);
+        }
+        return itemViewModels;
     };
     HeroService.prototype.setIconUrl = function (heroViewModel) {
         heroViewModel.iconName = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");

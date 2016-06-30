@@ -120,15 +120,7 @@
         rightFinger: Item;
         leftFinger: Item;
         neck: Item;
-    }
-
-    export interface FollowerItems {
         special: Item;
-        mainHand: Item;
-        offHand: Item;
-        rightFinger: Item;
-        leftFinger: Item;
-        neck: Item;
     }
 
     export interface Stats {
@@ -137,34 +129,18 @@
         experienceBonus: number;
     }
 
-    export interface Templar {
+    export interface Follower {
         slug: string;
         level: number;
-        items: FollowerItems;
-        stats: Stats;
-        skills: Skill[];
-    }
-
-    export interface Scoundrel {
-        slug: string;
-        level: number;
-        items: FollowerItems;
-        stats: Stats;
-        skills: Skill[];
-    }
-
-    export interface Enchantress {
-        slug: string;
-        level: number;
-        items: FollowerItems;
+        items: Items;
         stats: Stats;
         skills: Skill[];
     }
 
     export interface Followers {
-        templar: Templar;
-        scoundrel: Scoundrel;
-        enchantress: Enchantress;
+        templar: Follower;
+        scoundrel: Follower;
+        enchantress: Follower;
     }
 
     export interface LegendaryPower {

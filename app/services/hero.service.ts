@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Hero, Item } from '../interfaces/profile'
+import { Hero, Item, Items, Follower } from '../interfaces/profile'
 import { Headers, Http } from '@angular/http';
 
 import { HeroViewModel } from '../viewmodels/heroviewmodel'
@@ -46,14 +46,44 @@ export class HeroService
     }
 
     private enrichHero(heroViewModel: HeroViewModel){
-        var items = new Array<ItemViewModel>();
-        for (var i = 0; i < Object.keys(heroViewModel.hero.items).length; i++){
-            var item = new ItemViewModel(Object.values(heroViewModel.hero.items)[i] as Item, false);
-            var slotName = Object.keys(heroViewModel.hero.items)[i];
-            item.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
-            items.push(item);
-        }
+
+        var topToBottomSlots: Array<string> = [ "shoulders", "head", "neck",
+            "hands", "torso", "bracers", 
+            "leftFinger", "waist", "rightFinger",
+            "mainHand", "legs", "offHand",
+            "", "feet", ""
+        ];
+
+        var items = this.createItems(heroViewModel.hero.items, topToBottomSlots);
+        heroViewModel.templarItems = this.setFollowerItems(heroViewModel.hero.followers.templar, ["offHand"]);
+        heroViewModel.scoundrelItems = this.setFollowerItems(heroViewModel.hero.followers.scoundrel, null);
+        heroViewModel.enchantressItems = this.setFollowerItems(heroViewModel.hero.followers.enchantress, null);
+
         heroViewModel.items = items;
+
+    }
+
+    private setFollowerItems(follower: Follower, extraSlots: Array<string>): ItemViewModel[]{
+
+        var followerSlots: Array<string> = [ "special", "neck", "leftFinger", "rightFinger", "mainHand"];
+        if (extraSlots)
+        extraSlots.forEach((slot: string) => {
+            followerSlots.push(slot);
+        })
+        
+        return this.createItems(follower.items, followerSlots);
+    }
+
+    private createItems(items: Items, topToBottomSlots: Array<string>): ItemViewModel[] {
+        var itemViewModels = new Array<ItemViewModel>();
+        for (var i = 0; i < topToBottomSlots.length; i++){
+            var item = items[topToBottomSlots[i]] as Item;
+            var itemViewModel = new ItemViewModel(item, false);
+            var slotName = topToBottomSlots[i];
+            itemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
+            itemViewModels.push(itemViewModel);
+        }
+        return itemViewModels;
     }
 
     private setIconUrl(heroViewModel: HeroViewModel){

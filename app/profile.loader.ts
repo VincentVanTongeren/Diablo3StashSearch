@@ -7,7 +7,6 @@ import { ItemService } from './services/item.service'
 import { ProfileViewModel } from './viewmodels/profileviewmodel'
 import { HeroViewModel } from './viewmodels/heroviewmodel'
 import { ItemViewModel } from './viewmodels/itemviewmodel'
-import { GemViewModel } from './viewmodels/gemviewmodel'
 import { Profile, Hero, Item } from './interfaces/profile'
 import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
 
@@ -59,8 +58,18 @@ import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
 #hero-pane {
     height: 100%;
 }
+#hero-pane ul {
+    padding: 0;
+}
 #hero-main {
     height: 100%;
+}
+
+#hero-main ul.item-properties li {
+    list-style-type:none
+}
+#hero-main .empty-row {
+    height: 50px;
 }
 #item-detail {
     height: 100%;

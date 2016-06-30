@@ -5,6 +5,9 @@ import { ItemViewModel } from '../viewmodels/itemViewModel'
 export class HeroViewModel{
 
     public items: Array<ItemViewModel>
+    public templarItems: Array<ItemViewModel>
+    public scoundrelItems: Array<ItemViewModel>
+    public enchantressItems: Array<ItemViewModel>
     public iconName: string;
 
     constructor(public hero: Hero, public hasDetails: boolean){

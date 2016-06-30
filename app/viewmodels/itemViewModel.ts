@@ -16,6 +16,9 @@ export class ItemViewModel{
     public effect: string;
 
     constructor(public item: Item, public hasDetails: boolean){
+        if (!item)
+            return;
+
         this.uniqueId = item.tooltipParams.split('/')[1];
         this.baseValue = new NameValue("", null);
         if (hasDetails){
