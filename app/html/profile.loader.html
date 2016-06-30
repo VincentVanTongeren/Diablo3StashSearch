@@ -91,7 +91,7 @@
                     <div class="tooltip-head tooltip-head-{{selectedItemViewModel.item.displayColor}}">
                         <h3 class="d3-color-{{selectedItemViewModel.item.displayColor}}">{{ selectedItemViewModel.item.name }}</h3>
                     </div>
-                    <div class="tooltip-body effect-bg effect-bg-{{selectedItemViewModel.baseValue.name}} effect-bg-{{selectedItemViewModel.baseValue.name}}-{{selectedItemViewModel.elementalType}} effect-bg-{{selectedItemViewModel.elementalType}}">
+                    <div class="tooltip-body effect-bg effect-bg-{{selectedItemViewModel.effect}}">
                         <span class="d3-icon d3-icon-item d3-icon-item-large d3-icon-item-{{selectedItemViewModel.item.displayColor}}">
                             <span class="icon-item-gradient">
                                 <span class="icon-item-inner icon-item-default" [style.background-image]="selectedItemViewModel.iconUrl"></span>
@@ -114,7 +114,7 @@
                                     </p>
                                 </li>
                                 <li>{{selectedItemViewModel.baseValue.name}}</li>
-                                <li *ngIf="selectedItemViewModel.item.damageRange">{{selectedItemViewModel.item.damageRange}}</li>
+                                <li *ngIf="selectedItemViewModel.item.damageRange && selectedItemViewModel.item.damageRange.min > 0">{{selectedItemViewModel.item.damageRange}}</li>
                                 <li *ngIf="selectedItemViewModel.item.attacksPerSecondText">{{selectedItemViewModel.item.attacksPerSecondText}}</li>
                             </ul>
                             <div class="item-before-effects"></div>

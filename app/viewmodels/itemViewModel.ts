@@ -16,10 +16,11 @@ export class ItemViewModel{
     public elementalType: string;
     public augment: number;
     public gems: GemViewModel[];
+    public effect: string;
 
     constructor(public item: Item, public hasDetails: boolean){
         this.uniqueId = item.tooltipParams.split('/')[1];
-        this.baseValue = new NameValue("Armor", null);
+        this.baseValue = new NameValue("", null);
         if (hasDetails){
             this.isAncient = Boolean(item.attributesRaw["Ancient_Rank"]);
             this.sockets = Boolean(item.attributesRaw["Sockets"]) ? item.attributesRaw["Sockets"].min : 0;
@@ -32,6 +33,7 @@ export class ItemViewModel{
             this.elementalType = Boolean(this.item.elementalType) ? this.item.elementalType : "default";
             this.augment = Boolean(item.attributesRaw["CubeEnchantedGemRank"]) ? item.attributesRaw["CubeEnchantedGemRank"].min : 0;
             this.gems = new Array<GemViewModel>();
+            this.effect = this.elementalType != "default" ? this.elementalType : this.baseValue.name;
         }
 
 

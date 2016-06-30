@@ -45,18 +45,9 @@ var ProfileLoader = (function () {
         this._localStorageService.storeItemAsString("locale", this.locale);
         this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then(function (profileViewModel) {
             _this.profileViewModel = profileViewModel;
+            _this.selectedHeroViewModel = null;
+            _this.selectedItemViewModel = null;
         });
-    };
-    ProfileLoader.prototype.loadProfile = function (profile) {
-        var _this = this;
-        var profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
-        if (profile.heroes && profile.heroes.length) {
-            profile.heroes.forEach(function (hero) {
-                var heroViewModel = _this._heroService.createHeroViewModel(hero);
-                profileViewModel.heroes.push(heroViewModel);
-            });
-        }
-        this.profileViewModel = profileViewModel;
     };
     ProfileLoader.prototype.selectHero = function (heroViewModel) {
         var _this = this;
@@ -65,14 +56,14 @@ var ProfileLoader = (function () {
             _this.selectedItemViewModel = null;
         });
     };
-    ProfileLoader.prototype.show = function (obj) {
-        alert(JSON.stringify(obj));
-    };
     ProfileLoader.prototype.selectItem = function (itemViewModel) {
         var _this = this;
         this._itemService.getDetailedItemViewModel(this.selectedHeroViewModel.items, itemViewModel, this.locale, this.profileKey, this.apiKey).then(function (selectedItemViewModel) {
             _this.selectedItemViewModel = selectedItemViewModel;
         });
+    };
+    ProfileLoader.prototype.show = function (obj) {
+        alert(JSON.stringify(obj));
     };
     ProfileLoader = __decorate([
         core_1.Component({

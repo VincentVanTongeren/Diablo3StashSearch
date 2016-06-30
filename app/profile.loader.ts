@@ -106,19 +106,9 @@ export class ProfileLoader {
 
         this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then((profileViewModel: ProfileViewModel) =>{
             this.profileViewModel = profileViewModel;
+            this.selectedHeroViewModel = null;
+            this.selectedItemViewModel = null;
         });
-    }
-
-    private loadProfile(profile: Profile){
-        var profileViewModel = new ProfileViewModel(profile);
-        if (profile.heroes && profile.heroes.length)
-        {
-            profile.heroes.forEach(hero => {
-                var heroViewModel = this._heroService.createHeroViewModel(hero);
-                profileViewModel.heroes.push(heroViewModel); 
-            });
-        }
-        this.profileViewModel = profileViewModel
     }
 
     public selectHero(heroViewModel: HeroViewModel): void{
@@ -128,14 +118,13 @@ export class ProfileLoader {
         });
     }
 
-public show(obj: any){
-    alert(JSON.stringify(obj));
-}
-
     public selectItem(itemViewModel: ItemViewModel): void {
-        this._itemService.getDetailedItemViewModel(this.selectedHeroViewModel.items, itemViewModel, 
-        this.locale, this.profileKey, this.apiKey).then((selectedItemViewModel: ItemViewModel) => {
+        this._itemService.getDetailedItemViewModel(this.selectedHeroViewModel.items, itemViewModel, this.locale, this.profileKey, this.apiKey).then((selectedItemViewModel: ItemViewModel) => {
             this.selectedItemViewModel = selectedItemViewModel;
         });
+    }
+
+    public show(obj: any){
+        alert(JSON.stringify(obj));
     }
 }
