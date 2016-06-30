@@ -150,6 +150,13 @@
                                         <span (click)="show(gem)" class="socket-effect" *ngFor="let att of gem.attributes.primary">
                                             {{att.text}}
                                         </span>
+                                        <span class="d3-color-orange">Bane of the Stricken</span>
+                                        <span class="item-jewel-rank">&#x2013; Rank {{ gem.jewelRank }}</span>
+                                        <ul>
+                                            <li *ngFor="let passive of gem.attributes.passive" class="jewel-effect d3-color-{{passive.color}}">
+                                                <p>{{passive.text}}</p>
+                                            </li>
+                                        </ul>
                                     </li>
 			
                                 </ul>
