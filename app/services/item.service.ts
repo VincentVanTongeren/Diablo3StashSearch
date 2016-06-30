@@ -7,7 +7,6 @@ import { ItemViewModel } from '../viewmodels/itemviewmodel'
 import { GemViewModel } from '../viewmodels/gemviewmodel'
 
 import { LocalStorageService } from './localstorageservice'
-import { DomSanitizationService } from '@angular/platform-browser';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -16,8 +15,7 @@ export class ItemService
 {  
 
     constructor(private _http: Http,
-        private _localStorageService: LocalStorageService,
-        private _sanitizationService: DomSanitizationService
+        private _localStorageService: LocalStorageService
     ) { }
 
     public getItem(locale: string, profile: string, apiKey: string, uniqueId: string): Promise<Item> {
@@ -50,13 +48,11 @@ export class ItemService
             for (var i = 0; i < item.gems.length; i++)
             {
                 var gem = new GemViewModel(item.gems[i]);
-                var trustedUrl = `http://media.blizzard.com/d3/icons/items/small/${item.gems[i].item.icon}.png`;
-                gem.iconUrl = this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
+                gem.iconUrl = `http://media.blizzard.com/d3/icons/items/small/${item.gems[i].item.icon}.png`;
                 detailedItemViewModel.gems.push(gem);
             }
 
-            var trustedStyle = `url('http://media.blizzard.com/d3/icons/items/large/${itemViewModel.item.icon}.png')`;
-            detailedItemViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustStyle(trustedStyle);
+            detailedItemViewModel.iconStyle = `url('http://media.blizzard.com/d3/icons/items/large/${itemViewModel.item.icon}.png')`;
 
             var slotName = item.slots[0];
             detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");

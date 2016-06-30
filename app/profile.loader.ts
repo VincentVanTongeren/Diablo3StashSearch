@@ -9,9 +9,11 @@ import { HeroViewModel } from './viewmodels/heroviewmodel'
 import { ItemViewModel } from './viewmodels/itemviewmodel'
 import { GemViewModel } from './viewmodels/gemviewmodel'
 import { Profile, Hero, Item } from './interfaces/profile'
+import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
 
 @Component({
     directives: [ProfileViewModel],
+    pipes: [SafeUrlPipe, SafeStylePipe],
   selector: 'profile-loader',
   styles: [`
 .bold {

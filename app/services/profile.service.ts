@@ -10,7 +10,6 @@ import { ProfileViewModel } from '../viewmodels/profileviewmodel'
 import { HeroViewModel } from '../viewmodels/heroviewmodel'
 
 import { LocalStorageService } from './localstorageservice'
-import { DomSanitizationService } from '@angular/platform-browser';
 
 // import 'rxjs/add/operator/toPromise';
 
@@ -21,8 +20,7 @@ export class ProfileService
     constructor(
         private _http: Http,
         private _heroService: HeroService,
-        private _localStorageService: LocalStorageService,
-        private _sanitizationService: DomSanitizationService
+        private _localStorageService: LocalStorageService
     ){ }
     
     private getProfile(locale: string, profileKey: string, apiKey: string): Promise<Profile> {

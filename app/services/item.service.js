@@ -13,13 +13,11 @@ var http_1 = require('@angular/http');
 var itemviewmodel_1 = require('../viewmodels/itemviewmodel');
 var gemviewmodel_1 = require('../viewmodels/gemviewmodel');
 var localstorageservice_1 = require('./localstorageservice');
-var platform_browser_1 = require('@angular/platform-browser');
 require('rxjs/add/operator/toPromise');
 var ItemService = (function () {
-    function ItemService(_http, _localStorageService, _sanitizationService) {
+    function ItemService(_http, _localStorageService) {
         this._http = _http;
         this._localStorageService = _localStorageService;
-        this._sanitizationService = _sanitizationService;
     }
     ItemService.prototype.getItem = function (locale, profile, apiKey, uniqueId) {
         var _this = this;
@@ -43,17 +41,14 @@ var ItemService = (function () {
         return itemPromise;
     };
     ItemService.prototype.getDetailedItemViewModel = function (items, itemViewModel, locale, profileKey, apiKey) {
-        var _this = this;
         return this.getItem(locale, profileKey, apiKey, itemViewModel.uniqueId).then(function (item) {
             var detailedItemViewModel = new itemviewmodel_1.ItemViewModel(item, true);
             for (var i = 0; i < item.gems.length; i++) {
                 var gem = new gemviewmodel_1.GemViewModel(item.gems[i]);
-                var trustedUrl = "http://media.blizzard.com/d3/icons/items/small/" + item.gems[i].item.icon + ".png";
-                gem.iconUrl = _this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
+                gem.iconUrl = "http://media.blizzard.com/d3/icons/items/small/" + item.gems[i].item.icon + ".png";
                 detailedItemViewModel.gems.push(gem);
             }
-            var trustedStyle = "url('http://media.blizzard.com/d3/icons/items/large/" + itemViewModel.item.icon + ".png')";
-            detailedItemViewModel.iconUrl = _this._sanitizationService.bypassSecurityTrustStyle(trustedStyle);
+            detailedItemViewModel.iconStyle = "url('http://media.blizzard.com/d3/icons/items/large/" + itemViewModel.item.icon + ".png')";
             var slotName = item.slots[0];
             detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
             var index = items.indexOf(itemViewModel);
@@ -63,7 +58,7 @@ var ItemService = (function () {
     };
     ItemService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, localstorageservice_1.LocalStorageService, platform_browser_1.DomSanitizationService])
+        __metadata('design:paramtypes', [http_1.Http, localstorageservice_1.LocalStorageService])
     ], ItemService);
     return ItemService;
 }());

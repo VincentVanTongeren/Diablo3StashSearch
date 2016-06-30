@@ -14,14 +14,12 @@ var heroviewmodel_1 = require('../viewmodels/heroviewmodel');
 var itemviewmodel_1 = require('../viewmodels/itemviewmodel');
 var item_service_1 = require('./item.service');
 var localstorageservice_1 = require('./localstorageservice');
-var platform_browser_1 = require('@angular/platform-browser');
 require('rxjs/add/operator/toPromise');
 var HeroService = (function () {
-    function HeroService(_http, _itemService, _localStorageService, _sanitizationService) {
+    function HeroService(_http, _itemService, _localStorageService) {
         this._http = _http;
         this._itemService = _itemService;
         this._localStorageService = _localStorageService;
-        this._sanitizationService = _sanitizationService;
     }
     HeroService.prototype.getHero = function (locale, profile, apiKey, heroId) {
         var _this = this;
@@ -56,8 +54,7 @@ var HeroService = (function () {
     };
     HeroService.prototype.setIconUrl = function (heroViewModel) {
         var heroPart = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");
-        var trustedUrl = "http://media.blizzard.com/d3/icons/portraits/42/" + heroPart + ".png";
-        heroViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
+        heroViewModel.iconUrl = "http://media.blizzard.com/d3/icons/portraits/42/" + heroPart + ".png";
     };
     HeroService.prototype.createHeroViewModel = function (hero) {
         var cachedHero = this._localStorageService.getItem("hero" + hero.id);
@@ -80,7 +77,7 @@ var HeroService = (function () {
     };
     HeroService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, item_service_1.ItemService, localstorageservice_1.LocalStorageService, platform_browser_1.DomSanitizationService])
+        __metadata('design:paramtypes', [http_1.Http, item_service_1.ItemService, localstorageservice_1.LocalStorageService])
     ], HeroService);
     return HeroService;
 }());

@@ -14,6 +14,7 @@ var profile_service_1 = require('./services/profile.service');
 var hero_service_1 = require('./services/hero.service');
 var item_service_1 = require('./services/item.service');
 var profileviewmodel_1 = require('./viewmodels/profileviewmodel');
+var safe_1 = require('./pipes/safe');
 var ProfileLoader = (function () {
     function ProfileLoader(_profileService, _itemService, _heroService, _localStorageService) {
         var _this = this;
@@ -68,6 +69,7 @@ var ProfileLoader = (function () {
     ProfileLoader = __decorate([
         core_1.Component({
             directives: [profileviewmodel_1.ProfileViewModel],
+            pipes: [safe_1.SafeUrlPipe, safe_1.SafeStylePipe],
             selector: 'profile-loader',
             styles: ["\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane .input-row {\n    margin: 3px;\n}\n#profile-pane {\n    height: 100%;\n}\n#profile-pane ul {\n    padding: 0;\n}\n#profile-pane li {\n    list-style-type:none\n}\n#profile-pane .hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n#profile-pane .hero-tab.active {\n    border: 1px solid #555;\n}\n#profile-pane .hero-tab .hero-name {\n    margin: 3px 10px;\n    color: #ad835a\n}\n#profile-pane .hero-tab.active .hero-name {\n    color: #fff;\n}\n#hero-pane {\n    height: 100%;\n}\n#hero-main {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n"],
             templateUrl: '../app/html/profile.loader.html'

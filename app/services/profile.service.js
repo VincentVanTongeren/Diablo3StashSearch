@@ -13,14 +13,12 @@ var http_1 = require('@angular/http');
 var hero_service_1 = require('./hero.service');
 var profileviewmodel_1 = require('../viewmodels/profileviewmodel');
 var localstorageservice_1 = require('./localstorageservice');
-var platform_browser_1 = require('@angular/platform-browser');
 // import 'rxjs/add/operator/toPromise';
 var ProfileService = (function () {
-    function ProfileService(_http, _heroService, _localStorageService, _sanitizationService) {
+    function ProfileService(_http, _heroService, _localStorageService) {
         this._http = _http;
         this._heroService = _heroService;
         this._localStorageService = _localStorageService;
-        this._sanitizationService = _sanitizationService;
     }
     ProfileService.prototype.getProfile = function (locale, profileKey, apiKey) {
         var _this = this;
@@ -59,7 +57,7 @@ var ProfileService = (function () {
     };
     ProfileService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, hero_service_1.HeroService, localstorageservice_1.LocalStorageService, platform_browser_1.DomSanitizationService])
+        __metadata('design:paramtypes', [http_1.Http, hero_service_1.HeroService, localstorageservice_1.LocalStorageService])
     ], ProfileService);
     return ProfileService;
 }());

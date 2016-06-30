@@ -11,7 +11,7 @@ export class ItemViewModel{
     public uniqueId: string;
     public isAncient: boolean;
     public sockets: number;
-    public iconUrl: SafeStyle;
+    public iconStyle: string;
     public baseValue: NameValue;
     public elementalType: string;
     public augment: number;

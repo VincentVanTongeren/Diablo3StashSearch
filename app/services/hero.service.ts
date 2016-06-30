@@ -9,7 +9,6 @@ import { ItemViewModel } from '../viewmodels/itemviewmodel'
 import { ItemService } from './item.service'
 
 import { LocalStorageService } from './localstorageservice'
-import { DomSanitizationService } from '@angular/platform-browser';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -19,8 +18,7 @@ export class HeroService
     constructor(
         private _http: Http,
         private _itemService: ItemService,
-        private _localStorageService: LocalStorageService,
-        private _sanitizationService: DomSanitizationService
+        private _localStorageService: LocalStorageService
     ){ }
 
     private getHero(locale: string, profile: string, apiKey: string, heroId: number): Promise<Hero> {
@@ -60,8 +58,7 @@ export class HeroService
 
     private setIconUrl(heroViewModel: HeroViewModel){
         var heroPart = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");
-        var trustedUrl = `http://media.blizzard.com/d3/icons/portraits/42/${heroPart}.png`;
-        heroViewModel.iconUrl = this._sanitizationService.bypassSecurityTrustUrl(trustedUrl);
+        heroViewModel.iconUrl = `http://media.blizzard.com/d3/icons/portraits/42/${heroPart}.png`;
     }
 
     public createHeroViewModel(hero: Hero){
