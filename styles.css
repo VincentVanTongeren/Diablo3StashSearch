@@ -5,30 +5,6 @@ body {
 input, textarea, keygen, select, button{
   color: #333;
 }
- /*
-  * See https://github.com/angular/angular.io/blob/master/public/docs/_examples/styles.css
-  * for the full set of master styles used by the documentation samples
-  */
-/*
-#app-header {
-    height: 10%;
-}
-#app-main {
-    height: 90%;
-}
-#profile-pane {
-    height: 100%;
-    color: red;
-}
-#profile-pane .hero-tab {
-    color: red;
-    height: 50px;
-    border: 1px solid black;
-}
-#profile-pane .hero-tab .hero-name {
-    margin: 5px 10px;
-}
-#profile-pane .hero-tab .hero-name.has-details {
-    color: blue;
-}
-*/
+/*.text-right {
+    float: right;
+}*/

@@ -64,8 +64,21 @@ import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
 #hero-main {
     height: 100%;
 }
-
-#hero-main ul.item-properties li {
+#hero-main li.item-icon {
+    /*float: left;*/
+}
+#hero-main .item-properties {
+    padding: 0;
+    padding-top: 3px;
+    height: 72px;
+}
+#hero-main .item-properties.active {
+    border: 1px solid #555;
+}
+#hero-main .item-properties ul {
+    padding: 0;
+}
+#hero-main .item-properties ul li {
     list-style-type:none
 }
 #hero-main .empty-row {
@@ -73,6 +86,10 @@ import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
 }
 #item-detail {
     height: 100%;
+}
+#item-detail .item-card {
+    max-width: 351px;
+    margin-right: 0;
 }
 `],
   templateUrl: '../app/html/profile.loader.html'
