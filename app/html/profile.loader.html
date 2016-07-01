@@ -41,14 +41,36 @@
                 <li *ngFor="let heroViewModel of profileViewModel.heroes" class="hero-tab" [ngClass]="{'active':heroViewModel == selectedHeroViewModel }" (click)="selectHero(heroViewModel)">
                     <div class="row">
                         <div class="col col-xs-1">
-                            <img [src]="'http://media.blizzard.com/d3/icons/portraits/42/' + heroViewModel.iconName + '.png' | safeUrl" />
+                            <img class="hero-portrait" [src]="'http://media.blizzard.com/d3/icons/portraits/42/' + heroViewModel.iconName + '.png' | safeUrl" />
                         </div>
                         
                         <div class="col col-xs-3 hero-name" [ngClass]="{'has-details':heroViewModel.hasDetails}">
-                            {{heroViewModel.hero.name}}
+                            <ul>
+                                <li>
+                                    {{heroViewModel.hero.name}}
+                                </li>
+                                <li class="char-type">
+                                    <span class="paragon">{{ heroViewModel.hero.paragonLevel }}</span>
+                                    <span [ngClass]="{'small-seasonal-leaf': heroViewModel.hero.seasonal}"></span>
+                                    <span [ngClass]="{'small-hardcore': heroViewModel.hero.hardcore}"></span>
+                                </li>
+                            </ul>
+                            
                         </div>
 
-                        <div class="col col-xs-4 skills">
+                        <div class="col col-xs-4 skills" *ngIf="heroViewModel.hero.skills" (click)="show(heroViewModel.hero)">
+                            <ul>
+                                <li class="active">
+                                    <div class="skill" *ngFor="let skill of heroViewModel.hero.skills.active" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + skill.skill.icon + '.png)' | safeStyle" [title]="skill.skill.name + (skill.rune ? ' > ' + skill.rune.name : '')" >
+                                        &nbsp;
+                                    </div>
+                                </li>
+                                <li class="passive">
+                                    <div class="skill" *ngFor="let skill of heroViewModel.hero.skills.passive" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + skill.skill.icon + '.png)' | safeStyle" [title]="skill.skill.name" [ngClass]="{ last: skill == heroViewModel.hero.skills.active[heroViewModel.hero.skills.active.length -1]}">
+                                        &nbsp;
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </li>
@@ -230,7 +252,9 @@
                                             </li>
                                         </ul>
                                     </li>
-            
+                                    <li *ngFor="let socket of selectedItemViewModel.sockets" class="empty-socket d3-color-blue">
+                                        Empty Socket
+                                    </li>
                                 </ul>
                             </div>
                         </div>

@@ -49,11 +49,30 @@ import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
     border: 1px solid #555;
 }
 #profile-pane .hero-tab .hero-name {
-    margin: 3px;
+    margin-left: 10px;
     color: #ad835a
 }
 #profile-pane .hero-tab.active .hero-name {
     color: #fff;
+}
+#profile-pane .hero-tab .hero-name .paragon {
+    vertical-align: top;
+}
+#profile-pane .hero-portrait {
+    margin-left: 9px;
+}
+#profile-pane .skills {
+    height: 36px;
+}
+#profile-pane .skills .passive.last {
+    margin-right: 24px;
+}
+#profile-pane .skill {
+    display: inline-block;
+    background-size: contain;
+    margin-right: 3px;
+    width: 21px;
+    height: 21px;
 }
 #hero-pane {
     height: 100%;
@@ -91,6 +110,22 @@ import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
     max-width: 351px;
     margin-right: 0;
 }
+li.char-type {
+    height: 21px;
+}
+li.char-type .small-seasonal-leaf { 
+    display: inline-block; 
+    width: 15px; 
+    height: 21px; 
+    background: url("http://eu.battle.net/d3/static/images/profile/seasonal-leaf.png") -24px -2px no-repeat; 
+}
+li.char-type .small-hardcore { 
+    display: inline-block; 
+    width: 21px; 
+    height: 21px; 
+    background: url("../images/hardcore.png") no-repeat; 
+}
+
 `],
   templateUrl: '../app/html/profile.loader.html'
 })
@@ -147,9 +182,10 @@ export class ProfileLoader {
     }
 
     public selectItem(itemViewModel: ItemViewModel): void {
-        this._itemService.getDetailedItemViewModel(this.selectedHeroViewModel.items, itemViewModel, this.locale, this.profileKey, this.apiKey).then((selectedItemViewModel: ItemViewModel) => {
-            this.selectedItemViewModel = selectedItemViewModel;
-        });
+        if (itemViewModel)
+            this._itemService.getDetailedItemViewModel(this.selectedHeroViewModel.items, itemViewModel, this.locale, this.profileKey, this.apiKey).then((selectedItemViewModel: ItemViewModel) => {
+                this.selectedItemViewModel = selectedItemViewModel;
+            });
     }
 
     public show(obj: any){

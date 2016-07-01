@@ -5,6 +5,12 @@ var Profile = (function () {
     return Profile;
 }());
 exports.Profile = Profile;
+var Follower = (function () {
+    function Follower() {
+    }
+    return Follower;
+}());
+exports.Follower = Follower;
 var HeroStats = (function () {
     function HeroStats() {
     }

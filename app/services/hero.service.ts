@@ -55,9 +55,14 @@ export class HeroService
         ];
 
         var items = this.createItems(heroViewModel.hero.items, topToBottomSlots);
-        heroViewModel.templarItems = this.setFollowerItems(heroViewModel.hero.followers.templar, ["offHand"]);
-        heroViewModel.scoundrelItems = this.setFollowerItems(heroViewModel.hero.followers.scoundrel, null);
-        heroViewModel.enchantressItems = this.setFollowerItems(heroViewModel.hero.followers.enchantress, null);
+        var dummyFollower = new Follower();
+        var templar = heroViewModel.hero.followers.templar ? heroViewModel.hero.followers.templar : dummyFollower;
+        var scoundrel = heroViewModel.hero.followers.scoundrel ? heroViewModel.hero.followers.scoundrel : dummyFollower;
+        var enchantress = heroViewModel.hero.followers.enchantress ? heroViewModel.hero.followers.enchantress : dummyFollower;
+
+        heroViewModel.templarItems = this.setFollowerItems(templar, ["offHand"]);
+        heroViewModel.scoundrelItems = this.setFollowerItems(scoundrel, null);
+        heroViewModel.enchantressItems = this.setFollowerItems(enchantress, null);
 
         heroViewModel.items = items;
 
@@ -71,13 +76,13 @@ export class HeroService
             followerSlots.push(slot);
         })
         
-        return this.createItems(follower.items, followerSlots);
+        return this.createItems(follower.items ? follower.items : null, followerSlots);
     }
 
     private createItems(items: Items, topToBottomSlots: Array<string>): ItemViewModel[] {
         var itemViewModels = new Array<ItemViewModel>();
         for (var i = 0; i < topToBottomSlots.length; i++){
-            var item = items[topToBottomSlots[i]] as Item;
+            var item = items ? items[topToBottomSlots[i]] as Item : null;
             var itemViewModel = new ItemViewModel(item, false);
             var slotName = topToBottomSlots[i];
             itemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");

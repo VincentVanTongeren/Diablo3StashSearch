@@ -9,7 +9,7 @@ export class ItemViewModel{
     public characterType: CharacterType;
     public uniqueId: string;
     public isAncient: boolean;
-    public sockets: number;
+    public sockets: Array<any>;
     public baseValue: NameValue;
     public elementalType: string;
     public augment: number;
@@ -23,7 +23,11 @@ export class ItemViewModel{
         this.baseValue = new NameValue("", null);
         if (hasDetails){
             this.isAncient = Boolean(item.attributesRaw["Ancient_Rank"]);
-            this.sockets = Boolean(item.attributesRaw["Sockets"]) ? item.attributesRaw["Sockets"].min : 0;
+            this.sockets = [];
+            
+            for (var i = 0; i < (Boolean(item.attributesRaw["Sockets"]) ? item.attributesRaw["Sockets"].min : 0); i++)
+                this.sockets.push({});
+                
             if (Boolean(item.attributesRaw["Armor_Item"]) && item.attributesRaw["Armor_Item"].min > 0)
             {
                 this.baseValue = new NameValue("Armor", item.armor.min);

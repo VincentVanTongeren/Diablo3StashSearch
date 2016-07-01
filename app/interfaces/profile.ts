@@ -68,7 +68,7 @@
         seasonalProfiles: Season[];
     }
 
-    export interface Skill {
+    export interface SkillDetail {
         slug: string;
         name: string;
         icon: string;
@@ -92,18 +92,14 @@
         order: number;
     }
 
-    export interface Active {
-        skill: Skill;
+    export interface Skill {
+        skill: SkillDetail;
         rune: Rune;
     }
 
-    export interface Passive {
-        skill: Skill;
-    }
-
     export interface Skills {
-        active: Active[];
-        passive: Passive[];
+        active: Skill[];
+        passive: Skill[];
     }
 
     export interface Items {
@@ -129,7 +125,7 @@
         experienceBonus: number;
     }
 
-    export interface Follower {
+    export class Follower {
         slug: string;
         level: number;
         items: Items;
