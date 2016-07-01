@@ -9,6 +9,7 @@ export class HeroViewModel{
     public scoundrelItems: Array<ItemViewModel>
     public enchantressItems: Array<ItemViewModel>
     public iconName: string;
+    public sets: Array<string>;
     public hellfireAmuletPassive: string;
 
     constructor(public hero: Hero, public hasDetails: boolean){

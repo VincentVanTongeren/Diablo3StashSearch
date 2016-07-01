@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Profile, Hero, Item } from '../interfaces/profile'
+import { BattleNet } from '../interfaces/battlenet'
 import { Headers, Http } from '@angular/http';
 
 import { HeroService } from './hero.service'
@@ -23,15 +24,15 @@ export class ProfileService
         private _localStorageService: LocalStorageService
     ){ }
     
-    private getProfile(locale: string, profileKey: string, apiKey: string): Promise<Profile> {
-        var cachedProfile = this._localStorageService.getItem<Profile>(profileKey);
+    private getProfile(battleNet: BattleNet): Promise<Profile> {
+        var cachedProfile = this._localStorageService.getItem<Profile>(battleNet.profileKey);
         if (cachedProfile){
             return new Promise<Profile>((resolve, reject) => {
                 resolve(cachedProfile);
             })
         }
 
-        var url = `https://${locale}.api.battle.net/d3/profile/${profileKey}/?locale=en_GB&apikey=${apiKey}`;
+        var url = `https://${battleNet.locale}.api.battle.net/d3/profile/${battleNet.profileKey}/?locale=en_GB&apikey=${battleNet.apiKey}`;
         var profilePromise =  this._http.get(url)
                     .toPromise()
                     .then(response => response.json() as Profile)
@@ -41,14 +42,14 @@ export class ProfileService
 
         profilePromise.then((profile: Profile) => {
             if (profile)
-                this._localStorageService.storeItem(profileKey, profile);
+                this._localStorageService.storeItem(battleNet.profileKey, profile);
         });
         return profilePromise;
     }
 
 
-    public getProfileViewModel(locale: string, profileKey: string, apiKey: string): Promise<ProfileViewModel> {
-        var promise = this.getProfile(locale, profileKey, apiKey);
+    public getProfileViewModel(battleNet: BattleNet): Promise<ProfileViewModel> {
+        var promise = this.getProfile(battleNet);
         return promise.then((profile: Profile) => {
             var profileViewModel = new ProfileViewModel(profile);
             if (profile.heroes && profile.heroes.length)

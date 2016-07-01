@@ -8,6 +8,7 @@ import { ProfileViewModel } from './viewmodels/profileviewmodel'
 import { HeroViewModel } from './viewmodels/heroviewmodel'
 import { ItemViewModel } from './viewmodels/itemviewmodel'
 import { Profile, Hero, Item } from './interfaces/profile'
+import { BattleNet } from './interfaces/battlenet'
 import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
 
 @Component({
@@ -103,6 +104,25 @@ import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
 #hero-main .empty-row {
     height: 50px;
 }
+#hero-main .follower {
+    padding-left: 24px;
+    height: 21px;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+#hero-main .templar {
+    background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; 
+}
+#hero-main .scoundrel {
+    background: url('http://media.blizzard.com/d3/icons/portraits/21/scoundrel.png') no-repeat; 
+}
+#hero-main .enchantress {
+    background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; 
+}
+#hero-main .d3-icon-item-white {
+    opacity: 0.4;
+}
 #item-detail {
     height: 100%;
 }
@@ -149,7 +169,7 @@ export class ProfileLoader {
 
         if (this.profileKey)
         {
-            this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then((profileViewModel: ProfileViewModel) =>{
+            this._profileService.getProfileViewModel(new BattleNet(this.apiKey, this.locale, this.profileKey)).then((profileViewModel: ProfileViewModel) =>{
                 this.profileViewModel = profileViewModel;
             });
         }
@@ -167,7 +187,7 @@ export class ProfileLoader {
         this._localStorageService.storeItemAsString("profileKey", this.profileKey);
         this._localStorageService.storeItemAsString("locale", this.locale);
 
-        this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then((profileViewModel: ProfileViewModel) =>{
+        this._profileService.getProfileViewModel(new BattleNet(this.apiKey, this.locale, this.profileKey)).then((profileViewModel: ProfileViewModel) =>{
             this.profileViewModel = profileViewModel;
             this.selectedHeroViewModel = null;
             this.selectedItemViewModel = null;
@@ -175,7 +195,7 @@ export class ProfileLoader {
     }
 
     public selectHero(heroViewModel: HeroViewModel): void{
-        this._heroService.getHeroViewModel(this.profileViewModel.heroes, heroViewModel, this.locale, this.profileKey, this.apiKey).then((selectedHeroViewModel: HeroViewModel) => {
+        this._heroService.getHeroViewModel(this.profileViewModel.heroes, heroViewModel, new BattleNet(this.apiKey, this.locale, this.profileKey)).then((selectedHeroViewModel: HeroViewModel) => {
             this.selectedHeroViewModel = selectedHeroViewModel;
             this.selectedItemViewModel = null;
         });
@@ -183,8 +203,13 @@ export class ProfileLoader {
 
     public selectItem(itemViewModel: ItemViewModel): void {
         if (itemViewModel)
-            this._itemService.getDetailedItemViewModel(this.selectedHeroViewModel.items, itemViewModel, this.locale, this.profileKey, this.apiKey).then((selectedItemViewModel: ItemViewModel) => {
+            this._itemService.getDetailedItemViewModel(this.selectedHeroViewModel.items, itemViewModel, new BattleNet(this.apiKey, this.locale, this.profileKey)).then((selectedItemViewModel: ItemViewModel) => {
                 this.selectedItemViewModel = selectedItemViewModel;
+                var heroItem = this.selectedHeroViewModel.items.filter(i => i.uniqueId == selectedItemViewModel.uniqueId);
+                if (heroItem.length > 0){
+                    var index = this.selectedHeroViewModel.items.indexOf(heroItem[0]);
+                    this.selectedHeroViewModel.items[index] = selectedItemViewModel;
+                }
             });
     }
 

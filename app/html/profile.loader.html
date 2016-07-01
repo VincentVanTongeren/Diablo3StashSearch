@@ -69,6 +69,9 @@
                                     <div class="skill" *ngFor="let skill of heroViewModel.hero.skills.passive" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + skill.skill.icon + '.png)' | safeStyle" [title]="skill.skill.name" [ngClass]="{ last: skill == heroViewModel.hero.skills.active[heroViewModel.hero.skills.active.length -1]}">
                                         &nbsp;
                                     </div>
+                                    <div class="skill" *ngIf="heroViewModel.hellfireAmuletPassive" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + heroViewModel.hellfireAmuletPassive + '.png)' | safeStyle" [title]="skill.skill.name" [ngClass]="{ last: skill == heroViewModel.hero.skills.active[heroViewModel.hero.skills.active.length -1]}">
+                                        &nbsp;
+                                    </div>
                                 </li>
                             </ul>
                         </div>
@@ -93,7 +96,7 @@
             <div class="row" *ngIf="selectedHeroViewModel">
                 <div class="col col-xs-12">
                     <span>
-                        Character
+                        {{ selectedHeroViewModel.hero.name }}
                     </span>
                 </div>
             </div>
@@ -101,10 +104,10 @@
             <div *ngIf="selectedHeroViewModel && selectedHeroViewModel.hasDetails" class="row">
                 
                 <div *ngFor="let itemSlot of selectedHeroViewModel.items" class="col col-xs-4 item-properties" (click)="selectItem(itemSlot)">
-                    <div *ngIf="itemSlot.item" class="col col-xs-2 item-icon">
-                        <span class="d3-icon d3-icon-item d3-icon-item-small d3-icon-item-{{itemSlot.item.displayColor}}">
+                    <div *ngIf="itemSlot.slotName" class="col col-xs-2 item-icon">
+                        <span class="d3-icon d3-icon-item d3-icon-item-small d3-icon-item-{{ itemSlot.item ? itemSlot.item.displayColor : 'white'}}">
                             <span class="icon-item-gradient">
-                                <span class="icon-item-inner icon-item-default" [style.background-image]="'url(http://media.blizzard.com/d3/icons/items/small/' + itemSlot.item.icon + '.png)' | safeStyle"></span>
+                                <span class="icon-item-inner icon-item-default" [style.background-image]="itemSlot.item ? ('url(http://media.blizzard.com/d3/icons/items/small/' + itemSlot.item.icon + '.png)') : '' | safeStyle"></span>
                             </span>
                         </span>
                     </div>
@@ -125,17 +128,17 @@
             </div>-->
             <div class="row">
                 <div class="col col-xs-4" *ngIf="selectedHeroViewModel">
-                    <span>
+                    <span class="follower templar">
                         Templar
                     </span>
                 </div>
                 <div class="col col-xs-4" *ngIf="selectedHeroViewModel">
-                    <span>
+                    <span class="follower scoundrel">
                         Scoundrel
                     </span>
                 </div>
                 <div class="col col-xs-4" *ngIf="selectedHeroViewModel">
-                    <span>
+                    <span class="follower enchantress">
                         Enchantress
                     </span>
                 </div>
@@ -144,10 +147,10 @@
 
                 <div *ngFor="let followerItems of [selectedHeroViewModel.templarItems, selectedHeroViewModel.scoundrelItems, selectedHeroViewModel.enchantressItems]" class="col col-xs-4">
                     <div class="row item-properties" *ngFor="let itemSlot of followerItems" (click)="selectItem(itemSlot)">
-                        <div *ngIf="itemSlot.item" class="col col-xs-2 item-icon">
-                            <span class="d3-icon d3-icon-item d3-icon-item-small d3-icon-item-{{itemSlot.item.displayColor}}">
+                        <div class="col col-xs-2 item-icon">
+                            <span class="d3-icon d3-icon-item d3-icon-item-small d3-icon-item-{{ itemSlot.item ? itemSlot.item.displayColor : 'white'}}">
                                 <span class="icon-item-gradient">
-                                    <span class="icon-item-inner icon-item-default" [style.background-image]="'url(http://media.blizzard.com/d3/icons/items/small/' + itemSlot.item.icon + '.png)' | safeStyle"></span>
+                                    <span class="icon-item-inner icon-item-default" [style.background-image]="itemSlot.item ? ('url(http://media.blizzard.com/d3/icons/items/small/' + itemSlot.item.icon + '.png)') : '' | safeStyle"></span>
                                 </span>
                             </span>
                         </div>
@@ -252,7 +255,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li *ngFor="let socket of selectedItemViewModel.sockets" class="empty-socket d3-color-blue">
+                                    <li *ngFor="let socket of selectedItemViewModel.getEmptySockets()" class="empty-socket d3-color-blue">
                                         Empty Socket
                                     </li>
                                 </ul>

@@ -44,7 +44,14 @@ export class ItemViewModel{
         return true;
     }
 
-    public selectItem(): void{
-        
+    public getEmptySockets(): Array<any> {
+        if (!this.item.gems)
+            return this.sockets;
+
+        var emptySockets = new Array<any>();
+        for (var i = 0; i < this.sockets.length - this.item.gems.length; i++)
+            emptySockets.push({});
+
+        return emptySockets;
     }
 }

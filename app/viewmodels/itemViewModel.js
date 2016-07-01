@@ -27,7 +27,13 @@ var ItemViewModel = (function () {
     ItemViewModel.prototype.matches = function (search) {
         return true;
     };
-    ItemViewModel.prototype.selectItem = function () {
+    ItemViewModel.prototype.getEmptySockets = function () {
+        if (!this.item.gems)
+            return this.sockets;
+        var emptySockets = new Array();
+        for (var i = 0; i < this.sockets.length - this.item.gems.length; i++)
+            emptySockets.push({});
+        return emptySockets;
     };
     return ItemViewModel;
 }());

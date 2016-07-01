@@ -18,7 +18,7 @@ var ItemService = (function () {
         this._http = _http;
         this._localStorageService = _localStorageService;
     }
-    ItemService.prototype.getItem = function (locale, profile, apiKey, uniqueId) {
+    ItemService.prototype.getItem = function (battleNet, uniqueId) {
         var _this = this;
         var cachedItem = this._localStorageService.getItem("item" + uniqueId);
         if (cachedItem) {
@@ -26,7 +26,7 @@ var ItemService = (function () {
                 resolve(cachedItem);
             });
         }
-        var url = "https://" + locale + ".api.battle.net/d3/data/item/" + uniqueId + "?locale=en_GB&apikey=" + apiKey;
+        var url = "https://" + battleNet.locale + ".api.battle.net/d3/data/item/" + uniqueId + "?locale=en_GB&apikey=" + battleNet.apiKey;
         var itemPromise = this._http.get(url)
             .toPromise()
             .then(function (response) { return response.json(); })
@@ -39,8 +39,19 @@ var ItemService = (function () {
         });
         return itemPromise;
     };
-    ItemService.prototype.getDetailedItemViewModel = function (items, itemViewModel, locale, profileKey, apiKey) {
-        return this.getItem(locale, profileKey, apiKey, itemViewModel.uniqueId).then(function (item) {
+    ItemService.prototype.createItems = function (items, topToBottomSlots) {
+        var itemViewModels = new Array();
+        for (var i = 0; i < topToBottomSlots.length; i++) {
+            var item = items ? items[topToBottomSlots[i]] : null;
+            var itemViewModel = new itemviewmodel_1.ItemViewModel(item, false);
+            var slotName = topToBottomSlots[i];
+            itemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
+            itemViewModels.push(itemViewModel);
+        }
+        return itemViewModels;
+    };
+    ItemService.prototype.getDetailedItemViewModel = function (items, itemViewModel, battleNet) {
+        return this.getItem(battleNet, itemViewModel.uniqueId).then(function (item) {
             var detailedItemViewModel = new itemviewmodel_1.ItemViewModel(item, true);
             var slotName = item.slots[0];
             detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");

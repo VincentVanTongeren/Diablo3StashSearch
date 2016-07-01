@@ -12,7 +12,6 @@ var core_1 = require('@angular/core');
 var profile_1 = require('../interfaces/profile');
 var http_1 = require('@angular/http');
 var heroviewmodel_1 = require('../viewmodels/heroviewmodel');
-var itemviewmodel_1 = require('../viewmodels/itemviewmodel');
 var item_service_1 = require('./item.service');
 var localstorageservice_1 = require('./localstorageservice');
 require('rxjs/add/operator/toPromise');
@@ -22,7 +21,7 @@ var HeroService = (function () {
         this._itemService = _itemService;
         this._localStorageService = _localStorageService;
     }
-    HeroService.prototype.getHero = function (locale, profile, apiKey, heroId) {
+    HeroService.prototype.getHero = function (battleNet, heroId) {
         var _this = this;
         var cachedHero = this._localStorageService.getItem("hero" + heroId);
         if (cachedHero) {
@@ -30,7 +29,7 @@ var HeroService = (function () {
                 resolve(cachedHero);
             });
         }
-        var url = "https://" + locale + ".api.battle.net/d3/profile/" + profile + "/hero/" + heroId + "?locale=en_GB&apikey=" + apiKey;
+        var url = "https://" + battleNet.locale + ".api.battle.net/d3/profile/" + battleNet.profileKey + "/hero/" + heroId + "?locale=en_GB&apikey=" + battleNet.apiKey;
         var heroPromise = this._http.get(url)
             .toPromise()
             .then(function (response) { return response.json(); })
@@ -50,7 +49,20 @@ var HeroService = (function () {
             "mainHand", "legs", "offHand",
             "", "feet", ""
         ];
-        var items = this.createItems(heroViewModel.hero.items, topToBottomSlots);
+        heroViewModel.sets = [];
+        var items = this._itemService.createItems(heroViewModel.hero.items, topToBottomSlots);
+        var hellfire = items.filter(function (i) { return i.item && i.item.icon == "x1_amulet_norm_unique_25_demonhunter_male"; });
+        if (hellfire.length > 0 && hellfire[0].item.attributes) {
+            var passive = hellfire[0].item.attributes.passive[0].text.replace("Gain the ", "").replace(" passive.", "");
+            heroViewModel.hellfireAmuletPassive = passive;
+        }
+        for (var i = 0; i < items.length; i++) {
+            var set = items[i].item ? items[i].item.set : null;
+            if (set && heroViewModel.sets.indexOf(items[i].item.set.name)) {
+                debugger;
+                heroViewModel.sets.push(set.name);
+            }
+        }
         var dummyFollower = new profile_1.Follower();
         var templar = heroViewModel.hero.followers.templar ? heroViewModel.hero.followers.templar : dummyFollower;
         var scoundrel = heroViewModel.hero.followers.scoundrel ? heroViewModel.hero.followers.scoundrel : dummyFollower;
@@ -66,18 +78,7 @@ var HeroService = (function () {
             extraSlots.forEach(function (slot) {
                 followerSlots.push(slot);
             });
-        return this.createItems(follower.items ? follower.items : null, followerSlots);
-    };
-    HeroService.prototype.createItems = function (items, topToBottomSlots) {
-        var itemViewModels = new Array();
-        for (var i = 0; i < topToBottomSlots.length; i++) {
-            var item = items ? items[topToBottomSlots[i]] : null;
-            var itemViewModel = new itemviewmodel_1.ItemViewModel(item, false);
-            var slotName = topToBottomSlots[i];
-            itemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
-            itemViewModels.push(itemViewModel);
-        }
-        return itemViewModels;
+        return this._itemService.createItems(follower.items ? follower.items : null, followerSlots);
     };
     HeroService.prototype.setIconUrl = function (heroViewModel) {
         heroViewModel.iconName = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");
@@ -90,9 +91,9 @@ var HeroService = (function () {
             this.enrichHero(heroViewModel);
         return heroViewModel;
     };
-    HeroService.prototype.getHeroViewModel = function (heroes, heroViewModel, locale, profileKey, apiKey) {
+    HeroService.prototype.getHeroViewModel = function (heroes, heroViewModel, battleNet) {
         var _this = this;
-        return this.getHero(locale, profileKey, apiKey, heroViewModel.hero.id).then(function (hero) {
+        return this.getHero(battleNet, heroViewModel.hero.id).then(function (hero) {
             var detailedHeroViewModel = new heroviewmodel_1.HeroViewModel(hero, true);
             _this.setIconUrl(detailedHeroViewModel);
             _this.enrichHero(detailedHeroViewModel);

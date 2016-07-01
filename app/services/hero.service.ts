@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Hero, Item, Items, Follower } from '../interfaces/profile'
+import { Hero, Follower } from '../interfaces/profile'
+import { BattleNet } from '../interfaces/battlenet'
 import { Headers, Http } from '@angular/http';
 
 import { HeroViewModel } from '../viewmodels/heroviewmodel'
@@ -21,7 +22,7 @@ export class HeroService
         private _localStorageService: LocalStorageService
     ){ }
 
-    private getHero(locale: string, profile: string, apiKey: string, heroId: number): Promise<Hero> {
+    private getHero(battleNet: BattleNet, heroId: number): Promise<Hero> {
 
         var cachedHero = this._localStorageService.getItem<Hero>("hero" + heroId);
         if (cachedHero){
@@ -30,7 +31,7 @@ export class HeroService
             })
         }
 
-        var url = `https://${locale}.api.battle.net/d3/profile/${profile}/hero/${heroId}?locale=en_GB&apikey=${apiKey}`;
+        var url = `https://${battleNet.locale}.api.battle.net/d3/profile/${battleNet.profileKey}/hero/${heroId}?locale=en_GB&apikey=${battleNet.apiKey}`;
         var heroPromise = this._http.get(url)
                     .toPromise()
                     .then(response => response.json() as Hero)
@@ -54,7 +55,24 @@ export class HeroService
             "", "feet", ""
         ];
 
-        var items = this.createItems(heroViewModel.hero.items, topToBottomSlots);
+        heroViewModel.sets = [];
+        var items = this._itemService.createItems(heroViewModel.hero.items, topToBottomSlots);
+        var hellfire = items.filter(i =>i.item && i.item.icon == "x1_amulet_norm_unique_25_demonhunter_male");
+        if (hellfire.length > 0 && hellfire[0].item.attributes){
+            var passive = hellfire[0].item.attributes.passive[0].text.replace("Gain the ", "").replace(" passive.", "");
+            heroViewModel.hellfireAmuletPassive = passive;
+        }
+
+        for (var i = 0; i < items.length; i++)
+        {
+            var set = items[i].item ? items[i].item.set : null;
+            if (set && heroViewModel.sets.indexOf(items[i].item.set.name))
+            {
+                debugger;
+                heroViewModel.sets.push(set.name);
+            }
+        }
+
         var dummyFollower = new Follower();
         var templar = heroViewModel.hero.followers.templar ? heroViewModel.hero.followers.templar : dummyFollower;
         var scoundrel = heroViewModel.hero.followers.scoundrel ? heroViewModel.hero.followers.scoundrel : dummyFollower;
@@ -76,19 +94,7 @@ export class HeroService
             followerSlots.push(slot);
         })
         
-        return this.createItems(follower.items ? follower.items : null, followerSlots);
-    }
-
-    private createItems(items: Items, topToBottomSlots: Array<string>): ItemViewModel[] {
-        var itemViewModels = new Array<ItemViewModel>();
-        for (var i = 0; i < topToBottomSlots.length; i++){
-            var item = items ? items[topToBottomSlots[i]] as Item : null;
-            var itemViewModel = new ItemViewModel(item, false);
-            var slotName = topToBottomSlots[i];
-            itemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
-            itemViewModels.push(itemViewModel);
-        }
-        return itemViewModels;
+        return this._itemService.createItems(follower.items ? follower.items : null, followerSlots);
     }
 
     private setIconUrl(heroViewModel: HeroViewModel){
@@ -98,14 +104,15 @@ export class HeroService
     public createHeroViewModel(hero: Hero){
         var cachedHero = this._localStorageService.getItem<Hero>("hero" + hero.id);
         var heroViewModel = new HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero));
+
         this.setIconUrl(heroViewModel);
         if (cachedHero)
             this.enrichHero(heroViewModel);
         return heroViewModel;
     }
 
-    public getHeroViewModel(heroes: HeroViewModel[], heroViewModel: HeroViewModel, locale: string, profileKey: string, apiKey: string): Promise<HeroViewModel>{
-        return this.getHero(locale, profileKey, apiKey, heroViewModel.hero.id).then((hero: Hero) => {
+    public getHeroViewModel(heroes: HeroViewModel[], heroViewModel: HeroViewModel, battleNet: BattleNet): Promise<HeroViewModel>{
+        return this.getHero(battleNet, heroViewModel.hero.id).then((hero: Hero) => {
                 var detailedHeroViewModel = new HeroViewModel(hero, true);
                 this.setIconUrl(detailedHeroViewModel);
                 this.enrichHero(detailedHeroViewModel);

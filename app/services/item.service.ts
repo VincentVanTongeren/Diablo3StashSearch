@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Item } from '../interfaces/profile'
+import { Item, Items } from '../interfaces/profile'
+import { BattleNet } from '../interfaces/battlenet'
 import { Headers, Http } from '@angular/http';
 
 import { ItemViewModel } from '../viewmodels/itemviewmodel'
@@ -17,7 +18,7 @@ export class ItemService
         private _localStorageService: LocalStorageService
     ) { }
 
-    public getItem(locale: string, profile: string, apiKey: string, uniqueId: string): Promise<Item> {
+    public getItem(battleNet: BattleNet, uniqueId: string): Promise<Item> {
         var cachedItem = this._localStorageService.getItem<Item>("item" + uniqueId);
         if (cachedItem){
             return new Promise<Item>((resolve, reject) => {
@@ -25,7 +26,7 @@ export class ItemService
             })
         }
 
-        var url = `https://${locale}.api.battle.net/d3/data/item/${uniqueId}?locale=en_GB&apikey=${apiKey}`;
+        var url = `https://${battleNet.locale}.api.battle.net/d3/data/item/${uniqueId}?locale=en_GB&apikey=${battleNet.apiKey}`;
         var itemPromise = this._http.get(url)
                             .toPromise()
                             .then(response => response.json() as Item)
@@ -40,9 +41,22 @@ export class ItemService
         return itemPromise;
     }
 
-    public getDetailedItemViewModel(items: ItemViewModel[], itemViewModel: ItemViewModel, locale: string, profileKey: string, apiKey: string): Promise<ItemViewModel>{
+    public createItems(items: Items, topToBottomSlots: Array<string>): ItemViewModel[] {
+        var itemViewModels = new Array<ItemViewModel>();
+        for (var i = 0; i < topToBottomSlots.length; i++){
+            var item = items ? items[topToBottomSlots[i]] as Item : null;
+            
+            var itemViewModel = new ItemViewModel(item, false);
+            var slotName = topToBottomSlots[i];
+            itemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
+            itemViewModels.push(itemViewModel);
+        }
+        return itemViewModels;
+    }
 
-        return this.getItem(locale, profileKey, apiKey, itemViewModel.uniqueId).then((item: Item) => {
+    public getDetailedItemViewModel(items: ItemViewModel[], itemViewModel: ItemViewModel, battleNet: BattleNet): Promise<ItemViewModel>{
+
+        return this.getItem(battleNet, itemViewModel.uniqueId).then((item: Item) => {
             var detailedItemViewModel = new ItemViewModel(item, true);
             
             var slotName = item.slots[0];

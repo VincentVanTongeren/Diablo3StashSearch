@@ -276,11 +276,25 @@
         randomAffixes: any[];
         gems: Gem[];
         socketEffects: any[];
+        set: Set;
         craftedBy: any[];
         seasonRequiredToDrop: number;
         isSeasonRequiredToDrop: boolean;
         description: any;
         blockChance: string;
+    }
+
+    export interface Set {
+        name: string;
+        items: Item[];
+        slug: string;
+        ranks: Rank[];
+    }
+
+    export interface Rank {
+        required: number;
+        attributes: Attributes;
+        attributesRaw: any[];
     }
 
     export class Gem {

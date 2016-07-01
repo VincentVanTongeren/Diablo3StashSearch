@@ -20,15 +20,15 @@ var ProfileService = (function () {
         this._heroService = _heroService;
         this._localStorageService = _localStorageService;
     }
-    ProfileService.prototype.getProfile = function (locale, profileKey, apiKey) {
+    ProfileService.prototype.getProfile = function (battleNet) {
         var _this = this;
-        var cachedProfile = this._localStorageService.getItem(profileKey);
+        var cachedProfile = this._localStorageService.getItem(battleNet.profileKey);
         if (cachedProfile) {
             return new Promise(function (resolve, reject) {
                 resolve(cachedProfile);
             });
         }
-        var url = "https://" + locale + ".api.battle.net/d3/profile/" + profileKey + "/?locale=en_GB&apikey=" + apiKey;
+        var url = "https://" + battleNet.locale + ".api.battle.net/d3/profile/" + battleNet.profileKey + "/?locale=en_GB&apikey=" + battleNet.apiKey;
         var profilePromise = this._http.get(url)
             .toPromise()
             .then(function (response) { return response.json(); })
@@ -37,13 +37,13 @@ var ProfileService = (function () {
         });
         profilePromise.then(function (profile) {
             if (profile)
-                _this._localStorageService.storeItem(profileKey, profile);
+                _this._localStorageService.storeItem(battleNet.profileKey, profile);
         });
         return profilePromise;
     };
-    ProfileService.prototype.getProfileViewModel = function (locale, profileKey, apiKey) {
+    ProfileService.prototype.getProfileViewModel = function (battleNet) {
         var _this = this;
-        var promise = this.getProfile(locale, profileKey, apiKey);
+        var promise = this.getProfile(battleNet);
         return promise.then(function (profile) {
             var profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
             if (profile.heroes && profile.heroes.length) {

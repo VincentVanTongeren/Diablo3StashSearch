@@ -14,6 +14,7 @@ var profile_service_1 = require('./services/profile.service');
 var hero_service_1 = require('./services/hero.service');
 var item_service_1 = require('./services/item.service');
 var profileviewmodel_1 = require('./viewmodels/profileviewmodel');
+var battlenet_1 = require('./interfaces/battlenet');
 var safe_1 = require('./pipes/safe');
 var ProfileLoader = (function () {
     function ProfileLoader(_profileService, _itemService, _heroService, _localStorageService) {
@@ -27,7 +28,7 @@ var ProfileLoader = (function () {
         this.locale = "eu";
         this.resetProfileLoader();
         if (this.profileKey) {
-            this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then(function (profileViewModel) {
+            this._profileService.getProfileViewModel(new battlenet_1.BattleNet(this.apiKey, this.locale, this.profileKey)).then(function (profileViewModel) {
                 _this.profileViewModel = profileViewModel;
             });
         }
@@ -44,7 +45,7 @@ var ProfileLoader = (function () {
         this._localStorageService.storeItemAsString("apikey", this.apiKey);
         this._localStorageService.storeItemAsString("profileKey", this.profileKey);
         this._localStorageService.storeItemAsString("locale", this.locale);
-        this._profileService.getProfileViewModel(this.locale, this.profileKey, this.apiKey).then(function (profileViewModel) {
+        this._profileService.getProfileViewModel(new battlenet_1.BattleNet(this.apiKey, this.locale, this.profileKey)).then(function (profileViewModel) {
             _this.profileViewModel = profileViewModel;
             _this.selectedHeroViewModel = null;
             _this.selectedItemViewModel = null;
@@ -52,7 +53,7 @@ var ProfileLoader = (function () {
     };
     ProfileLoader.prototype.selectHero = function (heroViewModel) {
         var _this = this;
-        this._heroService.getHeroViewModel(this.profileViewModel.heroes, heroViewModel, this.locale, this.profileKey, this.apiKey).then(function (selectedHeroViewModel) {
+        this._heroService.getHeroViewModel(this.profileViewModel.heroes, heroViewModel, new battlenet_1.BattleNet(this.apiKey, this.locale, this.profileKey)).then(function (selectedHeroViewModel) {
             _this.selectedHeroViewModel = selectedHeroViewModel;
             _this.selectedItemViewModel = null;
         });
@@ -60,8 +61,13 @@ var ProfileLoader = (function () {
     ProfileLoader.prototype.selectItem = function (itemViewModel) {
         var _this = this;
         if (itemViewModel)
-            this._itemService.getDetailedItemViewModel(this.selectedHeroViewModel.items, itemViewModel, this.locale, this.profileKey, this.apiKey).then(function (selectedItemViewModel) {
+            this._itemService.getDetailedItemViewModel(this.selectedHeroViewModel.items, itemViewModel, new battlenet_1.BattleNet(this.apiKey, this.locale, this.profileKey)).then(function (selectedItemViewModel) {
                 _this.selectedItemViewModel = selectedItemViewModel;
+                var heroItem = _this.selectedHeroViewModel.items.filter(function (i) { return i.uniqueId == selectedItemViewModel.uniqueId; });
+                if (heroItem.length > 0) {
+                    var index = _this.selectedHeroViewModel.items.indexOf(heroItem[0]);
+                    _this.selectedHeroViewModel.items[index] = selectedItemViewModel;
+                }
             });
     };
     ProfileLoader.prototype.show = function (obj) {
@@ -72,7 +78,7 @@ var ProfileLoader = (function () {
             directives: [profileviewmodel_1.ProfileViewModel],
             pipes: [safe_1.SafeUrlPipe, safe_1.SafeStylePipe],
             selector: 'profile-loader',
-            styles: ["\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane .input-row {\n    margin: 3px;\n}\n#profile-pane {\n    height: 100%;\n}\n#profile-pane ul {\n    padding: 0;\n}\n#profile-pane li {\n    list-style-type:none\n}\n#profile-pane .hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n#profile-pane .hero-tab.active {\n    border: 1px solid #555;\n}\n#profile-pane .hero-tab .hero-name {\n    margin-left: 10px;\n    color: #ad835a\n}\n#profile-pane .hero-tab.active .hero-name {\n    color: #fff;\n}\n#profile-pane .hero-tab .hero-name .paragon {\n    vertical-align: top;\n}\n#profile-pane .hero-portrait {\n    margin-left: 9px;\n}\n#profile-pane .skills {\n    height: 36px;\n}\n#profile-pane .skills .passive.last {\n    margin-right: 24px;\n}\n#profile-pane .skill {\n    display: inline-block;\n    background-size: contain;\n    margin-right: 3px;\n    width: 21px;\n    height: 21px;\n}\n#hero-pane {\n    height: 100%;\n}\n#hero-pane ul {\n    padding: 0;\n}\n#hero-main {\n    height: 100%;\n}\n#hero-main li.item-icon {\n    /*float: left;*/\n}\n#hero-main .item-properties {\n    padding: 0;\n    padding-top: 3px;\n    height: 72px;\n}\n#hero-main .item-properties.active {\n    border: 1px solid #555;\n}\n#hero-main .item-properties ul {\n    padding: 0;\n}\n#hero-main .item-properties ul li {\n    list-style-type:none\n}\n#hero-main .empty-row {\n    height: 50px;\n}\n#item-detail {\n    height: 100%;\n}\n#item-detail .item-card {\n    max-width: 351px;\n    margin-right: 0;\n}\nli.char-type {\n    height: 21px;\n}\nli.char-type .small-seasonal-leaf { \n    display: inline-block; \n    width: 15px; \n    height: 21px; \n    background: url(\"http://eu.battle.net/d3/static/images/profile/seasonal-leaf.png\") -24px -2px no-repeat; \n}\nli.char-type .small-hardcore { \n    display: inline-block; \n    width: 21px; \n    height: 21px; \n    background: url(\"../images/hardcore.png\") no-repeat; \n}\n\n"],
+            styles: ["\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane .input-row {\n    margin: 3px;\n}\n#profile-pane {\n    height: 100%;\n}\n#profile-pane ul {\n    padding: 0;\n}\n#profile-pane li {\n    list-style-type:none\n}\n#profile-pane .hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n#profile-pane .hero-tab.active {\n    border: 1px solid #555;\n}\n#profile-pane .hero-tab .hero-name {\n    margin-left: 10px;\n    color: #ad835a\n}\n#profile-pane .hero-tab.active .hero-name {\n    color: #fff;\n}\n#profile-pane .hero-tab .hero-name .paragon {\n    vertical-align: top;\n}\n#profile-pane .hero-portrait {\n    margin-left: 9px;\n}\n#profile-pane .skills {\n    height: 36px;\n}\n#profile-pane .skills .passive.last {\n    margin-right: 24px;\n}\n#profile-pane .skill {\n    display: inline-block;\n    background-size: contain;\n    margin-right: 3px;\n    width: 21px;\n    height: 21px;\n}\n#hero-pane {\n    height: 100%;\n}\n#hero-pane ul {\n    padding: 0;\n}\n#hero-main {\n    height: 100%;\n}\n#hero-main li.item-icon {\n    /*float: left;*/\n}\n#hero-main .item-properties {\n    padding: 0;\n    padding-top: 3px;\n    height: 72px;\n}\n#hero-main .item-properties.active {\n    border: 1px solid #555;\n}\n#hero-main .item-properties ul {\n    padding: 0;\n}\n#hero-main .item-properties ul li {\n    list-style-type:none\n}\n#hero-main .empty-row {\n    height: 50px;\n}\n#hero-main .follower {\n    padding-left: 24px;\n    height: 21px;\n    margin-top: 10px;\n    display: inline-block;\n}\n\n#hero-main .templar {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; \n}\n#hero-main .scoundrel {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/scoundrel.png') no-repeat; \n}\n#hero-main .enchantress {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; \n}\n#hero-main .d3-icon-item-white {\n    opacity: 0.4;\n}\n#item-detail {\n    height: 100%;\n}\n#item-detail .item-card {\n    max-width: 351px;\n    margin-right: 0;\n}\nli.char-type {\n    height: 21px;\n}\nli.char-type .small-seasonal-leaf { \n    display: inline-block; \n    width: 15px; \n    height: 21px; \n    background: url(\"http://eu.battle.net/d3/static/images/profile/seasonal-leaf.png\") -24px -2px no-repeat; \n}\nli.char-type .small-hardcore { \n    display: inline-block; \n    width: 21px; \n    height: 21px; \n    background: url(\"../images/hardcore.png\") no-repeat; \n}\n\n"],
             templateUrl: '../app/html/profile.loader.html'
         }), 
         __metadata('design:paramtypes', [profile_service_1.ProfileService, item_service_1.ItemService, hero_service_1.HeroService, localstorageservice_1.LocalStorageService])
