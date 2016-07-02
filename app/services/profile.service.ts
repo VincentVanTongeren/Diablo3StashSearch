@@ -55,7 +55,7 @@ export class ProfileService
             if (profile.heroes && profile.heroes.length)
             {
                 profile.heroes.forEach(hero => {
-                    var heroViewModel = this._heroService.createHeroViewModel(hero);
+                    var heroViewModel = this._heroService.createHeroViewModel(hero, battleNet);
                     profileViewModel.heroes.push(heroViewModel); 
                 });
             }

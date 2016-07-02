@@ -10,10 +10,12 @@ import { ItemViewModel } from './viewmodels/itemviewmodel'
 import { Profile, Hero, Item } from './interfaces/profile'
 import { BattleNet } from './interfaces/battlenet'
 import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
+import { ConcatPipe, ShortenPipe } from './pipes/strings'
+import { ClassPipe, GenderPipe } from './pipes/hero'
 
 @Component({
     directives: [ProfileViewModel],
-    pipes: [SafeUrlPipe, SafeStylePipe],
+    pipes: [SafeUrlPipe, SafeStylePipe, ConcatPipe, ShortenPipe, ClassPipe, GenderPipe],
   selector: 'profile-loader',
   styles: [`
 .bold {
@@ -65,7 +67,7 @@ import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
 #profile-pane .skills {
     height: 36px;
 }
-#profile-pane .skills .passive.last {
+#profile-pane .skills .passive .last {
     margin-right: 24px;
 }
 #profile-pane .skill {
@@ -201,16 +203,9 @@ export class ProfileLoader {
         });
     }
 
-    public selectItem(itemViewModel: ItemViewModel): void {
-        if (itemViewModel)
-            this._itemService.getDetailedItemViewModel(this.selectedHeroViewModel.items, itemViewModel, new BattleNet(this.apiKey, this.locale, this.profileKey)).then((selectedItemViewModel: ItemViewModel) => {
-                this.selectedItemViewModel = selectedItemViewModel;
-                var heroItem = this.selectedHeroViewModel.items.filter(i => i.uniqueId == selectedItemViewModel.uniqueId);
-                if (heroItem.length > 0){
-                    var index = this.selectedHeroViewModel.items.indexOf(heroItem[0]);
-                    this.selectedHeroViewModel.items[index] = selectedItemViewModel;
-                }
-            });
+    public selectItem(selectedItemViewModel: ItemViewModel): void {
+        if (selectedItemViewModel)
+            this.selectedItemViewModel = selectedItemViewModel;
     }
 
     public show(obj: any){

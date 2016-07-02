@@ -46,22 +46,19 @@ export class HeroService
         return heroPromise;
     }
 
-    private enrichHero(heroViewModel: HeroViewModel){
-
-        var topToBottomSlots: Array<string> = [ "shoulders", "head", "neck",
-            "hands", "torso", "bracers", 
-            "leftFinger", "waist", "rightFinger",
-            "mainHand", "legs", "offHand",
-            "", "feet", ""
-        ];
+    private enrichHero(heroViewModel: HeroViewModel, battleNet: BattleNet): void{
 
         heroViewModel.sets = [];
-        var items = this._itemService.createItems(heroViewModel.hero.items, topToBottomSlots);
-        var hellfire = items.filter(i =>i.item && i.item.icon == "x1_amulet_norm_unique_25_demonhunter_male");
+        if (!heroViewModel.items)
+            return;
+
+        var hellfire = heroViewModel.items.filter(i =>i.item && i.item.icon == "x1_amulet_norm_unique_25_demonhunter_male");
         if (hellfire.length > 0 && hellfire[0].item.attributes){
             var passive = hellfire[0].item.attributes.passive[0].text.replace("Gain the ", "").replace(" passive.", "");
             heroViewModel.hellfireAmuletPassive = passive;
         }
+
+        var items = heroViewModel.items;
 
         for (var i = 0; i < items.length; i++)
         {
@@ -78,44 +75,65 @@ export class HeroService
         var scoundrel = heroViewModel.hero.followers.scoundrel ? heroViewModel.hero.followers.scoundrel : dummyFollower;
         var enchantress = heroViewModel.hero.followers.enchantress ? heroViewModel.hero.followers.enchantress : dummyFollower;
 
-        heroViewModel.templarItems = this.setFollowerItems(templar, ["offHand"]);
-        heroViewModel.scoundrelItems = this.setFollowerItems(scoundrel, null);
-        heroViewModel.enchantressItems = this.setFollowerItems(enchantress, null);
+        this.setFollowerItems(templar, ["offHand"], battleNet).then((items: ItemViewModel[]) => {
+            heroViewModel.templarItems = items;
+        });
+        this.setFollowerItems(scoundrel, null, battleNet).then((items: ItemViewModel[]) => {
+            heroViewModel.scoundrelItems = items;
+        });
+        this.setFollowerItems(enchantress, null, battleNet).then((items: ItemViewModel[]) => {
+            heroViewModel.enchantressItems = items;
+        });
 
         heroViewModel.items = items;
 
     }
 
-    private setFollowerItems(follower: Follower, extraSlots: Array<string>): ItemViewModel[]{
+    private setFollowerItems(follower: Follower, extraSlots: Array<string>, battleNet): Promise<ItemViewModel[]>{
 
-        var followerSlots: Array<string> = [ "special", "neck", "leftFinger", "rightFinger", "mainHand"];
-        if (extraSlots)
-        extraSlots.forEach((slot: string) => {
-            followerSlots.push(slot);
-        })
-        
-        return this._itemService.createItems(follower.items ? follower.items : null, followerSlots);
+        return new Promise<ItemViewModel[]>((resolve, reject) => {
+            var followerSlots: Array<string> = [ "special", "neck", "leftFinger", "rightFinger", "mainHand"];
+            if (extraSlots)
+            extraSlots.forEach((slot: string) => {
+                followerSlots.push(slot);
+            })
+            this._itemService.createItems(follower.items ? follower.items : null, followerSlots, battleNet).then((itemViewModels: ItemViewModel[]) => {
+                resolve(itemViewModels);
+            });
+        });
     }
 
     private setIconUrl(heroViewModel: HeroViewModel){
         heroViewModel.iconName = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");
     }
 
-    public createHeroViewModel(hero: Hero){
+    public createHeroViewModel(hero: Hero, battleNet: BattleNet){
         var cachedHero = this._localStorageService.getItem<Hero>("hero" + hero.id);
         var heroViewModel = new HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero));
 
         this.setIconUrl(heroViewModel);
         if (cachedHero)
-            this.enrichHero(heroViewModel);
+            this.enrichHero(heroViewModel, battleNet);
         return heroViewModel;
     }
 
     public getHeroViewModel(heroes: HeroViewModel[], heroViewModel: HeroViewModel, battleNet: BattleNet): Promise<HeroViewModel>{
         return this.getHero(battleNet, heroViewModel.hero.id).then((hero: Hero) => {
                 var detailedHeroViewModel = new HeroViewModel(hero, true);
+
+                var topToBottomSlots: Array<string> = [ "shoulders", "head", "neck",
+                    "hands", "torso", "bracers", 
+                    "leftFinger", "waist", "rightFinger",
+                    "mainHand", "legs", "offHand",
+                    "", "feet", ""
+                ];
+
+                this._itemService.createItems(hero.items, topToBottomSlots, battleNet).then((itemViewModels: ItemViewModel[]) => {
+                    detailedHeroViewModel.items = itemViewModels;
+                    this.enrichHero(detailedHeroViewModel, battleNet);
+                });
+
                 this.setIconUrl(detailedHeroViewModel);
-                this.enrichHero(detailedHeroViewModel);
                 var index = heroes.indexOf(heroViewModel);
                 heroes[index] = detailedHeroViewModel;
                 return detailedHeroViewModel;

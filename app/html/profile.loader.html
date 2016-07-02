@@ -41,7 +41,7 @@
                 <li *ngFor="let heroViewModel of profileViewModel.heroes" class="hero-tab" [ngClass]="{'active':heroViewModel == selectedHeroViewModel }" (click)="selectHero(heroViewModel)">
                     <div class="row">
                         <div class="col col-xs-1">
-                            <img class="hero-portrait" [src]="'http://media.blizzard.com/d3/icons/portraits/42/' + heroViewModel.iconName + '.png' | safeUrl" />
+                            <img class="hero-portrait" [src]="'http://media.blizzard.com/d3/icons/portraits/42/' + (heroViewModel.hero.class | mediaclass | concat) + '_' + (heroViewModel.hero.gender | gender) + '.png' | safeUrl" />
                         </div>
                         
                         <div class="col col-xs-3 hero-name" [ngClass]="{'has-details':heroViewModel.hasDetails}">
@@ -58,7 +58,7 @@
                             
                         </div>
 
-                        <div class="col col-xs-4 skills" *ngIf="heroViewModel.hero.skills" (click)="show(heroViewModel.hero)">
+                        <div class="col col-xs-4 skills" *ngIf="heroViewModel.hero.skills">
                             <ul>
                                 <li class="active">
                                     <div class="skill" *ngFor="let skill of heroViewModel.hero.skills.active" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + skill.skill.icon + '.png)' | safeStyle" [title]="skill.skill.name + (skill.rune ? ' > ' + skill.rune.name : '')" >
@@ -66,10 +66,10 @@
                                     </div>
                                 </li>
                                 <li class="passive">
-                                    <div class="skill" *ngFor="let skill of heroViewModel.hero.skills.passive" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + skill.skill.icon + '.png)' | safeStyle" [title]="skill.skill.name" [ngClass]="{ last: skill == heroViewModel.hero.skills.active[heroViewModel.hero.skills.active.length -1]}">
+                                    <div class="skill" *ngFor="let skill of heroViewModel.hero.skills.passive" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + skill.skill.icon + '.png)' | safeStyle" [title]="skill.skill.name" [ngClass]="{ last: skill == heroViewModel.hero.skills.passive[heroViewModel.hero.skills.passive.length -1]}">
                                         &nbsp;
                                     </div>
-                                    <div class="skill" *ngIf="heroViewModel.hellfireAmuletPassive" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + heroViewModel.hellfireAmuletPassive + '.png)' | safeStyle" [title]="skill.skill.name" [ngClass]="{ last: skill == heroViewModel.hero.skills.active[heroViewModel.hero.skills.active.length -1]}">
+                                    <div class="skill" *ngIf="heroViewModel.hellfireAmuletPassive" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + (heroViewModel.hero.class | mediaclass | concat) + '_passive_' + (heroViewModel.hellfireAmuletPassive | concat) + '.png)' | safeStyle" [title]="'Hellfire passive: ' + heroViewModel.hellfireAmuletPassive" [ngClass]="{ last: skill == heroViewModel.hero.skills.active[heroViewModel.hero.skills.active.length -1]}">
                                         &nbsp;
                                     </div>
                                 </li>

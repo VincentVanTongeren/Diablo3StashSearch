@@ -8,7 +8,6 @@ export class HeroViewModel{
     public templarItems: Array<ItemViewModel>
     public scoundrelItems: Array<ItemViewModel>
     public enchantressItems: Array<ItemViewModel>
-    public iconName: string;
     public sets: Array<string>;
     public hellfireAmuletPassive: string;
 

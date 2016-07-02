@@ -41,29 +41,38 @@ export class ItemService
         return itemPromise;
     }
 
-    public createItems(items: Items, topToBottomSlots: Array<string>): ItemViewModel[] {
+    public createItems(items: Items, topToBottomSlots: Array<string>, battleNet: BattleNet): Promise<ItemViewModel[]> {
         var itemViewModels = new Array<ItemViewModel>();
+        var promises = new Array<Promise<ItemViewModel>>();
         for (var i = 0; i < topToBottomSlots.length; i++){
-            var item = items ? items[topToBottomSlots[i]] as Item : null;
-            
-            var itemViewModel = new ItemViewModel(item, false);
             var slotName = topToBottomSlots[i];
-            itemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
-            itemViewModels.push(itemViewModel);
+            var item = items ? items[topToBottomSlots[i]] as Item : null;
+            if (item)
+            {
+                var promise = new Promise<ItemViewModel>((resolve, reject) => {
+                    var itemSlotName = slotName;
+                    this.getItem(battleNet, item.tooltipParams.split('/')[1]).then((detailedItem: Item) => {
+                        var itemViewModel = new ItemViewModel(detailedItem, true);
+                        itemViewModel.slotName = itemSlotName.substring(0, 1).toUpperCase() + itemSlotName.substring(1).replace(/(?=[A-Z])/, " ");
+                        resolve(itemViewModel);
+                    });
+                });
+                promises.push(promise);
+            }
         }
-        return itemViewModels;
+        return Promise.all<ItemViewModel>(promises);
     }
 
-    public getDetailedItemViewModel(items: ItemViewModel[], itemViewModel: ItemViewModel, battleNet: BattleNet): Promise<ItemViewModel>{
+    // public getDetailedItemViewModel(items: ItemViewModel[], itemViewModel: ItemViewModel, battleNet: BattleNet): Promise<ItemViewModel>{
 
-        return this.getItem(battleNet, itemViewModel.uniqueId).then((item: Item) => {
-            var detailedItemViewModel = new ItemViewModel(item, true);
+    //     return this.getItem(battleNet, itemViewModel.uniqueId).then((item: Item) => {
+    //         var detailedItemViewModel = new ItemViewModel(item, true);
             
-            var slotName = item.slots[0];
-            detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
-            var index = items.indexOf(itemViewModel);
-            items[index] = detailedItemViewModel;
-            return detailedItemViewModel;
-        });
-    }
+    //         var slotName = item.slots[0];
+    //         detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
+    //         var index = items.indexOf(itemViewModel);
+    //         items[index] = detailedItemViewModel;
+    //         return detailedItemViewModel;
+    //     });
+    // }
 }

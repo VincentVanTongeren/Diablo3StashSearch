@@ -39,26 +39,26 @@ var ItemService = (function () {
         });
         return itemPromise;
     };
-    ItemService.prototype.createItems = function (items, topToBottomSlots) {
+    ItemService.prototype.createItems = function (items, topToBottomSlots, battleNet) {
+        var _this = this;
         var itemViewModels = new Array();
+        var promises = new Array();
         for (var i = 0; i < topToBottomSlots.length; i++) {
-            var item = items ? items[topToBottomSlots[i]] : null;
-            var itemViewModel = new itemviewmodel_1.ItemViewModel(item, false);
             var slotName = topToBottomSlots[i];
-            itemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
-            itemViewModels.push(itemViewModel);
+            var item = items ? items[topToBottomSlots[i]] : null;
+            if (item) {
+                var promise = new Promise(function (resolve, reject) {
+                    var itemSlotName = slotName;
+                    _this.getItem(battleNet, item.tooltipParams.split('/')[1]).then(function (detailedItem) {
+                        var itemViewModel = new itemviewmodel_1.ItemViewModel(detailedItem, true);
+                        itemViewModel.slotName = itemSlotName.substring(0, 1).toUpperCase() + itemSlotName.substring(1).replace(/(?=[A-Z])/, " ");
+                        resolve(itemViewModel);
+                    });
+                });
+                promises.push(promise);
+            }
         }
-        return itemViewModels;
-    };
-    ItemService.prototype.getDetailedItemViewModel = function (items, itemViewModel, battleNet) {
-        return this.getItem(battleNet, itemViewModel.uniqueId).then(function (item) {
-            var detailedItemViewModel = new itemviewmodel_1.ItemViewModel(item, true);
-            var slotName = item.slots[0];
-            detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
-            var index = items.indexOf(itemViewModel);
-            items[index] = detailedItemViewModel;
-            return detailedItemViewModel;
-        });
+        return Promise.all(promises);
     };
     ItemService = __decorate([
         core_1.Injectable(), 

@@ -19,7 +19,7 @@ export class ShortenPipe implements PipeTransform {
 	name:'concat',
 	pure: true
 })
-export class SafeStylePipe implements PipeTransform {
+export class ConcatPipe implements PipeTransform {
 
 
 	transform(value:string, filter:string){

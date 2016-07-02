@@ -9,39 +9,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var ShortenPipe = (function () {
-    function ShortenPipe() {
+var ClassPipe = (function () {
+    function ClassPipe() {
     }
-    ShortenPipe.prototype.transform = function (value, filter) {
-        var parts = value.split(" ");
-        var shortened = "";
-        parts.forEach(function (p) { return shortened += p[0]; });
-        return shortened;
+    ClassPipe.prototype.transform = function (value, filter) {
+        return (value == "crusader" ? "x1_" : "") + value;
     };
-    ShortenPipe = __decorate([
+    ClassPipe = __decorate([
         core_1.Pipe({
-            name: 'shorten',
+            name: 'mediaclass',
             pure: true
         }), 
         __metadata('design:paramtypes', [])
-    ], ShortenPipe);
-    return ShortenPipe;
+    ], ClassPipe);
+    return ClassPipe;
 }());
-exports.ShortenPipe = ShortenPipe;
-var ConcatPipe = (function () {
-    function ConcatPipe() {
+exports.ClassPipe = ClassPipe;
+var GenderPipe = (function () {
+    function GenderPipe() {
     }
-    ConcatPipe.prototype.transform = function (value, filter) {
-        return value.replace("-", "").replace(" ", "");
+    GenderPipe.prototype.transform = function (value, filter) {
+        return value ? 'female' : 'male';
     };
-    ConcatPipe = __decorate([
+    GenderPipe = __decorate([
         core_1.Pipe({
-            name: 'concat',
+            name: 'gender',
             pure: true
         }), 
         __metadata('design:paramtypes', [])
-    ], ConcatPipe);
-    return ConcatPipe;
+    ], GenderPipe);
+    return GenderPipe;
 }());
-exports.ConcatPipe = ConcatPipe;
-//# sourceMappingURL=strings.js.map
+exports.GenderPipe = GenderPipe;
+//# sourceMappingURL=hero.js.map
