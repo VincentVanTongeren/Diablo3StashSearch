@@ -23,6 +23,6 @@ export class ConcatPipe implements PipeTransform {
 
 
 	transform(value:string, filter:string){
-		return value.replace("-", "").replace(" ", "");
+		return value.replace(/[\-|\s]/g, "");
 	}
 }

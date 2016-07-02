@@ -13,10 +13,11 @@ import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
 import { ConcatPipe, ShortenPipe } from './pipes/strings'
 import { ClassPipe, GenderPipe } from './pipes/hero'
 import { SumPipe } from './pipes/math'
+import { LegacyNamePipe } from './pipes/battlenet'
 
 @Component({
     directives: [ProfileViewModel],
-    pipes: [SafeUrlPipe, SafeStylePipe, ConcatPipe, ShortenPipe, ClassPipe, GenderPipe, SumPipe],
+    pipes: [SafeUrlPipe, SafeStylePipe, ConcatPipe, ShortenPipe, ClassPipe, GenderPipe, SumPipe, LegacyNamePipe],
   selector: 'profile-loader',
   styles: [`
 .bold {
@@ -79,7 +80,7 @@ import { SumPipe } from './pipes/math'
     height: 36px;
 }
 #profile-pane .skills .passive .last {
-    margin-right: 24px;
+    margin-right: 23px;
 }
 #profile-pane .skill {
     display: inline-block;
@@ -253,7 +254,7 @@ export class ProfileLoader {
     }
 
     public selectItem(selectedItemViewModel: ItemViewModel): void {
-        if (selectedItemViewModel)
+        if (selectedItemViewModel.item)
             this.selectedItemViewModel = selectedItemViewModel;
     }
 

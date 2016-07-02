@@ -9,39 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var ShortenPipe = (function () {
-    function ShortenPipe() {
+var LegacyNamePipe = (function () {
+    function LegacyNamePipe() {
     }
-    ShortenPipe.prototype.transform = function (value, filter) {
-        var parts = value.split(" ");
-        var shortened = "";
-        parts.forEach(function (p) { return shortened += p[0]; });
-        return shortened;
+    LegacyNamePipe.prototype.transform = function (value, filter) {
+        switch (value.toLocaleLowerCase()) {
+            case "swampland attunement":
+                return "physical attunement";
+            default:
+                return value;
+        }
     };
-    ShortenPipe = __decorate([
+    LegacyNamePipe = __decorate([
         core_1.Pipe({
-            name: 'shorten',
+            name: 'legacyname',
             pure: true
         }), 
         __metadata('design:paramtypes', [])
-    ], ShortenPipe);
-    return ShortenPipe;
+    ], LegacyNamePipe);
+    return LegacyNamePipe;
 }());
-exports.ShortenPipe = ShortenPipe;
-var ConcatPipe = (function () {
-    function ConcatPipe() {
-    }
-    ConcatPipe.prototype.transform = function (value, filter) {
-        return value.replace(/[\-|\s]/g, "");
-    };
-    ConcatPipe = __decorate([
-        core_1.Pipe({
-            name: 'concat',
-            pure: true
-        }), 
-        __metadata('design:paramtypes', [])
-    ], ConcatPipe);
-    return ConcatPipe;
-}());
-exports.ConcatPipe = ConcatPipe;
-//# sourceMappingURL=strings.js.map
+exports.LegacyNamePipe = LegacyNamePipe;
+//# sourceMappingURL=battlenet.js.map

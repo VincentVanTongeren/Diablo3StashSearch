@@ -48,8 +48,11 @@ var ProfileService = (function () {
             var profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
             if (profile.heroes && profile.heroes.length) {
                 profile.heroes.forEach(function (hero) {
-                    var heroViewModel = _this._heroService.createHeroViewModel(hero, battleNet);
-                    profileViewModel.heroes.push(heroViewModel);
+                    var createdHeroViewModel = _this._heroService.createHeroViewModel(hero, battleNet);
+                    profileViewModel.heroes.push(createdHeroViewModel);
+                });
+                profileViewModel.heroes.forEach(function (heroViewModel) {
+                    _this._heroService.getHeroViewModel(profileViewModel.heroes, heroViewModel, battleNet).then(function (processedHeroViewModel) { });
                 });
             }
             return profileViewModel;

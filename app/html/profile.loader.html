@@ -69,7 +69,7 @@
                                     <div class="skill" *ngFor="let skill of heroViewModel.hero.skills.passive" [style.background-image]="skill.skill ? 'url(http://media.blizzard.com/d3/icons/skills/21/' + skill.skill.icon + '.png)' : '' | safeStyle" [title]="skill.skill ? skill.skill.name : ''" [ngClass]="{ last: skill && skill == heroViewModel.hero.skills.passive[heroViewModel.hero.skills.passive.length -1]}">
                                         &nbsp;
                                     </div>
-                                    <div class="skill" *ngIf="heroViewModel.hellfireAmuletPassive" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + (heroViewModel.hero.class | mediaclass | concat) + '_passive_' + (heroViewModel.hellfireAmuletPassive | concat) + '.png)' | safeStyle" [title]="'Hellfire passive: ' + heroViewModel.hellfireAmuletPassive" [ngClass]="{ last: skill == heroViewModel.hero.skills.active[heroViewModel.hero.skills.active.length -1]}">
+                                    <div class="skill" *ngIf="heroViewModel.hellfireAmuletPassive" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + (heroViewModel.hero.class | mediaclass | concat) + '_passive_' + (heroViewModel.hellfireAmuletPassive.toLowerCase() | legacyname | concat) + '.png)' | safeStyle" [title]="'Hellfire passive: ' + heroViewModel.hellfireAmuletPassive" [ngClass]="{ last: skill == heroViewModel.hero.skills.active[heroViewModel.hero.skills.active.length -1]}">
                                         &nbsp;
                                     </div>
                                 </li>
@@ -268,7 +268,7 @@
                                     </li>
                                     <li *ngFor="let gem of selectedItemViewModel.item.gems" class="d3-color-white full-socket">
                                         <img class="gem" [src]="'http://media.blizzard.com/d3/icons/items/small/' + gem.item.icon + '.png' | safeUrl" />
-                                        <span (click)="show(gem)" class="socket-effect" *ngFor="let att of gem.attributes.primary">
+                                        <span class="socket-effect" *ngFor="let att of gem.attributes.primary.length > 0 ? gem.attributes.primary : gem.attributes.secondary">
                                             {{att.text}}
                                         </span>
                                         <span *ngIf="gem.isJewel" class="d3-color-orange">{{ gem.item.name }}</span>
