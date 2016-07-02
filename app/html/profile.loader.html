@@ -61,12 +61,12 @@
                         <div class="col col-xs-4 skills" *ngIf="heroViewModel.hero.skills">
                             <ul>
                                 <li class="active">
-                                    <div class="skill" *ngFor="let skill of heroViewModel.hero.skills.active" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + skill.skill.icon + '.png)' | safeStyle" [title]="skill.skill.name + (skill.rune ? ' > ' + skill.rune.name : '')" >
+                                    <div class="skill" *ngFor="let skill of heroViewModel.hero.skills.active" [style.background-image]="skill.skill ? 'url(http://media.blizzard.com/d3/icons/skills/21/' + skill.skill.icon + '.png)' : '' | safeStyle" [title]="skill.skill ? (skill.skill.name + (skill.rune ? ' > ' + skill.rune.name : '')) : ''" >
                                         &nbsp;
                                     </div>
                                 </li>
                                 <li class="passive">
-                                    <div class="skill" *ngFor="let skill of heroViewModel.hero.skills.passive" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + skill.skill.icon + '.png)' | safeStyle" [title]="skill.skill.name" [ngClass]="{ last: skill == heroViewModel.hero.skills.passive[heroViewModel.hero.skills.passive.length -1]}">
+                                    <div class="skill" *ngFor="let skill of heroViewModel.hero.skills.passive" [style.background-image]="skill.skill ? 'url(http://media.blizzard.com/d3/icons/skills/21/' + skill.skill.icon + '.png)' : '' | safeStyle" [title]="skill.skill ? skill.skill.name : ''" [ngClass]="{ last: skill && skill == heroViewModel.hero.skills.passive[heroViewModel.hero.skills.passive.length -1]}">
                                         &nbsp;
                                     </div>
                                     <div class="skill" *ngIf="heroViewModel.hellfireAmuletPassive" [style.background-image]="'url(http://media.blizzard.com/d3/icons/skills/21/' + (heroViewModel.hero.class | mediaclass | concat) + '_passive_' + (heroViewModel.hellfireAmuletPassive | concat) + '.png)' | safeStyle" [title]="'Hellfire passive: ' + heroViewModel.hellfireAmuletPassive" [ngClass]="{ last: skill == heroViewModel.hero.skills.active[heroViewModel.hero.skills.active.length -1]}">
