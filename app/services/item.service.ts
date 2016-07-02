@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Item, Items } from '../interfaces/profile'
+import { Item, Items, NameValue } from '../interfaces/profile'
 import { BattleNet } from '../interfaces/battlenet'
 import { Headers, Http } from '@angular/http';
 
@@ -47,32 +47,42 @@ export class ItemService
         for (var i = 0; i < topToBottomSlots.length; i++){
             var slotName = topToBottomSlots[i];
             var item = items ? items[topToBottomSlots[i]] as Item : null;
-            if (item)
-            {
-                var promise = new Promise<ItemViewModel>((resolve, reject) => {
-                    var itemSlotName = slotName;
+            var promise = new Promise<ItemViewModel>((resolve, reject) => {
+                var itemSlotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
+                if (item)
+                {
                     this.getItem(battleNet, item.tooltipParams.split('/')[1]).then((detailedItem: Item) => {
                         var itemViewModel = new ItemViewModel(detailedItem, true);
                         itemViewModel.slotName = itemSlotName.substring(0, 1).toUpperCase() + itemSlotName.substring(1).replace(/(?=[A-Z])/, " ");
+                        if (itemViewModel.item.attributesRaw){
+                            itemViewModel.isAncient = Boolean(itemViewModel.item.attributesRaw["Ancient_Rank"]);
+                            itemViewModel.sockets = [];
+                            
+                            for (var i = 0; i < (Boolean(itemViewModel.item.attributesRaw["Sockets"]) ? itemViewModel.item.attributesRaw["Sockets"].min : 0); i++)
+                                itemViewModel.sockets.push({});
+                                
+                            if (Boolean(itemViewModel.item.attributesRaw["Armor_Item"]) && itemViewModel.item.attributesRaw["Armor_Item"].min > 0)
+                            {
+                                itemViewModel.baseValue = new NameValue("Armor", itemViewModel.item.armor.min);
+                            } else if (Boolean(itemViewModel.item.attributesRaw["Damage_Weapon_Min#Physical"]) && itemViewModel.item.attributesRaw["Damage_Weapon_Min#Physical"].min > 0){
+                                itemViewModel.baseValue = new NameValue("Damage Per Second", Math.round(itemViewModel.item.dps.min * 10) / 10);
+                            }
+                            itemViewModel.elementalType = Boolean(itemViewModel.item.elementalType) ? itemViewModel.item.elementalType : "default";
+                            itemViewModel.augment = Boolean(itemViewModel.item.attributesRaw["CubeEnchantedGemRank"]) ? itemViewModel.item.attributesRaw["CubeEnchantedGemRank"].min : 0;
+                            itemViewModel.effect = itemViewModel.elementalType != "default" ? itemViewModel.elementalType : itemViewModel.baseValue.name;
+                        }
+
                         resolve(itemViewModel);
                     });
-                });
-                promises.push(promise);
-            }
+                }
+                else{
+                    var emptyItem = new ItemViewModel(null, false);
+                    emptyItem.slotName = itemSlotName;
+                    resolve(emptyItem);
+                }
+            });
+            promises.push(promise);
         }
         return Promise.all<ItemViewModel>(promises);
     }
-
-    // public getDetailedItemViewModel(items: ItemViewModel[], itemViewModel: ItemViewModel, battleNet: BattleNet): Promise<ItemViewModel>{
-
-    //     return this.getItem(battleNet, itemViewModel.uniqueId).then((item: Item) => {
-    //         var detailedItemViewModel = new ItemViewModel(item, true);
-            
-    //         var slotName = item.slots[0];
-    //         detailedItemViewModel.slotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
-    //         var index = items.indexOf(itemViewModel);
-    //         items[index] = detailedItemViewModel;
-    //         return detailedItemViewModel;
-    //     });
-    // }
 }

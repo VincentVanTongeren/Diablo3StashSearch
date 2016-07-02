@@ -17,6 +17,9 @@ var HeroViewModel = (function () {
         }
         return stats;
     };
+    HeroViewModel.prototype.getAncientCount = function () {
+        return this.items ? this.items.filter(function (x) { return Boolean(x.item) && x.isAncient; }).length : 0;
+    };
     return HeroViewModel;
 }());
 exports.HeroViewModel = HeroViewModel;

@@ -12,10 +12,11 @@ import { BattleNet } from './interfaces/battlenet'
 import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
 import { ConcatPipe, ShortenPipe } from './pipes/strings'
 import { ClassPipe, GenderPipe } from './pipes/hero'
+import { SumPipe } from './pipes/math'
 
 @Component({
     directives: [ProfileViewModel],
-    pipes: [SafeUrlPipe, SafeStylePipe, ConcatPipe, ShortenPipe, ClassPipe, GenderPipe],
+    pipes: [SafeUrlPipe, SafeStylePipe, ConcatPipe, ShortenPipe, ClassPipe, GenderPipe, SumPipe],
   selector: 'profile-loader',
   styles: [`
 .bold {
@@ -61,6 +62,16 @@ import { ClassPipe, GenderPipe } from './pipes/hero'
 #profile-pane .hero-tab .hero-name .paragon {
     vertical-align: top;
 }
+#profile-pane .hero-tab .sets {
+    margin-top: 2px;
+    padding: 0;
+}
+#profile-pane .hero-tab .sets li {
+    list-style-type: none;
+}
+#profile-pane .hero-tab .sets .set {
+    font-size: 9px;
+}
 #profile-pane .hero-portrait {
     margin-left: 9px;
 }
@@ -76,6 +87,41 @@ import { ClassPipe, GenderPipe } from './pipes/hero'
     margin-right: 3px;
     width: 21px;
     height: 21px;
+}
+#profile-pane .sets-container {
+    height: 100%;
+}
+#profile-pane .gems-container {
+    height: 100%;
+}
+#profile-pane .gems {
+    height: 25px;
+}
+#profile-pane .gems .rank {
+    font-size: 9px;
+}
+#profile-pane .gems .gem {
+    float: left;
+    margin-right: 3px;
+}
+#profile-pane .gems .gem-image {
+    width: 17px;
+    height: 17px;
+}
+#profile-pane .augments {
+    font-size: 9px;
+}
+#profile-pane .augments li {
+    list-style-type:none;
+    margin-left: 2px;
+    float: left;
+}
+#profile-pane .augments li.first {
+    margin-left: 5px;
+}
+#profile-pane .augments .ancient {
+    font-size: 9px;
+    color: #ad835a
 }
 #hero-pane {
     height: 100%;
@@ -94,6 +140,9 @@ import { ClassPipe, GenderPipe } from './pipes/hero'
     padding-top: 3px;
     height: 72px;
 }
+#hero-main .ancient {
+    color: #ad835a
+}
 #hero-main .item-properties.active {
     border: 1px solid #555;
 }
@@ -101,7 +150,7 @@ import { ClassPipe, GenderPipe } from './pipes/hero'
     padding: 0;
 }
 #hero-main .item-properties ul li {
-    list-style-type:none
+    list-style-type:none;
 }
 #hero-main .empty-row {
     height: 50px;

@@ -52,13 +52,29 @@ var HeroService = (function () {
             heroViewModel.hellfireAmuletPassive = passive;
         }
         var items = heroViewModel.items;
+        var setItems = new Array();
+        var legendaryGems = new Array();
+        heroViewModel.augments = [];
+        var augments = items.forEach(function (x) {
+            if (x.augment)
+                heroViewModel.augments.push(x.augment);
+        });
         for (var i = 0; i < items.length; i++) {
-            var set = items[i].item ? items[i].item.set : null;
-            if (set && heroViewModel.sets.indexOf(items[i].item.set.name)) {
-                debugger;
-                heroViewModel.sets.push(set.name);
+            var item = items[i].item;
+            if (item) {
+                if (item.set)
+                    setItems.push(item.set.name);
+                if (item.gems && item.gems.length > 0)
+                    item.gems.filter(function (x) { return x.isJewel; }).forEach(function (gem) { return legendaryGems.push(gem); });
             }
         }
+        var uniqueSetItems = {};
+        setItems.forEach(function (x) { return uniqueSetItems[x] = (uniqueSetItems[x] || 0) + 1; });
+        Object.keys(uniqueSetItems).forEach(function (x) {
+            if (uniqueSetItems[x] > 1)
+                heroViewModel.sets.push(x);
+        });
+        heroViewModel.legendaryGems = legendaryGems;
         var dummyFollower = new profile_1.Follower();
         var templar = heroViewModel.hero.followers.templar ? heroViewModel.hero.followers.templar : dummyFollower;
         var scoundrel = heroViewModel.hero.followers.scoundrel ? heroViewModel.hero.followers.scoundrel : dummyFollower;
@@ -87,13 +103,9 @@ var HeroService = (function () {
             });
         });
     };
-    HeroService.prototype.setIconUrl = function (heroViewModel) {
-        heroViewModel.iconName = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");
-    };
     HeroService.prototype.createHeroViewModel = function (hero, battleNet) {
         var cachedHero = this._localStorageService.getItem("hero" + hero.id);
         var heroViewModel = new heroviewmodel_1.HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero));
-        this.setIconUrl(heroViewModel);
         if (cachedHero)
             this.enrichHero(heroViewModel, battleNet);
         return heroViewModel;
@@ -112,7 +124,6 @@ var HeroService = (function () {
                 detailedHeroViewModel.items = itemViewModels;
                 _this.enrichHero(detailedHeroViewModel, battleNet);
             });
-            _this.setIconUrl(detailedHeroViewModel);
             var index = heroes.indexOf(heroViewModel);
             heroes[index] = detailedHeroViewModel;
             return detailedHeroViewModel;

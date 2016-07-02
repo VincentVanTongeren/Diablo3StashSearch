@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var profile_1 = require('../interfaces/profile');
 var http_1 = require('@angular/http');
 var itemviewmodel_1 = require('../viewmodels/itemviewmodel');
 var localstorageservice_1 = require('./localstorageservice');
@@ -46,17 +47,37 @@ var ItemService = (function () {
         for (var i = 0; i < topToBottomSlots.length; i++) {
             var slotName = topToBottomSlots[i];
             var item = items ? items[topToBottomSlots[i]] : null;
-            if (item) {
-                var promise = new Promise(function (resolve, reject) {
-                    var itemSlotName = slotName;
+            var promise = new Promise(function (resolve, reject) {
+                var itemSlotName = slotName.substring(0, 1).toUpperCase() + slotName.substring(1).replace(/(?=[A-Z])/, " ");
+                if (item) {
                     _this.getItem(battleNet, item.tooltipParams.split('/')[1]).then(function (detailedItem) {
                         var itemViewModel = new itemviewmodel_1.ItemViewModel(detailedItem, true);
                         itemViewModel.slotName = itemSlotName.substring(0, 1).toUpperCase() + itemSlotName.substring(1).replace(/(?=[A-Z])/, " ");
+                        if (itemViewModel.item.attributesRaw) {
+                            itemViewModel.isAncient = Boolean(itemViewModel.item.attributesRaw["Ancient_Rank"]);
+                            itemViewModel.sockets = [];
+                            for (var i = 0; i < (Boolean(itemViewModel.item.attributesRaw["Sockets"]) ? itemViewModel.item.attributesRaw["Sockets"].min : 0); i++)
+                                itemViewModel.sockets.push({});
+                            if (Boolean(itemViewModel.item.attributesRaw["Armor_Item"]) && itemViewModel.item.attributesRaw["Armor_Item"].min > 0) {
+                                itemViewModel.baseValue = new profile_1.NameValue("Armor", itemViewModel.item.armor.min);
+                            }
+                            else if (Boolean(itemViewModel.item.attributesRaw["Damage_Weapon_Min#Physical"]) && itemViewModel.item.attributesRaw["Damage_Weapon_Min#Physical"].min > 0) {
+                                itemViewModel.baseValue = new profile_1.NameValue("Damage Per Second", Math.round(itemViewModel.item.dps.min * 10) / 10);
+                            }
+                            itemViewModel.elementalType = Boolean(itemViewModel.item.elementalType) ? itemViewModel.item.elementalType : "default";
+                            itemViewModel.augment = Boolean(itemViewModel.item.attributesRaw["CubeEnchantedGemRank"]) ? itemViewModel.item.attributesRaw["CubeEnchantedGemRank"].min : 0;
+                            itemViewModel.effect = itemViewModel.elementalType != "default" ? itemViewModel.elementalType : itemViewModel.baseValue.name;
+                        }
                         resolve(itemViewModel);
                     });
-                });
-                promises.push(promise);
-            }
+                }
+                else {
+                    var emptyItem = new itemviewmodel_1.ItemViewModel(null, false);
+                    emptyItem.slotName = itemSlotName;
+                    resolve(emptyItem);
+                }
+            });
+            promises.push(promise);
         }
         return Promise.all(promises);
     };

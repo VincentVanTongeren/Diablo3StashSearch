@@ -1,4 +1,4 @@
-import { Hero, NameValue, Item } from '../interfaces/profile'
+import { Hero, NameValue, Item, Gem } from '../interfaces/profile'
 import { CharacterType } from '../interfaces/enum'
 import { ItemViewModel } from '../viewmodels/itemViewModel'
 
@@ -10,6 +10,8 @@ export class HeroViewModel{
     public enchantressItems: Array<ItemViewModel>
     public sets: Array<string>;
     public hellfireAmuletPassive: string;
+    public legendaryGems : Array<Gem>;
+    public augments: Array<number>;
 
     constructor(public hero: Hero, public hasDetails: boolean){
     }
@@ -26,5 +28,9 @@ export class HeroViewModel{
                 stats.push(stat);
         }
         return stats;
+    }
+
+    public getAncientCount(): number {
+        return this.items ? this.items.filter(x => Boolean(x.item) && x.isAncient).length : 0;
     }
 }

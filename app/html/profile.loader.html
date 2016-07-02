@@ -75,6 +75,30 @@
                                 </li>
                             </ul>
                         </div>
+                        <div class="col col-xs-1">
+                            <div class="row sets-container">
+                                <ul class="sets">
+                                    <li class="set" *ngFor="let set of heroViewModel.sets">
+                                        <span class="d3-color-green">{{ set | shorten }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col col-xs-2">
+                            <div class="row gems-container">
+                                <ul class="gems">
+                                    <li class="gem" *ngFor="let gem of heroViewModel.legendaryGems">
+                                        <img class="gem-image" [src]="'http://media.blizzard.com/d3/icons/items/small/' + gem.item.icon + '.png' | safeUrl" title="{{ gem.item.name}} " />
+                                        <span class="rank" (click)="show(gem)">{{ gem.jewelRank }}</span>
+                                    </li>
+                                </ul>
+                                <ul class="augments" *ngIf="heroViewModel.getAncientCount() > 0">
+                                    <li class="first">{{ heroViewModel.augments.length }} /</li>
+                                    <li class="ancient" >{{ heroViewModel.getAncientCount() }}</li>
+                                    <li *ngIf="heroViewModel.augments.length > 0"> (+{{ (heroViewModel.augments | sum) * 5 }})</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -114,7 +138,7 @@
                     <div class="col-xs-10 col">
                         <ul>
                             <li class="item-slot">
-                                <span class="text-right">{{ itemSlot.slotName }}</span>
+                                <span [ngClass]="{'d3-color-yellow': itemSlot.isAncient}" class="text-right">{{ itemSlot.slotName }}</span>
                             </li>
                             <li *ngIf="itemSlot && itemSlot.item" class="d3-color-{{itemSlot.item.displayColor}}">
                                 {{ itemSlot.item.name }}
@@ -157,7 +181,7 @@
                         <div class="col-xs-10 col">
                             <ul>
                                 <li class="item-slot">
-                                    <span class="text-right">{{ itemSlot.slotName }}</span>
+                                    <span [ngClass]="{'d3-color-yellow': itemSlot.isAncient}" class="text-right">{{ itemSlot.slotName }}</span>
                                 </li>
                                 <li *ngIf="itemSlot && itemSlot.item" class="d3-color-{{itemSlot.item.displayColor}}">
                                     {{ itemSlot.item.name }}

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Hero, Follower } from '../interfaces/profile'
+import { Hero, Follower, Gem } from '../interfaces/profile'
 import { BattleNet } from '../interfaces/battlenet'
 import { Headers, Http } from '@angular/http';
 
@@ -59,16 +59,35 @@ export class HeroService
         }
 
         var items = heroViewModel.items;
+        var setItems = new Array<string>();
+        var legendaryGems = new Array<Gem>();
+        heroViewModel.augments = [];
+        var augments = items.forEach(x => {
+            if (x.augment)
+                heroViewModel.augments.push(x.augment);
+        });
 
         for (var i = 0; i < items.length; i++)
         {
-            var set = items[i].item ? items[i].item.set : null;
-            if (set && heroViewModel.sets.indexOf(items[i].item.set.name))
+            var item = items[i].item;
+            if (item)
             {
-                debugger;
-                heroViewModel.sets.push(set.name);
+                if (item.set)
+                    setItems.push(item.set.name);
+
+                if (item.gems && item.gems.length > 0)
+                    item.gems.filter(x => x.isJewel).forEach(gem => legendaryGems.push(gem));
             }
         }
+
+        var uniqueSetItems = {};
+        setItems.forEach(x => uniqueSetItems[x] = (uniqueSetItems[x] || 0)+1 );
+        Object.keys(uniqueSetItems).forEach(x => {
+            if (uniqueSetItems[x] > 1)
+                heroViewModel.sets.push(x);
+        })
+
+        heroViewModel.legendaryGems = legendaryGems;
 
         var dummyFollower = new Follower();
         var templar = heroViewModel.hero.followers.templar ? heroViewModel.hero.followers.templar : dummyFollower;
@@ -103,15 +122,10 @@ export class HeroService
         });
     }
 
-    private setIconUrl(heroViewModel: HeroViewModel){
-        heroViewModel.iconName = (heroViewModel.hero.class == "crusader" ? "x1_" : "") + heroViewModel.hero.class.replace("-", "") + "_" + (heroViewModel.hero.gender ? "female" : "male");
-    }
-
     public createHeroViewModel(hero: Hero, battleNet: BattleNet){
         var cachedHero = this._localStorageService.getItem<Hero>("hero" + hero.id);
         var heroViewModel = new HeroViewModel(cachedHero ? cachedHero : hero, Boolean(cachedHero));
 
-        this.setIconUrl(heroViewModel);
         if (cachedHero)
             this.enrichHero(heroViewModel, battleNet);
         return heroViewModel;
@@ -133,7 +147,6 @@ export class HeroService
                     this.enrichHero(detailedHeroViewModel, battleNet);
                 });
 
-                this.setIconUrl(detailedHeroViewModel);
                 var index = heroes.indexOf(heroViewModel);
                 heroes[index] = detailedHeroViewModel;
                 return detailedHeroViewModel;
