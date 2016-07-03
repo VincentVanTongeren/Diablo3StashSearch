@@ -10,11 +10,12 @@ import { ItemViewModel } from './viewmodels/itemviewmodel'
 import { Profile, Hero, Item } from './interfaces/profile'
 import { BattleNet } from './interfaces/battlenet'
 import { ItemCardComponent } from './components/item.card.component';
+import { ItemCarouselComponent } from './components/item.carousel.component';
 import { HeroComponent } from './components/hero.component';
 import { HeroTabComponent } from './components/hero.tab.component';
 
 @Component({
-    directives: [ProfileViewModel, ItemCardComponent, HeroComponent, HeroTabComponent],
+    directives: [ProfileViewModel, ItemCardComponent, HeroComponent, HeroTabComponent, ItemCarouselComponent],
   selector: 'profile-loader',
   styles: [`
 .hero-tab {

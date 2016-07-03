@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var heroviewmodel_1 = require('../viewmodels/heroviewmodel');
 var item_slot_component_1 = require('../components/item.slot.component');
+var item_card_component_1 = require('../components/item.card.component');
 var HeroComponent = (function () {
     function HeroComponent() {
         this.itemSelected = new core_1.EventEmitter();
@@ -30,7 +31,7 @@ var HeroComponent = (function () {
     HeroComponent = __decorate([
         core_1.Component({
             selector: 'hero',
-            directives: [item_slot_component_1.ItemSlotComponent],
+            directives: [item_slot_component_1.ItemSlotComponent, item_card_component_1.ItemCardComponent],
             styles: [
                 "\n.ancient {\n    color: #ad835a\n}\n.empty-row {\n    height: 50px;\n}\n.follower {\n    padding-left: 24px;\n    height: 21px;\n    margin-top: 10px;\n    display: inline-block;\n}\n\n.templar {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; \n}\n.scoundrel {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/scoundrel.png') no-repeat; \n}\n.enchantress {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; \n}\n\n"
             ],

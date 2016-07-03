@@ -16,6 +16,7 @@ var item_service_1 = require('./services/item.service');
 var profileviewmodel_1 = require('./viewmodels/profileviewmodel');
 var battlenet_1 = require('./interfaces/battlenet');
 var item_card_component_1 = require('./components/item.card.component');
+var item_carousel_component_1 = require('./components/item.carousel.component');
 var hero_component_1 = require('./components/hero.component');
 var hero_tab_component_1 = require('./components/hero.tab.component');
 var ProfileLoader = (function () {
@@ -75,7 +76,7 @@ var ProfileLoader = (function () {
     ], ProfileLoader.prototype, "heroSelected", void 0);
     ProfileLoader = __decorate([
         core_1.Component({
-            directives: [profileviewmodel_1.ProfileViewModel, item_card_component_1.ItemCardComponent, hero_component_1.HeroComponent, hero_tab_component_1.HeroTabComponent],
+            directives: [profileviewmodel_1.ProfileViewModel, item_card_component_1.ItemCardComponent, hero_component_1.HeroComponent, hero_tab_component_1.HeroTabComponent, item_carousel_component_1.ItemCarouselComponent],
             selector: 'profile-loader',
             styles: ["\n.hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n.hero-tab.active {\n    border: 1px solid #555;\n}\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane .input-row {\n    margin: 3px;\n}\n#profile-pane {\n    height: 100%;\n}\n#profile-pane ul {\n    padding: 0;\n}\n#profile-pane li {\n    list-style-type:none\n}\n\n\n#hero-pane {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n#item-detail .item-card {\n    max-width: 351px;\n    margin-right: 0;\n}\n\n"],
             templateUrl: '../app/html/profile.loader.html'

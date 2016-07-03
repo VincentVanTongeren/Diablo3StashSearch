@@ -2,10 +2,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HeroViewModel } from '../viewmodels/heroviewmodel'
 import { ItemViewModel } from '../viewmodels/itemviewmodel'
 import { ItemSlotComponent } from '../components/item.slot.component';
+import { ItemCardComponent } from '../components/item.card.component';
 
 @Component({
   selector: 'hero',
-  directives: [ItemSlotComponent],
+  directives: [ItemSlotComponent, ItemCardComponent],
   styles: [
     `
 .ancient {
