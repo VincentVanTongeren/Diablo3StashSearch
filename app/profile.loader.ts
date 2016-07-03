@@ -14,10 +14,11 @@ import { ConcatPipe, ShortenPipe } from './pipes/strings'
 import { ClassPipe, GenderPipe } from './pipes/hero'
 import { SumPipe } from './pipes/math'
 import { LegacyNamePipe } from './pipes/battlenet'
+import { ItemCardComponent } from './components/item.card.component';
 
 @Component({
-    directives: [ProfileViewModel],
-    pipes: [SafeUrlPipe, SafeStylePipe, ConcatPipe, ShortenPipe, ClassPipe, GenderPipe, SumPipe, LegacyNamePipe],
+    directives: [ProfileViewModel, ItemCardComponent],
+    pipes: [ SafeUrlPipe, SafeStylePipe, ConcatPipe, ShortenPipe, ClassPipe, GenderPipe, SumPipe, LegacyNamePipe],
   selector: 'profile-loader',
   styles: [`
 .bold {
