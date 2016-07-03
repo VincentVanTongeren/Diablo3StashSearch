@@ -117,51 +117,7 @@
             </div>
         </div>-->
         <div class="col col-xs-5" id="hero-main">
-            <div class="row" *ngIf="selectedHeroViewModel">
-                <div class="col col-xs-12">
-                    <span>
-                        {{ selectedHeroViewModel.hero.name }}
-                    </span>
-                </div>
-            </div>
-
-            <div *ngIf="selectedHeroViewModel && selectedHeroViewModel.hasDetails" class="row">
-                
-                <div *ngFor="let itemSlot of selectedHeroViewModel.items" class="col col-xs-4 item-properties" (click)="selectItem(itemSlot)">
-                    <div class="row">
-                        <item-slot [itemSlot]="itemSlot"></item-slot>
-                    </div>
-                </div>
-            </div>
-            <!--<div class="row empty-row">
-                &nbsp;
-            </div>-->
-            <div class="row">
-                <div class="col col-xs-4" *ngIf="selectedHeroViewModel">
-                    <span class="follower templar">
-                        Templar
-                    </span>
-                </div>
-                <div class="col col-xs-4" *ngIf="selectedHeroViewModel">
-                    <span class="follower scoundrel">
-                        Scoundrel
-                    </span>
-                </div>
-                <div class="col col-xs-4" *ngIf="selectedHeroViewModel">
-                    <span class="follower enchantress">
-                        Enchantress
-                    </span>
-                </div>
-            </div>
-            <div *ngIf="selectedHeroViewModel && selectedHeroViewModel.hasDetails" class="row">
-
-                <div *ngFor="let followerItems of [selectedHeroViewModel.templarItems, selectedHeroViewModel.scoundrelItems, selectedHeroViewModel.enchantressItems]" class="col col-xs-4">
-                    <div class="row item-properties" *ngFor="let itemSlot of followerItems" (click)="selectItem(itemSlot)">
-                        <item-slot [itemSlot]="itemSlot"></item-slot>
-                    </div>
-                </div>
-            </div>
-
+            <hero [heroViewModel]="selectedHeroViewModel" (itemSelected)="selectItem($event)"></hero>
         </div>
         <div class="col col-xs-3" id="item-detail">
             <div class="row" *ngIf="selectedHeroViewModel">

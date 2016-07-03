@@ -15,10 +15,10 @@ import { ClassPipe, GenderPipe } from './pipes/hero'
 import { SumPipe } from './pipes/math'
 import { LegacyNamePipe } from './pipes/battlenet'
 import { ItemCardComponent } from './components/item.card.component';
-import { ItemSlotComponent } from './components/item.slot.component';
+import { HeroComponent } from './components/hero.component';
 
 @Component({
-    directives: [ProfileViewModel, ItemCardComponent, ItemSlotComponent],
+    directives: [ProfileViewModel, ItemCardComponent, HeroComponent],
     pipes: [ SafeUrlPipe, SafeStylePipe, ConcatPipe, ShortenPipe, ClassPipe, GenderPipe, SumPipe, LegacyNamePipe],
   selector: 'profile-loader',
   styles: [`
@@ -128,34 +128,6 @@ import { ItemSlotComponent } from './components/item.slot.component';
 }
 #hero-pane {
     height: 100%;
-}
-#hero-pane ul {
-    padding: 0;
-}
-#hero-main {
-    height: 100%;
-}
-#hero-main .ancient {
-    color: #ad835a
-}
-#hero-main .empty-row {
-    height: 50px;
-}
-#hero-main .follower {
-    padding-left: 24px;
-    height: 21px;
-    margin-top: 10px;
-    display: inline-block;
-}
-
-#hero-main .templar {
-    background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; 
-}
-#hero-main .scoundrel {
-    background: url('http://media.blizzard.com/d3/icons/portraits/21/scoundrel.png') no-repeat; 
-}
-#hero-main .enchantress {
-    background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; 
 }
 #item-detail {
     height: 100%;
