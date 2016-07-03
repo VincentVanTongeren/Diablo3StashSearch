@@ -15,9 +15,10 @@ import { ClassPipe, GenderPipe } from './pipes/hero'
 import { SumPipe } from './pipes/math'
 import { LegacyNamePipe } from './pipes/battlenet'
 import { ItemCardComponent } from './components/item.card.component';
+import { ItemSlotComponent } from './components/item.slot.component';
 
 @Component({
-    directives: [ProfileViewModel, ItemCardComponent],
+    directives: [ProfileViewModel, ItemCardComponent, ItemSlotComponent],
     pipes: [ SafeUrlPipe, SafeStylePipe, ConcatPipe, ShortenPipe, ClassPipe, GenderPipe, SumPipe, LegacyNamePipe],
   selector: 'profile-loader',
   styles: [`
@@ -134,25 +135,8 @@ import { ItemCardComponent } from './components/item.card.component';
 #hero-main {
     height: 100%;
 }
-#hero-main li.item-icon {
-    /*float: left;*/
-}
-#hero-main .item-properties {
-    padding: 0;
-    padding-top: 3px;
-    height: 72px;
-}
 #hero-main .ancient {
     color: #ad835a
-}
-#hero-main .item-properties.active {
-    border: 1px solid #555;
-}
-#hero-main .item-properties ul {
-    padding: 0;
-}
-#hero-main .item-properties ul li {
-    list-style-type:none;
 }
 #hero-main .empty-row {
     height: 50px;
@@ -172,9 +156,6 @@ import { ItemCardComponent } from './components/item.card.component';
 }
 #hero-main .enchantress {
     background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; 
-}
-#hero-main .d3-icon-item-white {
-    opacity: 0.4;
 }
 #item-detail {
     height: 100%;

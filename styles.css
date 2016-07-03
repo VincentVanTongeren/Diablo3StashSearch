@@ -5,6 +5,9 @@ body {
 input, textarea, keygen, select, button{
   color: #333;
 }
-/*.text-right {
-    float: right;
-}*/
+ul {
+  padding: 0;
+}
+li {
+    list-style-type:none;
+}

@@ -128,22 +128,8 @@
             <div *ngIf="selectedHeroViewModel && selectedHeroViewModel.hasDetails" class="row">
                 
                 <div *ngFor="let itemSlot of selectedHeroViewModel.items" class="col col-xs-4 item-properties" (click)="selectItem(itemSlot)">
-                    <div *ngIf="itemSlot.slotName" class="col col-xs-2 item-icon">
-                        <span class="d3-icon d3-icon-item d3-icon-item-small d3-icon-item-{{ itemSlot.item ? itemSlot.item.displayColor : 'white'}}">
-                            <span class="icon-item-gradient">
-                                <span class="icon-item-inner icon-item-default" [style.background-image]="itemSlot.item ? ('url(http://media.blizzard.com/d3/icons/items/small/' + itemSlot.item.icon + '.png)') : '' | safeStyle"></span>
-                            </span>
-                        </span>
-                    </div>
-                    <div class="col-xs-10 col">
-                        <ul>
-                            <li class="item-slot">
-                                <span [ngClass]="{'d3-color-yellow': itemSlot.isAncient}" class="text-right">{{ itemSlot.slotName }}</span>
-                            </li>
-                            <li *ngIf="itemSlot && itemSlot.item" class="d3-color-{{itemSlot.item.displayColor}}">
-                                {{ itemSlot.item.name }}
-                            </li>
-                        </ul>
+                    <div class="row">
+                        <item-slot [itemSlot]="itemSlot"></item-slot>
                     </div>
                 </div>
             </div>
@@ -171,23 +157,7 @@
 
                 <div *ngFor="let followerItems of [selectedHeroViewModel.templarItems, selectedHeroViewModel.scoundrelItems, selectedHeroViewModel.enchantressItems]" class="col col-xs-4">
                     <div class="row item-properties" *ngFor="let itemSlot of followerItems" (click)="selectItem(itemSlot)">
-                        <div class="col col-xs-2 item-icon">
-                            <span class="d3-icon d3-icon-item d3-icon-item-small d3-icon-item-{{ itemSlot.item ? itemSlot.item.displayColor : 'white'}}">
-                                <span class="icon-item-gradient">
-                                    <span class="icon-item-inner icon-item-default" [style.background-image]="itemSlot.item ? ('url(http://media.blizzard.com/d3/icons/items/small/' + itemSlot.item.icon + '.png)') : '' | safeStyle"></span>
-                                </span>
-                            </span>
-                        </div>
-                        <div class="col-xs-10 col">
-                            <ul>
-                                <li class="item-slot">
-                                    <span [ngClass]="{'d3-color-yellow': itemSlot.isAncient}" class="text-right">{{ itemSlot.slotName }}</span>
-                                </li>
-                                <li *ngIf="itemSlot && itemSlot.item" class="d3-color-{{itemSlot.item.displayColor}}">
-                                    {{ itemSlot.item.name }}
-                                </li>
-                            </ul>
-                        </div>
+                        <item-slot [itemSlot]="itemSlot"></item-slot>
                     </div>
                 </div>
             </div>

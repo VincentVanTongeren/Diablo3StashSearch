@@ -11,22 +11,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var itemviewmodel_1 = require('../viewmodels/itemviewmodel');
 var safe_1 = require('../pipes/safe');
-var ItemCardComponent = (function () {
-    function ItemCardComponent() {
+var ItemSlotComponent = (function () {
+    function ItemSlotComponent() {
     }
     __decorate([
         core_1.Input(), 
         __metadata('design:type', itemviewmodel_1.ItemViewModel)
-    ], ItemCardComponent.prototype, "itemViewModel", void 0);
-    ItemCardComponent = __decorate([
+    ], ItemSlotComponent.prototype, "itemSlot", void 0);
+    ItemSlotComponent = __decorate([
         core_1.Component({
-            selector: 'item-card',
+            selector: 'item-slot',
             pipes: [safe_1.SafeUrlPipe, safe_1.SafeStylePipe],
-            templateUrl: '/app/components/html/item.card.html'
+            styles: [
+                ".item-icon, .item-text {\n    padding-top: 3px;\n    height: 72px;\n}\n.d3-icon-item-white {\n    opacity: 0.4;\n}\n"
+            ],
+            // styleUrls: ['/app/components/css/item.slot.css'],
+            templateUrl: '/app/components/html/item.slot.html'
         }), 
         __metadata('design:paramtypes', [])
-    ], ItemCardComponent);
-    return ItemCardComponent;
+    ], ItemSlotComponent);
+    return ItemSlotComponent;
 }());
-exports.ItemCardComponent = ItemCardComponent;
-//# sourceMappingURL=item.card.component.js.map
+exports.ItemSlotComponent = ItemSlotComponent;
+//# sourceMappingURL=item.slot.component.js.map

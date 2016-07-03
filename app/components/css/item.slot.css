@@ -1,0 +1,8 @@
+.item-icon, .item-text {
+    padding: 0;
+    padding-top: 3px;
+    height: 72px;
+}
+.d3-icon-item-white {
+    opacity: 0.4;
+}
