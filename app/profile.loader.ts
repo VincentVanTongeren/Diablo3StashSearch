@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FORM_PROVIDERS } from '@angular/common';
 import { LocalStorageService } from './services/localstorageservice'
 import { ProfileService } from './services/profile.service'
@@ -9,19 +9,23 @@ import { HeroViewModel } from './viewmodels/heroviewmodel'
 import { ItemViewModel } from './viewmodels/itemviewmodel'
 import { Profile, Hero, Item } from './interfaces/profile'
 import { BattleNet } from './interfaces/battlenet'
-import { SafeUrlPipe, SafeStylePipe } from './pipes/safe'
-import { ConcatPipe, ShortenPipe } from './pipes/strings'
-import { ClassPipe, GenderPipe } from './pipes/hero'
-import { SumPipe } from './pipes/math'
-import { LegacyNamePipe } from './pipes/battlenet'
 import { ItemCardComponent } from './components/item.card.component';
 import { HeroComponent } from './components/hero.component';
+import { HeroTabComponent } from './components/hero.tab.component';
 
 @Component({
-    directives: [ProfileViewModel, ItemCardComponent, HeroComponent],
-    pipes: [ SafeUrlPipe, SafeStylePipe, ConcatPipe, ShortenPipe, ClassPipe, GenderPipe, SumPipe, LegacyNamePipe],
+    directives: [ProfileViewModel, ItemCardComponent, HeroComponent, HeroTabComponent],
   selector: 'profile-loader',
   styles: [`
+.hero-tab {
+    height: 44px;
+    margin: 3px;
+    border: 1px solid #222;
+    border-radius: 3px;
+}
+.hero-tab.active {
+    border: 1px solid #555;
+}
 .bold {
     font-weight: bold;
 }
@@ -46,86 +50,8 @@ import { HeroComponent } from './components/hero.component';
 #profile-pane li {
     list-style-type:none
 }
-#profile-pane .hero-tab {
-    height: 44px;
-    margin: 3px;
-    border: 1px solid #222;
-    border-radius: 3px;
-}
-#profile-pane .hero-tab.active {
-    border: 1px solid #555;
-}
-#profile-pane .hero-tab .hero-name {
-    margin-left: 10px;
-    color: #ad835a
-}
-#profile-pane .hero-tab.active .hero-name {
-    color: #fff;
-}
-#profile-pane .hero-tab .hero-name .paragon {
-    vertical-align: top;
-}
-#profile-pane .hero-tab .sets {
-    margin-top: 2px;
-    padding: 0;
-}
-#profile-pane .hero-tab .sets li {
-    list-style-type: none;
-}
-#profile-pane .hero-tab .sets .set {
-    font-size: 9px;
-}
-#profile-pane .hero-portrait {
-    margin-left: 9px;
-}
-#profile-pane .skills {
-    height: 36px;
-}
-#profile-pane .skills .passive .last {
-    margin-right: 23px;
-}
-#profile-pane .skill {
-    display: inline-block;
-    background-size: contain;
-    margin-right: 3px;
-    width: 21px;
-    height: 21px;
-}
-#profile-pane .sets-container {
-    height: 100%;
-}
-#profile-pane .gems-container {
-    height: 100%;
-}
-#profile-pane .gems {
-    height: 25px;
-}
-#profile-pane .gems .rank {
-    font-size: 9px;
-}
-#profile-pane .gems .gem {
-    float: left;
-    margin-right: 3px;
-}
-#profile-pane .gems .gem-image {
-    width: 17px;
-    height: 17px;
-}
-#profile-pane .augments {
-    font-size: 9px;
-}
-#profile-pane .augments li {
-    list-style-type:none;
-    margin-left: 2px;
-    float: left;
-}
-#profile-pane .augments li.first {
-    margin-left: 5px;
-}
-#profile-pane .augments .ancient {
-    font-size: 9px;
-    color: #ad835a
-}
+
+
 #hero-pane {
     height: 100%;
 }
@@ -135,21 +61,6 @@ import { HeroComponent } from './components/hero.component';
 #item-detail .item-card {
     max-width: 351px;
     margin-right: 0;
-}
-li.char-type {
-    height: 21px;
-}
-li.char-type .small-seasonal-leaf { 
-    display: inline-block; 
-    width: 15px; 
-    height: 21px; 
-    background: url("http://eu.battle.net/d3/static/images/profile/seasonal-leaf.png") -24px -2px no-repeat; 
-}
-li.char-type .small-hardcore { 
-    display: inline-block; 
-    width: 21px; 
-    height: 21px; 
-    background: url("../images/hardcore.png") no-repeat; 
 }
 
 `],
@@ -164,6 +75,9 @@ export class ProfileLoader {
     public selectedHeroViewModel: HeroViewModel;
     public selectedItemViewModel: ItemViewModel;
     public itemDetailsHtml: string;
+
+    @Output()
+    public heroSelected = new EventEmitter<HeroViewModel>();
 
     constructor(
         private _profileService: ProfileService,  
@@ -204,6 +118,7 @@ export class ProfileLoader {
         this._heroService.getHeroViewModel(this.profileViewModel.heroes, heroViewModel, new BattleNet(this.apiKey, this.locale, this.profileKey)).then((selectedHeroViewModel: HeroViewModel) => {
             this.selectedHeroViewModel = selectedHeroViewModel;
             this.selectedItemViewModel = null;
+            this.heroSelected.emit(selectedHeroViewModel);
         });
     }
 
