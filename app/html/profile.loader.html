@@ -5,7 +5,6 @@
             <h3>Diablo 3 Stash Search</h3>
         </div>
         <div class="col col-xs-7" id="search-pane">
-            <span><button class="btn btn-info" data-toggle="modal" data-target="#heroModal"><img src="/images/carousel_16.png" /></button></span>
         </div>
         <div class="col col-xs-3" id="input-pane">
             <div class="row input-row">
@@ -77,4 +76,5 @@
     </div>
 
 </div>
-<item-carousel [items]="highlightedItemViewModels"></item-carousel>
+
+<item-carousel [items]="[selectedItemViewModel]"></item-carousel>

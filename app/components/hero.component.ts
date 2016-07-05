@@ -12,6 +12,9 @@ import { ItemCardComponent } from '../components/item.card.component';
 .ancient {
     color: #ad835a
 }
+.empty-row {
+    height: 50px;
+}
 .follower {
     padding-left: 24px;
     height: 21px;
