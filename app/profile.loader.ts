@@ -59,8 +59,10 @@ import { HeroTabComponent } from './components/hero.tab.component';
 #item-detail {
     height: 100%;
 }
-#item-detail .item-card {
+#item-detail {
     max-width: 351px;
+}
+#item-detail .item-card {
     margin-right: 0;
 }
 
@@ -76,6 +78,7 @@ export class ProfileLoader {
     public selectedHeroViewModel: HeroViewModel;
     public selectedItemViewModel: ItemViewModel;
     public itemDetailsHtml: string;
+    public highlightedItemViewModels: Array<ItemViewModel>;
 
     @Output()
     public heroSelected = new EventEmitter<HeroViewModel>();
@@ -124,9 +127,13 @@ export class ProfileLoader {
     }
 
     public selectItem(selectedItemViewModel: ItemViewModel): void {
-        if (selectedItemViewModel.item)
+        if (selectedItemViewModel.item){
             this.selectedItemViewModel = selectedItemViewModel;
+            this.highlightedItemViewModels = [selectedItemViewModel, selectedItemViewModel, selectedItemViewModel, selectedItemViewModel, selectedItemViewModel, selectedItemViewModel];
+        }
     }
+
+
 
     public show(obj: any){
         alert(JSON.stringify(obj));

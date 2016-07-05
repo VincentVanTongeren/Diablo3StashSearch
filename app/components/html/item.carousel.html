@@ -1,21 +1,35 @@
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <item-card [itemViewModel]="items.length ? items[0]: null"></item-card>
-          <p>Some text in the modal.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+<div id="item-carousel" [hidden]="!items || items.length == 0">
+  <div class="row content">
+    <span class="close" (click)="removeItems()">x</span>
+
+
+
+
+<div class="gallery js-flickity" data-flickity-options="{ 'cellAlign': 'left', 'contain': true, 'freeScroll': true }" >
+<!--<div class="flickity-viewport" >
+  <div class="flickity-slider" >-->
+    <!--<div class="gallery-cell is-selected" style="position: absolute; left: 0%;"></div>
+    <div class="gallery-cell" style="position: absolute; left: 67.05%;"></div>
+    <div class="gallery-cell" style="position: absolute; left: 134.1%;"></div>
+    <div class="gallery-cell" style="position: absolute; left: 201.16%;"></div>
+    <div class="gallery-cell" style="position: absolute; left: 268.21%;"></div>-->
+    <div *ngFor="let item of items" class="col col-xs-3 gallery-cell item-card">
+        <item-card [itemViewModel]="item"></item-card>
       </div>
-      
-    </div>
+    <button class="flickity-prev-next-button previous" type="button" disabled="">
+      <svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" transform="translate(15,0)"></path></svg>
+    </button>
+    <button class="flickity-prev-next-button next" type="button">
+      <svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" transform="translate(85,100) rotate(180)"></path></svg>
+      </button>
+  <!--</div>
+</div>-->
+</div>
+
+    <!--<div class="main-gallery gallery js-flickity flickity-enabled is-draggable" data-flickity-options='{ "cellAlign": "left", "contain": true, "freeScroll": true" }'>
+      <div *ngFor="let item of items" class="col col-xs-3 gallery-cell item-card">
+        <item-card [itemViewModel]="item"></item-card>
+      </div>
+    </div>-->
   </div>
+</div>

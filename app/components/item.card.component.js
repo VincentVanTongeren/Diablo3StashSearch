@@ -22,6 +22,7 @@ var ItemCardComponent = (function () {
         core_1.Component({
             selector: 'item-card',
             pipes: [safe_1.SafeUrlPipe, safe_1.SafeStylePipe],
+            styles: ["\n    .item-card {\n      max-width: 351px;\n    }\n    "],
             templateUrl: '/app/components/html/item.card.html'
         }), 
         __metadata('design:paramtypes', [])

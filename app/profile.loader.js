@@ -64,8 +64,10 @@ var ProfileLoader = (function () {
         });
     };
     ProfileLoader.prototype.selectItem = function (selectedItemViewModel) {
-        if (selectedItemViewModel.item)
+        if (selectedItemViewModel.item) {
             this.selectedItemViewModel = selectedItemViewModel;
+            this.highlightedItemViewModels = [selectedItemViewModel, selectedItemViewModel, selectedItemViewModel, selectedItemViewModel, selectedItemViewModel, selectedItemViewModel];
+        }
     };
     ProfileLoader.prototype.show = function (obj) {
         alert(JSON.stringify(obj));
@@ -78,7 +80,7 @@ var ProfileLoader = (function () {
         core_1.Component({
             directives: [profileviewmodel_1.ProfileViewModel, item_card_component_1.ItemCardComponent, hero_component_1.HeroComponent, hero_tab_component_1.HeroTabComponent, item_carousel_component_1.ItemCarouselComponent],
             selector: 'profile-loader',
-            styles: ["\n.hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n.hero-tab.active {\n    border: 1px solid #555;\n}\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane .input-row {\n    margin: 3px;\n}\n#profile-pane {\n    height: 100%;\n}\n#profile-pane ul {\n    padding: 0;\n}\n#profile-pane li {\n    list-style-type:none\n}\n\n\n#hero-pane {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n#item-detail .item-card {\n    max-width: 351px;\n    margin-right: 0;\n}\n\n"],
+            styles: ["\n.hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n.hero-tab.active {\n    border: 1px solid #555;\n}\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane .input-row {\n    margin: 3px;\n}\n#profile-pane {\n    height: 100%;\n}\n#profile-pane ul {\n    padding: 0;\n}\n#profile-pane li {\n    list-style-type:none\n}\n\n\n#hero-pane {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n#item-detail {\n    max-width: 351px;\n}\n#item-detail .item-card {\n    margin-right: 0;\n}\n\n"],
             templateUrl: '../app/html/profile.loader.html'
         }), 
         __metadata('design:paramtypes', [profile_service_1.ProfileService, item_service_1.ItemService, hero_service_1.HeroService, localstorageservice_1.LocalStorageService])
