@@ -76,6 +76,7 @@ export class ProfileLoader {
     public selectedHeroViewModel: HeroViewModel;
     public selectedItemViewModel: ItemViewModel;
     public itemDetailsHtml: string;
+    public highlightedItemViewModels: Array<ItemViewModel>;
 
     @Output()
     public heroSelected = new EventEmitter<HeroViewModel>();
@@ -124,8 +125,10 @@ export class ProfileLoader {
     }
 
     public selectItem(selectedItemViewModel: ItemViewModel): void {
-        if (selectedItemViewModel.item)
+        if (selectedItemViewModel.item){
             this.selectedItemViewModel = selectedItemViewModel;
+            this.highlightedItemViewModels = [selectedItemViewModel, selectedItemViewModel, selectedItemViewModel]
+        }
     }
 
     public show(obj: any){

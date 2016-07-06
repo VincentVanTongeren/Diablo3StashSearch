@@ -5,7 +5,11 @@ import { SafeUrlPipe, SafeStylePipe } from '../pipes/safe'
 @Component({
   selector: 'item-card',
     pipes: [SafeUrlPipe, SafeStylePipe],
-  templateUrl: '/app/components/html/item.card.html'
+     styles: [`
+    .item-card {
+      max-width: 351px;
+    }
+    `], templateUrl: '/app/components/html/item.card.html'
 })
 export class ItemCardComponent { 
   @Input()

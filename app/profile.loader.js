@@ -64,8 +64,10 @@ var ProfileLoader = (function () {
         });
     };
     ProfileLoader.prototype.selectItem = function (selectedItemViewModel) {
-        if (selectedItemViewModel.item)
+        if (selectedItemViewModel.item) {
             this.selectedItemViewModel = selectedItemViewModel;
+            this.highlightedItemViewModels = [selectedItemViewModel, selectedItemViewModel, selectedItemViewModel];
+        }
     };
     ProfileLoader.prototype.show = function (obj) {
         alert(JSON.stringify(obj));
