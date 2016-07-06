@@ -7,7 +7,18 @@
 
 
 <div class="gallery js-flickity" data-flickity-options="{ 'cellAlign': 'left', 'contain': true, 'freeScroll': true, 'cellSelector': 'gallery-cell' }" >
+
+<div class="flickity-viewport">
+  <div class="flickity-slider" >
     <div *ngFor="let item of items" class="col col-xs-3 gallery-cell item-card">
         <item-card [itemViewModel]="item"></item-card>
   </div>
+  </div>
+
+</div>
+
+
+    <!--<div *ngFor="let item of items" class="col col-xs-3 gallery-cell item-card">
+        <item-card [itemViewModel]="item"></item-card>
+  </div>-->
 </div>

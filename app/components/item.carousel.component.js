@@ -16,8 +16,14 @@ var ItemCarouselComponent = (function () {
     ItemCarouselComponent.prototype.removeItems = function () {
         this.items = [];
     };
-    ItemCarouselComponent.prototype.ngAfterViewInit = function () {
-        $('.gallery').flickity();
+    // ngAfterViewInit(){
+    //     $('.gallery').flickity();
+    // }
+    ItemCarouselComponent.prototype.ngOnChanges = function (changes) {
+        if (changes.items.currentValue)
+            setTimeout(function () {
+                $('.gallery').flickity();
+            }, 200);
     };
     __decorate([
         core_1.Input(), 

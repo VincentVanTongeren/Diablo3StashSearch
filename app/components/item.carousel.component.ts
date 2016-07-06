@@ -82,7 +82,14 @@ export class ItemCarouselComponent {
     this.items = [];
 }
 
-    ngAfterViewInit(){
-        $('.gallery').flickity();
+    // ngAfterViewInit(){
+    //     $('.gallery').flickity();
+    // }
+
+    ngOnChanges(changes){
+        if (changes.items.currentValue)
+        setTimeout(() => {
+            $('.gallery').flickity();
+        }, 200);
     }
 }

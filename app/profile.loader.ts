@@ -127,7 +127,7 @@ export class ProfileLoader {
     public selectItem(selectedItemViewModel: ItemViewModel): void {
         if (selectedItemViewModel.item){
             this.selectedItemViewModel = selectedItemViewModel;
-            this.highlightedItemViewModels = [selectedItemViewModel, selectedItemViewModel, selectedItemViewModel]
+            this.highlightedItemViewModels = [selectedItemViewModel, selectedItemViewModel, selectedItemViewModel, selectedItemViewModel, selectedItemViewModel, selectedItemViewModel]
         }
     }
 
