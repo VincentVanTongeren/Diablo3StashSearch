@@ -62,15 +62,19 @@ declare var $: any;
     from {top: -300px; opacity: 0}
     to {top: 0; opacity: 1}
 }
-
 .gallery {
     border: 1px red solid;
-    height: 60%;
+    width: 100%;
+}
+.flickity-slider{
     width: 100%;
 }
 .gallery-cell {
     border: 1px green solid;
     height: 100%;
+    width: 351px;
+    margin-right: 40px;
+    float: left;
 }`
   ]
 })
@@ -78,18 +82,31 @@ export class ItemCarouselComponent {
   @Input()
   public items: ItemViewModel[];
 
+private _flickity: any;
+
   public removeItems(){
     this.items = [];
 }
 
-    // ngAfterViewInit(){
-    //     $('.gallery').flickity();
-    // }
-
     ngOnChanges(changes){
         if (changes.items.currentValue)
-        setTimeout(() => {
-            $('.gallery').flickity();
-        }, 200);
+        {
+            if (this._flickity)
+                // $(this._flickity).flickity('reloadCells');
+                $(this._flickity).flickity('destroy');
+            this.startFlickity();
+        }
+    }
+
+    startFlickity(){
+        setTimeout(() => 
+        this._flickity = $('.gallery').flickity({
+                        cellAlign: 'left', 
+                        contain: true, 
+                        freeScroll: true, 
+                        cellSelector: '.gallery-cell',
+                        setGallerySize: false,
+                        wrapAround: true
+                    }), 200);
     }
 }
