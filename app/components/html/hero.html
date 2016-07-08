@@ -1,7 +1,7 @@
 <div class="row" *ngIf="heroViewModel">
     <div class="col col-xs-12">
         <span>
-            {{ heroViewModel.hero.name }}
+            <a href="#" (click)="selectItems('player')">{{ heroViewModel.hero.name }}</a>
         </span>
     </div>
 </div>
@@ -20,17 +20,17 @@
 <div *ngIf="heroViewModel" class="row">
     <div class="col col-xs-4">
         <span class="follower templar">
-            Templar <span><button class="btn btn-info" data-toggle="modal" data-target="#heroModal"><img src="/images/carousel_16.png" /></button></span>
+            <a href="#" (click)="selectItems('templar')">Templar</a>
         </span>
     </div>
     <div class="col col-xs-4">
         <span class="follower scoundrel">
-            Scoundrel
+            <a href="#" (click)="selectItems('scoundrel')">Scoundrel</a>
         </span>
     </div>
     <div class="col col-xs-4">
         <span class="follower enchantress">
-            Enchantress
+            <a href="#" (click)="selectItems('enchantress')">Enchantress</a>
         </span>
     </div>
 </div>

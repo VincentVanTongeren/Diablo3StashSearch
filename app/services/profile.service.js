@@ -46,13 +46,19 @@ var ProfileService = (function () {
         var promise = this.getProfile(battleNet);
         return promise.then(function (profile) {
             var profileViewModel = new profileviewmodel_1.ProfileViewModel(profile);
-            if (profile.heroes && profile.heroes.length) {
+            if (profile.heroes && profile.heroes.length > 0) {
                 profile.heroes.forEach(function (hero) {
                     var createdHeroViewModel = _this._heroService.createHeroViewModel(hero, battleNet);
                     profileViewModel.heroes.push(createdHeroViewModel);
                 });
                 profileViewModel.heroes.forEach(function (heroViewModel) {
-                    _this._heroService.getHeroViewModel(profileViewModel.heroes, heroViewModel, battleNet).then(function (processedHeroViewModel) { });
+                    _this._heroService.getHeroViewModel(profileViewModel.heroes, heroViewModel, battleNet).then(function (processedHeroViewModel) {
+                        var currentHero = profileViewModel.heroes.filter(function (x) { return x.hero.id == processedHeroViewModel.hero.id; });
+                        if (currentHero && currentHero.length > 0) {
+                            var index = profileViewModel.heroes.indexOf(currentHero[0]);
+                            profileViewModel.heroes[index] = processedHeroViewModel;
+                        }
+                    });
                 });
             }
             return profileViewModel;

@@ -3,6 +3,7 @@ import { HeroViewModel } from '../viewmodels/heroviewmodel'
 import { ItemViewModel } from '../viewmodels/itemviewmodel'
 import { ItemSlotComponent } from '../components/item.slot.component';
 import { ItemCardComponent } from '../components/item.card.component';
+import { CharacterType } from '../interfaces/enum'
 
 @Component({
   selector: 'hero',
@@ -41,10 +42,35 @@ export class HeroComponent {
   public heroViewModel: HeroViewModel;
   @Output()
   public itemSelected = new EventEmitter<ItemViewModel>();
+  @Output()
+  public itemsSelected = new EventEmitter<Array<ItemViewModel>>();
 
     public selectItem(selectedItemViewModel: ItemViewModel): void {
         if (selectedItemViewModel.item)
             this.itemSelected.emit(selectedItemViewModel);
     }
 
+    public selectItems(characterType: string): void{
+        var items = new Array<ItemViewModel>();
+        switch(characterType){
+            case "player":
+                items = this.heroViewModel.items;
+                break;
+            case "templar":
+                items = this.heroViewModel.templarItems;
+                break;
+            case "scoundrel":
+                items = this.heroViewModel.scoundrelItems;
+                break;
+            case "enchantress":
+                items = this.heroViewModel.enchantressItems;
+                break;
+        }
+        if (items){
+            items = items.filter(x => Boolean(x.item));
+        }
+        if (items)
+            this.itemsSelected.emit(items);
+
+    }
 }

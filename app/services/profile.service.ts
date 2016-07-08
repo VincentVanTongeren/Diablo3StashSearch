@@ -52,7 +52,7 @@ export class ProfileService
         var promise = this.getProfile(battleNet);
         return promise.then((profile: Profile) => {
             var profileViewModel = new ProfileViewModel(profile);
-            if (profile.heroes && profile.heroes.length)
+            if (profile.heroes && profile.heroes.length > 0)
             {
                 profile.heroes.forEach(hero => {
                     var createdHeroViewModel = this._heroService.createHeroViewModel(hero, battleNet);
@@ -60,7 +60,14 @@ export class ProfileService
                 });
 
                 profileViewModel.heroes.forEach(heroViewModel => {
-                    this._heroService.getHeroViewModel(profileViewModel.heroes, heroViewModel, battleNet).then((processedHeroViewModel: HeroViewModel) => { });
+                    this._heroService.getHeroViewModel(profileViewModel.heroes, heroViewModel, battleNet).then((processedHeroViewModel: HeroViewModel) => { 
+                        var currentHero = profileViewModel.heroes.filter(x => x.hero.id == processedHeroViewModel.hero.id);
+                        if (currentHero && currentHero.length > 0)
+                        {
+                            var index = profileViewModel.heroes.indexOf(currentHero[0]);
+                            profileViewModel.heroes[index] = processedHeroViewModel;
+                        }
+                    });
                 })
 
             }

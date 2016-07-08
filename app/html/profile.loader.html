@@ -59,7 +59,7 @@
             </div>
         </div>-->
         <div class="col col-xs-5" id="hero-main">
-            <hero [heroViewModel]="selectedHeroViewModel" (itemSelected)="selectItem($event)"></hero>
+            <hero [heroViewModel]="selectedHeroViewModel" (itemsSelected)="selectItems($event)" (itemSelected)="selectItem($event)"></hero>
         </div>
         <div class="col col-xs-3" id="item-detail">
             <div class="row" *ngIf="selectedHeroViewModel">

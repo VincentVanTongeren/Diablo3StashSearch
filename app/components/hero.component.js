@@ -15,10 +15,33 @@ var item_card_component_1 = require('../components/item.card.component');
 var HeroComponent = (function () {
     function HeroComponent() {
         this.itemSelected = new core_1.EventEmitter();
+        this.itemsSelected = new core_1.EventEmitter();
     }
     HeroComponent.prototype.selectItem = function (selectedItemViewModel) {
         if (selectedItemViewModel.item)
             this.itemSelected.emit(selectedItemViewModel);
+    };
+    HeroComponent.prototype.selectItems = function (characterType) {
+        var items = new Array();
+        switch (characterType) {
+            case "player":
+                items = this.heroViewModel.items;
+                break;
+            case "templar":
+                items = this.heroViewModel.templarItems;
+                break;
+            case "scoundrel":
+                items = this.heroViewModel.scoundrelItems;
+                break;
+            case "enchantress":
+                items = this.heroViewModel.enchantressItems;
+                break;
+        }
+        if (items) {
+            items = items.filter(function (x) { return Boolean(x.item); });
+        }
+        if (items)
+            this.itemsSelected.emit(items);
     };
     __decorate([
         core_1.Input(), 
@@ -28,6 +51,10 @@ var HeroComponent = (function () {
         core_1.Output(), 
         __metadata('design:type', Object)
     ], HeroComponent.prototype, "itemSelected", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], HeroComponent.prototype, "itemsSelected", void 0);
     HeroComponent = __decorate([
         core_1.Component({
             selector: 'hero',

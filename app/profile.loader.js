@@ -66,7 +66,11 @@ var ProfileLoader = (function () {
     ProfileLoader.prototype.selectItem = function (selectedItemViewModel) {
         if (selectedItemViewModel.item) {
             this.selectedItemViewModel = selectedItemViewModel;
-            this.highlightedItemViewModels = [selectedItemViewModel, selectedItemViewModel, selectedItemViewModel, selectedItemViewModel, selectedItemViewModel, selectedItemViewModel];
+        }
+    };
+    ProfileLoader.prototype.selectItems = function (selectedItemViewModels) {
+        if (selectedItemViewModels) {
+            this.highlightedItemViewModels = selectedItemViewModels;
         }
     };
     ProfileLoader.prototype.show = function (obj) {

@@ -34,7 +34,7 @@ var ItemCarouselComponent = (function () {
                 freeScroll: true,
                 cellSelector: '.gallery-cell',
                 setGallerySize: false,
-                wrapAround: true
+                wrapAround: false
             });
         }, 200);
     };
