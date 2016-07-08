@@ -1,24 +1,12 @@
-
-<div id="item-carousel" [hidden]="!items || items.length == 0">
+<div id="item-carousel" [hidden]="!items || items.length == 0" (click)="handleClick($event)" >
   <div class="content">
-    <span class="close" (click)="removeItems()">&times;</span>
-
-
-
-
-<div class="gallery js-flickity" >
-
-<div class="flickity-viewport">
-  <div class="flickity-slider" >
-    <div *ngFor="let item of items" class="gallery-cell item-card">
-        <item-card [itemViewModel]="item"></item-card>
+  <div class="gallery js-flickity" >
+    <div class="flickity-viewport">
+      <div class="flickity-slider" >
+        <div *ngFor="let item of items" class="gallery-cell item-card">
+          <item-card [itemViewModel]="item"></item-card>
+        </div>
+      </div>
+    </div>
   </div>
-  </div>
-
-</div>
-
-
-    <!--<div *ngFor="let item of items" class="col col-xs-3 gallery-cell item-card">
-        <item-card [itemViewModel]="item"></item-card>
-  </div>-->
 </div>

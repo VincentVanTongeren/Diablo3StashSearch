@@ -15,10 +15,8 @@ declare var $: any;
     position: fixed; /* Stay in place */
     z-index: 10; /* Sit on top */
     left: 0;
-    top: 15%;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.85); /* Black w/ opacity */
 }
@@ -45,6 +43,7 @@ declare var $: any;
     padding: 0;
     border: 1px solid #888;
     width: 80%;
+    top: 15%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
@@ -64,6 +63,7 @@ declare var $: any;
 }
 .gallery {
     border: 1px red solid;
+    height: 100%;
     width: 100%;
 }
 .flickity-slider{
@@ -84,8 +84,9 @@ export class ItemCarouselComponent {
 
 private _flickity: any;
 
-  public removeItems(){
-    this.items = [];
+  public handleClick(event){
+      if (event && event.currentTarget == event.srcElement)
+        this.items = [];
 }
 
     ngOnChanges(changes){
