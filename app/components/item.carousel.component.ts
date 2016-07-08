@@ -43,6 +43,7 @@ declare var $: any;
     padding: 0;
     border: 1px solid #888;
     width: 80%;
+    height: 70%;
     top: 15%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
@@ -62,7 +63,6 @@ declare var $: any;
     to {top: 0; opacity: 1}
 }
 .gallery {
-    border: 1px red solid;
     height: 100%;
     width: 100%;
 }
@@ -70,7 +70,6 @@ declare var $: any;
     width: 100%;
 }
 .gallery-cell {
-    border: 1px green solid;
     height: 100%;
     width: 351px;
     margin-right: 40px;
