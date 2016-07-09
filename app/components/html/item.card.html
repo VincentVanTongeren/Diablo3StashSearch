@@ -19,7 +19,11 @@
         </span>
         <div class="d3-item-properties">
             <ul class="item-type-right">
-                <li class="item-slot">{{itemViewModel.slotName}}</li>
+                <li class="item-slot">
+                    <span *ngIf="itemViewModel.removeLevelReq" title="Gem of ease used">
+                        <img class="icon" src="http://media.blizzard.com/d3/icons/items/small/unique_gem_003_x1_demonhunter_male.png"/>
+                    </span>{{itemViewModel.slotName}}
+                </li>
                 <li class="item-class-specific d3-color-white" *ngIf="itemViewModel.item.type && itemViewModel.item.type.id.split('_').length > 1" >{{itemViewModel.item.type.id.split('_')[1]}}</li>
             </ul>
             <ul class="item-type">
@@ -66,6 +70,9 @@
                         <img class="gem" [src]="'http://media.blizzard.com/d3/icons/items/small/' + gem.item.icon + '.png' | safeUrl" />
                         <span class="socket-effect" *ngFor="let att of gem.attributes.primary.length > 0 ? gem.attributes.primary : gem.attributes.secondary">
                             {{att.text}}
+                        </span>
+                        <span *ngIf="itemViewModel.consumableUsed" title="Ramaladni's gift used">
+                            <img class="icon" src="http://media.blizzard.com/d3/icons/items/small/consumable_add_sockets_1_demonhunter_male.png"/>
                         </span>
                         <span *ngIf="gem.isJewel" class="d3-color-orange">{{ gem.item.name }}</span>
                         <span *ngIf="gem.isJewel" class="item-jewel-rank">&#x2013; Rank {{ gem.jewelRank }}</span>

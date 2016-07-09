@@ -5,6 +5,7 @@
             <h3>Diablo 3 Stash Search</h3>
         </div>
         <div class="col col-xs-7" id="search-pane">
+            <span (click)="getItemAttributes()">Attributes</span>
         </div>
         <div class="col col-xs-3" id="input-pane">
             <div class="row input-row">
@@ -33,7 +34,7 @@
         <div *ngIf="profileViewModel" class="col col-xs-4" id="profile-pane">
             <div class="row">
                 <div class="col col-xs-12">
-                    <span>{{ profileViewModel.profile.battleTag }}</span><span>{{ profileViewModel.profile.guildName }}</span>
+                    <span>{{ profileViewModel.profile.battleTag }}</span><span>{{ profileViewModel.profile.guildName }}</span><img class="icon" src="/images/refresh.png" (click)="refresh()" />
                 </div>
             </div>
 
@@ -59,7 +60,7 @@
             </div>
         </div>-->
         <div class="col col-xs-5" id="hero-main">
-            <hero [heroViewModel]="selectedHeroViewModel" (itemsSelected)="selectItems($event)" (itemSelected)="selectItem($event)"></hero>
+            <hero [heroViewModel]="selectedHeroViewModel" (heroOutdated)="refreshHero($event)" (itemsSelected)="selectItems($event)" (itemSelected)="selectItem($event)"></hero>
         </div>
         <div class="col col-xs-3" id="item-detail">
             <div class="row" *ngIf="selectedHeroViewModel">

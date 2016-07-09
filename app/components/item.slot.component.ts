@@ -1,10 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { ItemViewModel } from '../viewmodels/itemviewmodel'
 import { SafeUrlPipe, SafeStylePipe } from '../pipes/safe'
+import { ItemCardComponent } from '../components/item.card.component'
 
 @Component({
   selector: 'item-slot',
   pipes: [SafeUrlPipe, SafeStylePipe],
+  directives: [ItemCardComponent],
   styles: [
     `.item-icon, .item-text {
     padding-top: 3px;
@@ -13,6 +15,7 @@ import { SafeUrlPipe, SafeStylePipe } from '../pipes/safe'
 .d3-icon-item-white {
     opacity: 0.4;
 }
+
 `
   ],
   // styleUrls: ['/app/components/css/item.slot.css'],

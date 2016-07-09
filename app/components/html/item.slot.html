@@ -10,7 +10,7 @@
         <li class="item-slot">
             <span [ngClass]="{'d3-color-yellow': itemSlot.isAncient}" class="text-right">{{ itemSlot.slotName }}</span>
         </li>
-        <li *ngIf="itemSlot && itemSlot.item" class="d3-color-{{itemSlot.item.displayColor}}">
+        <li *ngIf="itemSlot && itemSlot.item" class="item-name d3-color-{{itemSlot.item.displayColor}}">
             {{ itemSlot.item.name }}
         </li>
     </ul>

@@ -57,6 +57,8 @@ export class ItemService
                         if (itemViewModel.item.attributesRaw){
                             itemViewModel.isAncient = Boolean(itemViewModel.item.attributesRaw["Ancient_Rank"]);
                             itemViewModel.sockets = [];
+                            itemViewModel.consumableUsed = Boolean(itemViewModel.item.attributesRaw["ConsumableAddSockets"]);
+                            itemViewModel.removeLevelReq = Boolean(itemViewModel.item.attributesRaw["RemoveLevelReq"]);
                             
                             for (var i = 0; i < (Boolean(itemViewModel.item.attributesRaw["Sockets"]) ? itemViewModel.item.attributesRaw["Sockets"].min : 0); i++)
                                 itemViewModel.sockets.push({});

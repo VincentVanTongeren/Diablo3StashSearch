@@ -3,7 +3,6 @@ import { HeroViewModel } from '../viewmodels/heroviewmodel'
 import { ItemViewModel } from '../viewmodels/itemviewmodel'
 import { ItemSlotComponent } from '../components/item.slot.component';
 import { ItemCardComponent } from '../components/item.card.component';
-import { CharacterType } from '../interfaces/enum'
 
 @Component({
   selector: 'hero',
@@ -44,6 +43,8 @@ export class HeroComponent {
   public itemSelected = new EventEmitter<ItemViewModel>();
   @Output()
   public itemsSelected = new EventEmitter<Array<ItemViewModel>>();
+  @Output()
+  public heroOutdated = new EventEmitter<HeroViewModel>(); 
 
     public selectItem(selectedItemViewModel: ItemViewModel): void {
         if (selectedItemViewModel.item)
@@ -72,5 +73,9 @@ export class HeroComponent {
         if (items)
             this.itemsSelected.emit(items);
 
+    }
+
+    public refresh(): void{
+        this.heroOutdated.emit(this.heroViewModel);
     }
 }

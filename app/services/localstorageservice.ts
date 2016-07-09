@@ -22,4 +22,9 @@ export class LocalStorageService {
             localStorage.removeItem(key);
         localStorage.setItem(key, item);
     }
+
+    public removeItem(key: string): void {
+        if (localStorage[key])
+            localStorage.removeItem(key);
+        }
 }

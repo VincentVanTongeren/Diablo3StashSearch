@@ -129,6 +129,9 @@ var HeroService = (function () {
             return detailedHeroViewModel;
         });
     };
+    HeroService.prototype.refresh = function (heroId) {
+        this._localStorageService.removeItem("hero" + heroId);
+    };
     HeroService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http, item_service_1.ItemService, localstorageservice_1.LocalStorageService])

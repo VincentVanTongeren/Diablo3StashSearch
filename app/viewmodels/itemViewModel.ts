@@ -14,6 +14,8 @@ export class ItemViewModel{
     public elementalType: string;
     public augment: number;
     public effect: string;
+    public removeLevelReq: boolean;
+    public consumableUsed: boolean;
 
     constructor(public item: Item, public hasDetails: boolean){
         if (!item)

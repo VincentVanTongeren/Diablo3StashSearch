@@ -1,7 +1,7 @@
 <div class="row" *ngIf="heroViewModel">
     <div class="col col-xs-12">
         <span>
-            <a href="#" (click)="selectItems('player')">{{ heroViewModel.hero.name }}</a>
+            <a href="#" (click)="selectItems('player')">{{ heroViewModel.hero.name }}</a><img class="icon" src="/images/refresh.png" (click)="refresh" />
         </span>
     </div>
 </div>

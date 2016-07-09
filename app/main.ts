@@ -8,5 +8,6 @@ import { LocalStorageService } from './services/localstorageservice'
 import { ProfileService } from './services/profile.service'
 import { HeroService } from './services/hero.service'
 import { ItemService } from './services/item.service'
+import { AttributeService } from './services/attribute.service'
 
-bootstrap(AppComponent, [ LocalStorageService, ProfileService, HeroService, ItemService, HTTP_PROVIDERS, ROUTER_PROVIDERS, FORM_PROVIDERS]);
+bootstrap(AppComponent, [ LocalStorageService, ProfileService, HeroService, ItemService, AttributeService, HTTP_PROVIDERS, ROUTER_PROVIDERS, FORM_PROVIDERS]);

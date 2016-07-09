@@ -153,4 +153,8 @@ export class HeroService
             });
             
     }
+
+    public refresh(heroId: number): void {
+        this._localStorageService.removeItem("hero" + heroId);
+    }
 }

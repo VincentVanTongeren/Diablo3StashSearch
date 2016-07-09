@@ -4,9 +4,11 @@ import { LocalStorageService } from './services/localstorageservice'
 import { ProfileService } from './services/profile.service'
 import { HeroService } from './services/hero.service'
 import { ItemService } from './services/item.service'
+import { AttributeService } from './services/attribute.service'
 import { ProfileViewModel } from './viewmodels/profileviewmodel'
 import { HeroViewModel } from './viewmodels/heroviewmodel'
 import { ItemViewModel } from './viewmodels/itemviewmodel'
+import { ItemAttribute } from './interfaces/attributes'
 import { Profile, Hero, Item } from './interfaces/profile'
 import { BattleNet } from './interfaces/battlenet'
 import { ItemCardComponent } from './components/item.card.component';
@@ -77,7 +79,7 @@ export class ProfileLoader {
     public selectedItemViewModel: ItemViewModel;
     public itemDetailsHtml: string;
     public highlightedItemViewModels: Array<ItemViewModel>;
-
+    
     @Output()
     public heroSelected = new EventEmitter<HeroViewModel>();
 
@@ -85,15 +87,14 @@ export class ProfileLoader {
         private _profileService: ProfileService,  
         private _itemService: ItemService,
         private _heroService: HeroService,
+        private _attributeService: AttributeService,
         private _localStorageService: LocalStorageService){
 
         this.resetProfileLoader();
 
         if (this.profileKey)
         {
-            this._profileService.getProfileViewModel(new BattleNet(this.apiKey, this.locale, this.profileKey)).then((profileViewModel: ProfileViewModel) =>{
-                this.profileViewModel = profileViewModel;
-            });
+            this.loadProfile();
         }
     }
 
@@ -108,12 +109,7 @@ export class ProfileLoader {
         this._localStorageService.storeItemAsString("apikey", this.apiKey);
         this._localStorageService.storeItemAsString("profileKey", this.profileKey);
         this._localStorageService.storeItemAsString("locale", this.locale);
-
-        this._profileService.getProfileViewModel(new BattleNet(this.apiKey, this.locale, this.profileKey)).then((profileViewModel: ProfileViewModel) =>{
-            this.profileViewModel = profileViewModel;
-            this.selectedHeroViewModel = null;
-            this.selectedItemViewModel = null;
-        });
+        this.loadProfile();
     }
 
     public selectHero(heroViewModel: HeroViewModel): void{
@@ -134,6 +130,24 @@ export class ProfileLoader {
         if (selectedItemViewModels){
             this.highlightedItemViewModels = selectedItemViewModels;
         }
+    }
+
+    public refresh(): void{
+        this._profileService.refresh(this.profileKey);
+        this.profileViewModel.heroes.forEach(hero => this._heroService.refresh(hero.hero.id));
+        this.loadProfile();
+    }
+
+    public loadProfile(): void {
+        this._profileService.getProfileViewModel(new BattleNet(this.apiKey, this.locale, this.profileKey)).then((profileViewModel: ProfileViewModel) =>{
+            this.profileViewModel = profileViewModel;
+            this.selectedHeroViewModel = null;
+            this.selectedItemViewModel = null;
+        });
+    }
+
+    public getItemAttributes(){
+        this._attributeService.getItemAttributes(this.profileViewModel.heroes);
     }
 
     public show(obj: any){

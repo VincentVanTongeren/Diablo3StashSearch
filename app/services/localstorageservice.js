@@ -28,6 +28,10 @@ var LocalStorageService = (function () {
             localStorage.removeItem(key);
         localStorage.setItem(key, item);
     };
+    LocalStorageService.prototype.removeItem = function (key) {
+        if (localStorage[key])
+            localStorage.removeItem(key);
+    };
     LocalStorageService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [])

@@ -47,7 +47,6 @@ export class ProfileService
         return profilePromise;
     }
 
-
     public getProfileViewModel(battleNet: BattleNet): Promise<ProfileViewModel> {
         var promise = this.getProfile(battleNet);
         return promise.then((profile: Profile) => {
@@ -73,5 +72,9 @@ export class ProfileService
             }
             return profileViewModel;
         });
+    }
+
+    public refresh(profileKey: string): void {
+        this._localStorageService.removeItem(profileKey);
     }
 }

@@ -16,6 +16,7 @@ var HeroComponent = (function () {
     function HeroComponent() {
         this.itemSelected = new core_1.EventEmitter();
         this.itemsSelected = new core_1.EventEmitter();
+        this.heroOutdated = new core_1.EventEmitter();
     }
     HeroComponent.prototype.selectItem = function (selectedItemViewModel) {
         if (selectedItemViewModel.item)
@@ -43,6 +44,9 @@ var HeroComponent = (function () {
         if (items)
             this.itemsSelected.emit(items);
     };
+    HeroComponent.prototype.refresh = function () {
+        this.heroOutdated.emit(this.heroViewModel);
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', heroviewmodel_1.HeroViewModel)
@@ -55,6 +59,10 @@ var HeroComponent = (function () {
         core_1.Output(), 
         __metadata('design:type', Object)
     ], HeroComponent.prototype, "itemsSelected", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], HeroComponent.prototype, "heroOutdated", void 0);
     HeroComponent = __decorate([
         core_1.Component({
             selector: 'hero',

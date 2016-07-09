@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var itemviewmodel_1 = require('../viewmodels/itemviewmodel');
 var safe_1 = require('../pipes/safe');
+var item_card_component_1 = require('../components/item.card.component');
 var ItemSlotComponent = (function () {
     function ItemSlotComponent() {
     }
@@ -22,8 +23,9 @@ var ItemSlotComponent = (function () {
         core_1.Component({
             selector: 'item-slot',
             pipes: [safe_1.SafeUrlPipe, safe_1.SafeStylePipe],
+            directives: [item_card_component_1.ItemCardComponent],
             styles: [
-                ".item-icon, .item-text {\n    padding-top: 3px;\n    height: 72px;\n}\n.d3-icon-item-white {\n    opacity: 0.4;\n}\n"
+                ".item-icon, .item-text {\n    padding-top: 3px;\n    height: 72px;\n}\n.d3-icon-item-white {\n    opacity: 0.4;\n}\n\n"
             ],
             // styleUrls: ['/app/components/css/item.slot.css'],
             templateUrl: '/app/components/html/item.slot.html'

@@ -64,6 +64,9 @@ var ProfileService = (function () {
             return profileViewModel;
         });
     };
+    ProfileService.prototype.refresh = function (profileKey) {
+        this._localStorageService.removeItem(profileKey);
+    };
     ProfileService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http, hero_service_1.HeroService, localstorageservice_1.LocalStorageService])
