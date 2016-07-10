@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 
 import { Hero, Follower, Gem } from '../interfaces/profile'
 import { BattleNet } from '../interfaces/battlenet'
@@ -20,7 +20,11 @@ export class HeroService
         private _http: Http,
         private _itemService: ItemService,
         private _localStorageService: LocalStorageService
-    ){ }
+    ){ 
+        this.heroLoaded = new EventEmitter<HeroViewModel>();
+    }
+
+    public heroLoaded: EventEmitter<HeroViewModel>;
 
     private getHero(battleNet: BattleNet, heroId: number): Promise<Hero> {
 
@@ -89,21 +93,6 @@ export class HeroService
 
         heroViewModel.legendaryGems = legendaryGems;
 
-        var dummyFollower = new Follower();
-        var templar = heroViewModel.hero.followers.templar ? heroViewModel.hero.followers.templar : dummyFollower;
-        var scoundrel = heroViewModel.hero.followers.scoundrel ? heroViewModel.hero.followers.scoundrel : dummyFollower;
-        var enchantress = heroViewModel.hero.followers.enchantress ? heroViewModel.hero.followers.enchantress : dummyFollower;
-
-        this.setFollowerItems(templar, ["offHand"], battleNet).then((items: ItemViewModel[]) => {
-            heroViewModel.templarItems = items;
-        });
-        this.setFollowerItems(scoundrel, null, battleNet).then((items: ItemViewModel[]) => {
-            heroViewModel.scoundrelItems = items;
-        });
-        this.setFollowerItems(enchantress, null, battleNet).then((items: ItemViewModel[]) => {
-            heroViewModel.enchantressItems = items;
-        });
-
         heroViewModel.items = items;
 
     }
@@ -145,6 +134,25 @@ export class HeroService
                 this._itemService.createItems(hero.items, topToBottomSlots, battleNet).then((itemViewModels: ItemViewModel[]) => {
                     detailedHeroViewModel.items = itemViewModels;
                     this.enrichHero(detailedHeroViewModel, battleNet);
+
+                    var dummyFollower = new Follower();
+                    var templar = detailedHeroViewModel.hero.followers.templar ? heroViewModel.hero.followers.templar : dummyFollower;
+                    var scoundrel = detailedHeroViewModel.hero.followers.scoundrel ? heroViewModel.hero.followers.scoundrel : dummyFollower;
+                    var enchantress = detailedHeroViewModel.hero.followers.enchantress ? heroViewModel.hero.followers.enchantress : dummyFollower;
+
+                    var promises = new Array<Promise<void>>();
+
+                    var templarItemsPromise = this.setFollowerItems(templar, ["offHand"], battleNet).then((items: ItemViewModel[]) => {
+                        detailedHeroViewModel.templarItems = items;
+                    });
+                    var scoundrelItemsPromise = this.setFollowerItems(scoundrel, null, battleNet).then((items: ItemViewModel[]) => {
+                        detailedHeroViewModel.scoundrelItems = items;
+                    });
+                    var enchantressItemsPromise = this.setFollowerItems(enchantress, null, battleNet).then((items: ItemViewModel[]) => {
+                        detailedHeroViewModel.enchantressItems = items;
+                    });
+
+                    Promise.all<void>([templarItemsPromise, scoundrelItemsPromise, enchantressItemsPromise]).then(() => this.heroLoaded.emit(detailedHeroViewModel));
                 });
 
                 var index = heroes.indexOf(heroViewModel);
@@ -152,6 +160,23 @@ export class HeroService
                 return detailedHeroViewModel;
             });
             
+    }
+    
+    public getProfileItems(heroes: HeroViewModel[]): Array<string>{
+        var items = new Array<string>();
+        heroes.forEach(hero => {
+            if (hero.hasItems())
+                hero.getItems().forEach(itemViewModel => {
+                    if (itemViewModel && itemViewModel.item)
+                    {
+                        if (items.indexOf(itemViewModel.item.name) < 0){
+                            items.push(itemViewModel.item.name);
+                        }
+                    }
+                });
+        });
+
+        return items.sort();
     }
 
     public refresh(heroId: number): void {

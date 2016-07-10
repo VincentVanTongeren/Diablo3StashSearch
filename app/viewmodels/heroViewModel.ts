@@ -33,4 +33,21 @@ export class HeroViewModel{
     public getAncientCount(): number {
         return this.items ? this.items.filter(x => Boolean(x.item) && x.isAncient).length : 0;
     }
+
+    public hasItems(): boolean {
+        return Boolean(this.items) || Boolean(this.templarItems) || Boolean(this.scoundrelItems) || Boolean(this.enchantressItems);
+    }
+
+    public getItems(): Array<ItemViewModel>{
+        var items = new Array<ItemViewModel>();
+        if (this.items)
+            this.items.forEach(item => items.push(item));
+        if (this.templarItems)
+            this.templarItems.forEach(item => items.push(item));
+        if (this.scoundrelItems)
+            this.scoundrelItems.forEach(item => items.push(item));
+        if (this.enchantressItems)
+            this.enchantressItems.forEach(item => items.push(item));
+        return items;
+    }
 }

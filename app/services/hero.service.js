@@ -20,6 +20,7 @@ var HeroService = (function () {
         this._http = _http;
         this._itemService = _itemService;
         this._localStorageService = _localStorageService;
+        this.heroLoaded = new core_1.EventEmitter();
     }
     HeroService.prototype.getHero = function (battleNet, heroId) {
         var _this = this;
@@ -75,19 +76,6 @@ var HeroService = (function () {
                 heroViewModel.sets.push(x);
         });
         heroViewModel.legendaryGems = legendaryGems;
-        var dummyFollower = new profile_1.Follower();
-        var templar = heroViewModel.hero.followers.templar ? heroViewModel.hero.followers.templar : dummyFollower;
-        var scoundrel = heroViewModel.hero.followers.scoundrel ? heroViewModel.hero.followers.scoundrel : dummyFollower;
-        var enchantress = heroViewModel.hero.followers.enchantress ? heroViewModel.hero.followers.enchantress : dummyFollower;
-        this.setFollowerItems(templar, ["offHand"], battleNet).then(function (items) {
-            heroViewModel.templarItems = items;
-        });
-        this.setFollowerItems(scoundrel, null, battleNet).then(function (items) {
-            heroViewModel.scoundrelItems = items;
-        });
-        this.setFollowerItems(enchantress, null, battleNet).then(function (items) {
-            heroViewModel.enchantressItems = items;
-        });
         heroViewModel.items = items;
     };
     HeroService.prototype.setFollowerItems = function (follower, extraSlots, battleNet) {
@@ -123,11 +111,40 @@ var HeroService = (function () {
             _this._itemService.createItems(hero.items, topToBottomSlots, battleNet).then(function (itemViewModels) {
                 detailedHeroViewModel.items = itemViewModels;
                 _this.enrichHero(detailedHeroViewModel, battleNet);
+                var dummyFollower = new profile_1.Follower();
+                var templar = detailedHeroViewModel.hero.followers.templar ? heroViewModel.hero.followers.templar : dummyFollower;
+                var scoundrel = detailedHeroViewModel.hero.followers.scoundrel ? heroViewModel.hero.followers.scoundrel : dummyFollower;
+                var enchantress = detailedHeroViewModel.hero.followers.enchantress ? heroViewModel.hero.followers.enchantress : dummyFollower;
+                var promises = new Array();
+                var templarItemsPromise = _this.setFollowerItems(templar, ["offHand"], battleNet).then(function (items) {
+                    detailedHeroViewModel.templarItems = items;
+                });
+                var scoundrelItemsPromise = _this.setFollowerItems(scoundrel, null, battleNet).then(function (items) {
+                    detailedHeroViewModel.scoundrelItems = items;
+                });
+                var enchantressItemsPromise = _this.setFollowerItems(enchantress, null, battleNet).then(function (items) {
+                    detailedHeroViewModel.enchantressItems = items;
+                });
+                Promise.all([templarItemsPromise, scoundrelItemsPromise, enchantressItemsPromise]).then(function () { return _this.heroLoaded.emit(detailedHeroViewModel); });
             });
             var index = heroes.indexOf(heroViewModel);
             heroes[index] = detailedHeroViewModel;
             return detailedHeroViewModel;
         });
+    };
+    HeroService.prototype.getProfileItems = function (heroes) {
+        var items = new Array();
+        heroes.forEach(function (hero) {
+            if (hero.hasItems())
+                hero.getItems().forEach(function (itemViewModel) {
+                    if (itemViewModel && itemViewModel.item) {
+                        if (items.indexOf(itemViewModel.item.name) < 0) {
+                            items.push(itemViewModel.item.name);
+                        }
+                    }
+                });
+        });
+        return items.sort();
     };
     HeroService.prototype.refresh = function (heroId) {
         this._localStorageService.removeItem("hero" + heroId);

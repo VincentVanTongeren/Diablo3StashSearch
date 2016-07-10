@@ -11,13 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var hero_service_1 = require('./hero.service');
+var attribute_service_1 = require('./attribute.service');
 var profileviewmodel_1 = require('../viewmodels/profileviewmodel');
 var localstorageservice_1 = require('./localstorageservice');
 // import 'rxjs/add/operator/toPromise';
 var ProfileService = (function () {
-    function ProfileService(_http, _heroService, _localStorageService) {
+    function ProfileService(_http, _heroService, _attributeService, _localStorageService) {
         this._http = _http;
         this._heroService = _heroService;
+        this._attributeService = _attributeService;
         this._localStorageService = _localStorageService;
     }
     ProfileService.prototype.getProfile = function (battleNet) {
@@ -51,8 +53,9 @@ var ProfileService = (function () {
                     var createdHeroViewModel = _this._heroService.createHeroViewModel(hero, battleNet);
                     profileViewModel.heroes.push(createdHeroViewModel);
                 });
+                var heroPromises = new Array();
                 profileViewModel.heroes.forEach(function (heroViewModel) {
-                    _this._heroService.getHeroViewModel(profileViewModel.heroes, heroViewModel, battleNet).then(function (processedHeroViewModel) {
+                    var heroPromise = _this._heroService.getHeroViewModel(profileViewModel.heroes, heroViewModel, battleNet).then(function (processedHeroViewModel) {
                         var currentHero = profileViewModel.heroes.filter(function (x) { return x.hero.id == processedHeroViewModel.hero.id; });
                         if (currentHero && currentHero.length > 0) {
                             var index = profileViewModel.heroes.indexOf(currentHero[0]);
@@ -69,7 +72,7 @@ var ProfileService = (function () {
     };
     ProfileService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, hero_service_1.HeroService, localstorageservice_1.LocalStorageService])
+        __metadata('design:paramtypes', [http_1.Http, hero_service_1.HeroService, attribute_service_1.AttributeService, localstorageservice_1.LocalStorageService])
     ], ProfileService);
     return ProfileService;
 }());

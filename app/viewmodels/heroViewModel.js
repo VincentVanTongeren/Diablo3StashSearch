@@ -20,6 +20,21 @@ var HeroViewModel = (function () {
     HeroViewModel.prototype.getAncientCount = function () {
         return this.items ? this.items.filter(function (x) { return Boolean(x.item) && x.isAncient; }).length : 0;
     };
+    HeroViewModel.prototype.hasItems = function () {
+        return Boolean(this.items) || Boolean(this.templarItems) || Boolean(this.scoundrelItems) || Boolean(this.enchantressItems);
+    };
+    HeroViewModel.prototype.getItems = function () {
+        var items = new Array();
+        if (this.items)
+            this.items.forEach(function (item) { return items.push(item); });
+        if (this.templarItems)
+            this.templarItems.forEach(function (item) { return items.push(item); });
+        if (this.scoundrelItems)
+            this.scoundrelItems.forEach(function (item) { return items.push(item); });
+        if (this.enchantressItems)
+            this.enchantressItems.forEach(function (item) { return items.push(item); });
+        return items;
+    };
     return HeroViewModel;
 }());
 exports.HeroViewModel = HeroViewModel;

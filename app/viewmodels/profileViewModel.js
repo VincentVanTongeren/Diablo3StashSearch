@@ -14,6 +14,7 @@ var ProfileViewModel = (function () {
     function ProfileViewModel(profile) {
         this.profile = profile;
         this.heroes = [];
+        this.itemAttributes = [];
     }
     ProfileViewModel = __decorate([
         core_1.Component({

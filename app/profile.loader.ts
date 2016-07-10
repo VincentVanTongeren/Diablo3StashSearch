@@ -53,7 +53,9 @@ import { HeroTabComponent } from './components/hero.tab.component';
 #profile-pane li {
     list-style-type:none
 }
-
+#search-pane select {
+    margin: 3px;
+}
 
 #hero-pane {
     height: 100%;
@@ -79,6 +81,9 @@ export class ProfileLoader {
     public selectedItemViewModel: ItemViewModel;
     public itemDetailsHtml: string;
     public highlightedItemViewModels: Array<ItemViewModel>;
+
+    public selectedAttribute: string;
+    public selectedItem: string;
     
     @Output()
     public heroSelected = new EventEmitter<HeroViewModel>();
@@ -91,6 +96,15 @@ export class ProfileLoader {
         private _localStorageService: LocalStorageService){
 
         this.resetProfileLoader();
+
+        this._heroService.heroLoaded.subscribe((heroViewModel: HeroViewModel) => {
+            this.profileViewModel.itemAttributes = this._attributeService.getItemAttributes(this.profileViewModel.heroes);
+            this.selectedAttribute = "-- Select item attribute --";
+            this.profileViewModel.itemAttributes.unshift(new ItemAttribute("", this.selectedAttribute));
+            this.profileViewModel.profileItems = this._heroService.getProfileItems(this.profileViewModel.heroes);
+            this.selectedItem = "-- Select item --";
+            this.profileViewModel.profileItems.unshift(this.selectedItem);
+        })
 
         if (this.profileKey)
         {
@@ -141,13 +155,36 @@ export class ProfileLoader {
     public loadProfile(): void {
         this._profileService.getProfileViewModel(new BattleNet(this.apiKey, this.locale, this.profileKey)).then((profileViewModel: ProfileViewModel) =>{
             this.profileViewModel = profileViewModel;
+
             this.selectedHeroViewModel = null;
             this.selectedItemViewModel = null;
         });
     }
 
-    public getItemAttributes(){
-        this._attributeService.getItemAttributes(this.profileViewModel.heroes);
+    public search(): void {
+        var selectedItems = new Array<ItemViewModel>();
+        if (!this.selectedItem && !this.selectedAttribute)
+            return;
+
+        this.profileViewModel.heroes.forEach(hero => {
+            hero.getItems().forEach(item => {
+                if (item.item &&
+                    ((!this.selectedItem || this.selectedItem.indexOf("--") == 0 || item.item.name == this.selectedItem) && 
+                    (!this.selectedAttribute || this.selectedAttribute.indexOf("--") == 0 || Object.keys(item.item.attributesRaw).indexOf(this.selectedAttribute) >= 0)))
+                    selectedItems.push(item);
+            });
+        });
+
+        if (selectedItems.length == 0)
+            alert("No items found");
+        else
+            this.highlightedItemViewModels = selectedItems;
+    }
+
+    public go(event){
+        debugger;
+        var a = event;
+//        selectedAttribute=searchAttribute.value
     }
 
     public show(obj: any){

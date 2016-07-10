@@ -6,6 +6,7 @@ import { Headers, Http } from '@angular/http';
 
 import { HeroService } from './hero.service'
 import { ItemService } from './item.service'
+import { AttributeService } from './attribute.service'
 
 import { ProfileViewModel } from '../viewmodels/profileviewmodel'
 import { HeroViewModel } from '../viewmodels/heroviewmodel'
@@ -21,8 +22,10 @@ export class ProfileService
     constructor(
         private _http: Http,
         private _heroService: HeroService,
+        private _attributeService: AttributeService,
         private _localStorageService: LocalStorageService
-    ){ }
+    ){ 
+    }
     
     private getProfile(battleNet: BattleNet): Promise<Profile> {
         var cachedProfile = this._localStorageService.getItem<Profile>(battleNet.profileKey);
@@ -58,8 +61,9 @@ export class ProfileService
                     profileViewModel.heroes.push(createdHeroViewModel); 
                 });
 
+                var heroPromises = new Array<Promise<HeroViewModel>>();
                 profileViewModel.heroes.forEach(heroViewModel => {
-                    this._heroService.getHeroViewModel(profileViewModel.heroes, heroViewModel, battleNet).then((processedHeroViewModel: HeroViewModel) => { 
+                    var heroPromise = this._heroService.getHeroViewModel(profileViewModel.heroes, heroViewModel, battleNet).then((processedHeroViewModel: HeroViewModel) => { 
                         var currentHero = profileViewModel.heroes.filter(x => x.hero.id == processedHeroViewModel.hero.id);
                         if (currentHero && currentHero.length > 0)
                         {
@@ -68,7 +72,6 @@ export class ProfileService
                         }
                     });
                 })
-
             }
             return profileViewModel;
         });

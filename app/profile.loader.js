@@ -15,6 +15,7 @@ var hero_service_1 = require('./services/hero.service');
 var item_service_1 = require('./services/item.service');
 var attribute_service_1 = require('./services/attribute.service');
 var profileviewmodel_1 = require('./viewmodels/profileviewmodel');
+var attributes_1 = require('./interfaces/attributes');
 var battlenet_1 = require('./interfaces/battlenet');
 var item_card_component_1 = require('./components/item.card.component');
 var item_carousel_component_1 = require('./components/item.carousel.component');
@@ -22,6 +23,7 @@ var hero_component_1 = require('./components/hero.component');
 var hero_tab_component_1 = require('./components/hero.tab.component');
 var ProfileLoader = (function () {
     function ProfileLoader(_profileService, _itemService, _heroService, _attributeService, _localStorageService) {
+        var _this = this;
         this._profileService = _profileService;
         this._itemService = _itemService;
         this._heroService = _heroService;
@@ -32,6 +34,14 @@ var ProfileLoader = (function () {
         this.locale = "eu";
         this.heroSelected = new core_1.EventEmitter();
         this.resetProfileLoader();
+        this._heroService.heroLoaded.subscribe(function (heroViewModel) {
+            _this.profileViewModel.itemAttributes = _this._attributeService.getItemAttributes(_this.profileViewModel.heroes);
+            _this.selectedAttribute = "-- Select item attribute --";
+            _this.profileViewModel.itemAttributes.unshift(new attributes_1.ItemAttribute("", _this.selectedAttribute));
+            _this.profileViewModel.profileItems = _this._heroService.getProfileItems(_this.profileViewModel.heroes);
+            _this.selectedItem = "-- Select item --";
+            _this.profileViewModel.profileItems.unshift(_this.selectedItem);
+        });
         if (this.profileKey) {
             this.loadProfile();
         }
@@ -81,8 +91,28 @@ var ProfileLoader = (function () {
             _this.selectedItemViewModel = null;
         });
     };
-    ProfileLoader.prototype.getItemAttributes = function () {
-        this._attributeService.getItemAttributes(this.profileViewModel.heroes);
+    ProfileLoader.prototype.search = function () {
+        var _this = this;
+        var selectedItems = new Array();
+        if (!this.selectedItem && !this.selectedAttribute)
+            return;
+        this.profileViewModel.heroes.forEach(function (hero) {
+            hero.getItems().forEach(function (item) {
+                if (item.item &&
+                    ((!_this.selectedItem || _this.selectedItem.indexOf("--") == 0 || item.item.name == _this.selectedItem) &&
+                        (!_this.selectedAttribute || _this.selectedAttribute.indexOf("--") == 0 || Object.keys(item.item.attributesRaw).indexOf(_this.selectedAttribute) >= 0)))
+                    selectedItems.push(item);
+            });
+        });
+        if (selectedItems.length == 0)
+            alert("No items found");
+        else
+            this.highlightedItemViewModels = selectedItems;
+    };
+    ProfileLoader.prototype.go = function (event) {
+        debugger;
+        var a = event;
+        //        selectedAttribute=searchAttribute.value
     };
     ProfileLoader.prototype.show = function (obj) {
         alert(JSON.stringify(obj));
@@ -95,7 +125,7 @@ var ProfileLoader = (function () {
         core_1.Component({
             directives: [profileviewmodel_1.ProfileViewModel, item_card_component_1.ItemCardComponent, hero_component_1.HeroComponent, hero_tab_component_1.HeroTabComponent, item_carousel_component_1.ItemCarouselComponent],
             selector: 'profile-loader',
-            styles: ["\n.hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n.hero-tab.active {\n    border: 1px solid #555;\n}\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane .input-row {\n    margin: 3px;\n}\n#profile-pane {\n    height: 100%;\n}\n#profile-pane ul {\n    padding: 0;\n}\n#profile-pane li {\n    list-style-type:none\n}\n\n\n#hero-pane {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n#item-detail .item-card {\n    max-width: 351px;\n    margin-right: 0;\n}\n\n"],
+            styles: ["\n.hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n.hero-tab.active {\n    border: 1px solid #555;\n}\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane .input-row {\n    margin: 3px;\n}\n#profile-pane {\n    height: 100%;\n}\n#profile-pane ul {\n    padding: 0;\n}\n#profile-pane li {\n    list-style-type:none\n}\n#search-pane select {\n    margin: 3px;\n}\n\n#hero-pane {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n#item-detail .item-card {\n    max-width: 351px;\n    margin-right: 0;\n}\n\n"],
             templateUrl: '../app/html/profile.loader.html'
         }), 
         __metadata('design:paramtypes', [profile_service_1.ProfileService, item_service_1.ItemService, hero_service_1.HeroService, attribute_service_1.AttributeService, localstorageservice_1.LocalStorageService])

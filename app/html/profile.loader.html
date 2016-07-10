@@ -1,11 +1,24 @@
 <div class="col col-xs-12">
 
     <div class="row app-header" id="app-header">
-        <div class="col col-xs-2">
+        <div class="col col-xs-4">
             <h3>Diablo 3 Stash Search</h3>
         </div>
-        <div class="col col-xs-7" id="search-pane">
-            <span (click)="getItemAttributes()">Attributes</span>
+        <div class="col col-xs-5" id="search-pane">
+            <div class="row">
+                <div class="col col-xs-4">
+                    <select class="form-control input-sm" #searchAttribute (change)="selectedAttribute=searchAttribute.value" *ngIf="profileViewModel && profileViewModel.itemAttributes">
+                        <option *ngFor="let att of profileViewModel.itemAttributes" value="{{att.rawAttribute}}">{{att.attribute}}</option> 
+                    </select>
+                    <select class="form-control input-sm" #searchItem (change)="selectedItem=searchItem.value" *ngIf="profileViewModel && profileViewModel.profileItems">
+                        <option *ngFor="let item of profileViewModel.profileItems" value="{{item}}">{{item}}</option> 
+                    </select>
+                </div>
+                <div class="col col-xs-4">
+                    <button class="form-control btn btn-primary" (click)="search()">Search</button>
+                </div>
+
+            </div>
         </div>
         <div class="col col-xs-3" id="input-pane">
             <div class="row input-row">

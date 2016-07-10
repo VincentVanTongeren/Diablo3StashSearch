@@ -104,6 +104,6 @@ li.char-type .small-hardcore {
 export class HeroTabComponent { 
   @Input()
   public heroViewModel: HeroViewModel;
-    @Input()
+  @Input()
   public isSelected: boolean;
 }
