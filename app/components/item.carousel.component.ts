@@ -88,6 +88,29 @@ private _flickity: any;
         this.items = [];
 }
 
+    public getItems(): SearchResultViewModel[]{
+
+        var items = new Array<SearchResultViewModel>();
+        if (!this.items)
+            return items;
+
+        var leftToRightSlots: Array<string> = [
+            "Main Hand", "Off Hand",
+            "Neck", "Left Finger", "Right Finger",
+            "Head", "Hands", "Torso", "Legs", "Shoulders", "Feet",
+            "Bracers", "Waist",
+            "Special"
+        ];
+
+        leftToRightSlots.forEach(slot => {
+            this.items.filter(x => x.item.slotName == slot).forEach(item => {
+                items.push(item);
+            });
+        });
+
+        return items;
+    }
+
     ngOnChanges(changes){
         if (changes.items.currentValue)
         {

@@ -17,6 +17,25 @@ var ItemCarouselComponent = (function () {
         if (event && event.currentTarget == event.srcElement)
             this.items = [];
     };
+    ItemCarouselComponent.prototype.getItems = function () {
+        var _this = this;
+        var items = new Array();
+        if (!this.items)
+            return items;
+        var leftToRightSlots = [
+            "Main Hand", "Off Hand",
+            "Neck", "Left Finger", "Right Finger",
+            "Head", "Hands", "Torso", "Legs", "Shoulders", "Feet",
+            "Bracers", "Waist",
+            "Special"
+        ];
+        leftToRightSlots.forEach(function (slot) {
+            _this.items.filter(function (x) { return x.item.slotName == slot; }).forEach(function (item) {
+                items.push(item);
+            });
+        });
+        return items;
+    };
     ItemCarouselComponent.prototype.ngOnChanges = function (changes) {
         if (changes.items.currentValue) {
             if (this._flickity)

@@ -181,7 +181,7 @@ export class ProfileLoader {
         if (selectedItems.length == 0)
             alert("No items found");
         else
-            this.highlightedItemViewModels = selectedItems;
+            this.searchResults = selectedItems;
     }
 
 

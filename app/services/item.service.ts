@@ -53,7 +53,7 @@ export class ItemService
                 {
                     this.getItem(battleNet, item.tooltipParams.split('/')[1]).then((detailedItem: Item) => {
                         var itemViewModel = new ItemViewModel(detailedItem, true);
-                        itemViewModel.slotName = itemSlotName.substring(0, 1).toUpperCase() + itemSlotName.substring(1).replace(/(?=[A-Z])/, " ");
+                        itemViewModel.slotName = itemSlotName;
                         if (itemViewModel.item.attributesRaw){
                             itemViewModel.isAncient = Boolean(itemViewModel.item.attributesRaw["Ancient_Rank"]);
                             itemViewModel.sockets = [];

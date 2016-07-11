@@ -3,7 +3,7 @@
   <div class="gallery js-flickity" >
     <div class="flickity-viewport">
       <div class="flickity-slider" >
-        <div *ngFor="let item of items" class="gallery-cell item-card">
+        <div *ngFor="let item of getItems()" class="gallery-cell item-card">
           <search-result [searchResult]="item"></search-result>
         </div>
       </div>

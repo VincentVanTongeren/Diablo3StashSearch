@@ -52,7 +52,7 @@ var ItemService = (function () {
                 if (item) {
                     _this.getItem(battleNet, item.tooltipParams.split('/')[1]).then(function (detailedItem) {
                         var itemViewModel = new itemviewmodel_1.ItemViewModel(detailedItem, true);
-                        itemViewModel.slotName = itemSlotName.substring(0, 1).toUpperCase() + itemSlotName.substring(1).replace(/(?=[A-Z])/, " ");
+                        itemViewModel.slotName = itemSlotName;
                         if (itemViewModel.item.attributesRaw) {
                             itemViewModel.isAncient = Boolean(itemViewModel.item.attributesRaw["Ancient_Rank"]);
                             itemViewModel.sockets = [];
