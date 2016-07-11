@@ -4,7 +4,7 @@
     <div class="flickity-viewport">
       <div class="flickity-slider" >
         <div *ngFor="let item of items" class="gallery-cell item-card">
-          <item-card [itemViewModel]="item"></item-card>
+          <search-result [searchResult]="item"></search-result>
         </div>
       </div>
     </div>

@@ -1,13 +1,13 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { ItemViewModel } from '../viewmodels/itemviewmodel'
+import { SearchResultViewModel } from '../viewmodels/searchresultviewmodel'
 import { SafeUrlPipe, SafeStylePipe } from '../pipes/safe'
-import { ItemCardComponent } from '../components/item.card.component'
+import { SearchResultComponent } from '../components/searchresult.component'
 
 declare var $: any;
 
 @Component({
   selector: 'item-carousel',
-  directives: [ItemCardComponent],
+  directives: [SearchResultComponent],
   templateUrl: '/app/components/html/item.carousel.html',
   styles: [
     `
@@ -79,7 +79,7 @@ declare var $: any;
 })
 export class ItemCarouselComponent { 
   @Input()
-  public items: ItemViewModel[];
+  public items: SearchResultViewModel[];
 
 private _flickity: any;
 

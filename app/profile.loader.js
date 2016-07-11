@@ -15,6 +15,7 @@ var hero_service_1 = require('./services/hero.service');
 var item_service_1 = require('./services/item.service');
 var attribute_service_1 = require('./services/attribute.service');
 var profileviewmodel_1 = require('./viewmodels/profileviewmodel');
+var searchresultviewmodel_1 = require('./viewmodels/searchresultviewmodel');
 var attributes_1 = require('./interfaces/attributes');
 var battlenet_1 = require('./interfaces/battlenet');
 var item_card_component_1 = require('./components/item.card.component');
@@ -72,9 +73,9 @@ var ProfileLoader = (function () {
             this.selectedItemViewModel = selectedItemViewModel;
         }
     };
-    ProfileLoader.prototype.selectItems = function (selectedItemViewModels) {
-        if (selectedItemViewModels) {
-            this.highlightedItemViewModels = selectedItemViewModels;
+    ProfileLoader.prototype.selectItems = function (searchResults) {
+        if (searchResults) {
+            this.searchResults = searchResults;
         }
     };
     ProfileLoader.prototype.refresh = function () {
@@ -100,19 +101,16 @@ var ProfileLoader = (function () {
             hero.getItems().forEach(function (item) {
                 if (item.item &&
                     ((!_this.selectedItem || _this.selectedItem.indexOf("--") == 0 || item.item.name == _this.selectedItem) &&
-                        (!_this.selectedAttribute || _this.selectedAttribute.indexOf("--") == 0 || Object.keys(item.item.attributesRaw).indexOf(_this.selectedAttribute) >= 0)))
-                    selectedItems.push(item);
+                        (!_this.selectedAttribute || _this.selectedAttribute.indexOf("--") == 0 || Object.keys(item.item.attributesRaw).indexOf(_this.selectedAttribute) >= 0))) {
+                    var result = new searchresultviewmodel_1.SearchResultViewModel(item, hero.hero, hero.getCharacterType(item));
+                    selectedItems.push(result);
+                }
             });
         });
         if (selectedItems.length == 0)
             alert("No items found");
         else
             this.highlightedItemViewModels = selectedItems;
-    };
-    ProfileLoader.prototype.go = function (event) {
-        debugger;
-        var a = event;
-        //        selectedAttribute=searchAttribute.value
     };
     ProfileLoader.prototype.show = function (obj) {
         alert(JSON.stringify(obj));

@@ -35,6 +35,17 @@ var HeroViewModel = (function () {
             this.enchantressItems.forEach(function (item) { return items.push(item); });
         return items;
     };
+    HeroViewModel.prototype.getCharacterType = function (item) {
+        if (this.items.indexOf(item) >= 0)
+            return "player";
+        if (this.templarItems.indexOf(item) >= 0)
+            return "templar";
+        if (this.scoundrelItems.indexOf(item) >= 0)
+            return "scoundrel";
+        if (this.enchantressItems.indexOf(item) >= 0)
+            return "enchantress";
+        return null;
+    };
     return HeroViewModel;
 }());
 exports.HeroViewModel = HeroViewModel;

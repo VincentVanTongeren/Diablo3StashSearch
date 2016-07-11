@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HeroViewModel } from '../viewmodels/heroviewmodel'
 import { ItemViewModel } from '../viewmodels/itemviewmodel'
+import { SearchResultViewModel } from '../viewmodels/searchresultviewmodel'
 import { ItemSlotComponent } from '../components/item.slot.component';
 import { ItemCardComponent } from '../components/item.card.component';
 
@@ -11,9 +12,6 @@ import { ItemCardComponent } from '../components/item.card.component';
     `
 .ancient {
     color: #ad835a
-}
-.empty-row {
-    height: 50px;
 }
 .follower {
     padding-left: 24px;
@@ -42,7 +40,7 @@ export class HeroComponent {
   @Output()
   public itemSelected = new EventEmitter<ItemViewModel>();
   @Output()
-  public itemsSelected = new EventEmitter<Array<ItemViewModel>>();
+  public itemsSelected = new EventEmitter<Array<SearchResultViewModel>>();
   @Output()
   public heroOutdated = new EventEmitter<HeroViewModel>(); 
 
@@ -70,9 +68,14 @@ export class HeroComponent {
         if (items){
             items = items.filter(x => Boolean(x.item));
         }
-        if (items)
-            this.itemsSelected.emit(items);
-
+        if (items){
+            var results = new Array<SearchResultViewModel>();
+            items.forEach(x => {
+                var result = new SearchResultViewModel(x, this.heroViewModel.hero, characterType);
+                results.push(result)
+            })
+            this.itemsSelected.emit(results);
+        }
     }
 
     public refresh(): void{

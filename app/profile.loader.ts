@@ -8,6 +8,7 @@ import { AttributeService } from './services/attribute.service'
 import { ProfileViewModel } from './viewmodels/profileviewmodel'
 import { HeroViewModel } from './viewmodels/heroviewmodel'
 import { ItemViewModel } from './viewmodels/itemviewmodel'
+import { SearchResultViewModel } from './viewmodels/searchresultviewmodel'
 import { ItemAttribute } from './interfaces/attributes'
 import { Profile, Hero, Item } from './interfaces/profile'
 import { BattleNet } from './interfaces/battlenet'
@@ -80,7 +81,7 @@ export class ProfileLoader {
     public selectedHeroViewModel: HeroViewModel;
     public selectedItemViewModel: ItemViewModel;
     public itemDetailsHtml: string;
-    public highlightedItemViewModels: Array<ItemViewModel>;
+    public searchResults: Array<SearchResultViewModel>;
 
     public selectedAttribute: string;
     public selectedItem: string;
@@ -140,9 +141,9 @@ export class ProfileLoader {
         }
     }
 
-    public selectItems(selectedItemViewModels: ItemViewModel[]): void {
-        if (selectedItemViewModels){
-            this.highlightedItemViewModels = selectedItemViewModels;
+    public selectItems(searchResults: SearchResultViewModel[]): void {
+        if (searchResults){
+            this.searchResults = searchResults;
         }
     }
 
@@ -162,7 +163,7 @@ export class ProfileLoader {
     }
 
     public search(): void {
-        var selectedItems = new Array<ItemViewModel>();
+        var selectedItems = new Array<SearchResultViewModel>();
         if (!this.selectedItem && !this.selectedAttribute)
             return;
 
@@ -170,8 +171,10 @@ export class ProfileLoader {
             hero.getItems().forEach(item => {
                 if (item.item &&
                     ((!this.selectedItem || this.selectedItem.indexOf("--") == 0 || item.item.name == this.selectedItem) && 
-                    (!this.selectedAttribute || this.selectedAttribute.indexOf("--") == 0 || Object.keys(item.item.attributesRaw).indexOf(this.selectedAttribute) >= 0)))
-                    selectedItems.push(item);
+                    (!this.selectedAttribute || this.selectedAttribute.indexOf("--") == 0 || Object.keys(item.item.attributesRaw).indexOf(this.selectedAttribute) >= 0))){
+                        var result = new SearchResultViewModel(item, hero.hero, hero.getCharacterType(item))
+                        selectedItems.push(result);
+                    }
             });
         });
 
@@ -181,11 +184,6 @@ export class ProfileLoader {
             this.highlightedItemViewModels = selectedItems;
     }
 
-    public go(event){
-        debugger;
-        var a = event;
-//        selectedAttribute=searchAttribute.value
-    }
 
     public show(obj: any){
         alert(JSON.stringify(obj));
