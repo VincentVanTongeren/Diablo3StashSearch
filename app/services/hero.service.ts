@@ -2,6 +2,7 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 
 import { Hero, Follower, Gem } from '../interfaces/profile'
 import { BattleNet } from '../interfaces/battlenet'
+import { ProfileItem } from '../interfaces/attributes'
 import { Headers, Http } from '@angular/http';
 
 import { HeroViewModel } from '../viewmodels/heroviewmodel'
@@ -162,21 +163,21 @@ export class HeroService
             
     }
     
-    public getProfileItems(heroes: HeroViewModel[]): Array<string>{
-        var items = new Array<string>();
+    public getProfileItems(heroes: HeroViewModel[]): Array<ProfileItem>{
+        var items = new Array<ProfileItem>();
         heroes.forEach(hero => {
             if (hero.hasItems())
                 hero.getItems().forEach(itemViewModel => {
                     if (itemViewModel && itemViewModel.item)
                     {
-                        if (items.indexOf(itemViewModel.item.name) < 0){
-                            items.push(itemViewModel.item.name);
+                        if (items.filter(x => x.name == itemViewModel.item.name).length == 0){
+                            items.push(new ProfileItem(itemViewModel.item.name, itemViewModel.slotName));
                         }
                     }
                 });
         });
 
-        return items.sort();
+        return items;
     }
 
     public refresh(heroId: number): void {

@@ -9,7 +9,7 @@ import { ProfileViewModel } from './viewmodels/profileviewmodel'
 import { HeroViewModel } from './viewmodels/heroviewmodel'
 import { ItemViewModel } from './viewmodels/itemviewmodel'
 import { SearchResultViewModel } from './viewmodels/searchresultviewmodel'
-import { ItemAttribute } from './interfaces/attributes'
+import { ItemAttribute, ProfileItem } from './interfaces/attributes'
 import { Profile, Hero, Item } from './interfaces/profile'
 import { BattleNet } from './interfaces/battlenet'
 import { ItemCardComponent } from './components/item.card.component';
@@ -85,6 +85,7 @@ export class ProfileLoader {
 
     public selectedAttribute: string;
     public selectedItem: string;
+    public selectedItemSlot: string;
     
     @Output()
     public heroSelected = new EventEmitter<HeroViewModel>();
@@ -104,7 +105,8 @@ export class ProfileLoader {
             this.profileViewModel.itemAttributes.unshift(new ItemAttribute("", this.selectedAttribute));
             this.profileViewModel.profileItems = this._heroService.getProfileItems(this.profileViewModel.heroes);
             this.selectedItem = "-- Select item --";
-            this.profileViewModel.profileItems.unshift(this.selectedItem);
+            this.profileViewModel.profileItems.unshift(new ProfileItem(this.selectedItem, ""));
+            this.profileViewModel.setFilter("");
         })
 
         if (this.profileKey)
@@ -184,6 +186,9 @@ export class ProfileLoader {
             this.searchResults = selectedItems;
     }
 
+    public onSlotChange(event){
+        this.profileViewModel.setFilter(event.currentTarget.value);
+    }
 
     public show(obj: any){
         alert(JSON.stringify(obj));

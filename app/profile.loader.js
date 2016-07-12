@@ -41,7 +41,8 @@ var ProfileLoader = (function () {
             _this.profileViewModel.itemAttributes.unshift(new attributes_1.ItemAttribute("", _this.selectedAttribute));
             _this.profileViewModel.profileItems = _this._heroService.getProfileItems(_this.profileViewModel.heroes);
             _this.selectedItem = "-- Select item --";
-            _this.profileViewModel.profileItems.unshift(_this.selectedItem);
+            _this.profileViewModel.profileItems.unshift(new attributes_1.ProfileItem(_this.selectedItem, ""));
+            _this.profileViewModel.setFilter("");
         });
         if (this.profileKey) {
             this.loadProfile();
@@ -111,6 +112,9 @@ var ProfileLoader = (function () {
             alert("No items found");
         else
             this.searchResults = selectedItems;
+    };
+    ProfileLoader.prototype.onSlotChange = function (event) {
+        this.profileViewModel.setFilter(event.currentTarget.value);
     };
     ProfileLoader.prototype.show = function (obj) {
         alert(JSON.stringify(obj));

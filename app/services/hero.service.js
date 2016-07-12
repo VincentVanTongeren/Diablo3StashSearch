@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var profile_1 = require('../interfaces/profile');
+var attributes_1 = require('../interfaces/attributes');
 var http_1 = require('@angular/http');
 var heroviewmodel_1 = require('../viewmodels/heroviewmodel');
 var item_service_1 = require('./item.service');
@@ -138,13 +139,13 @@ var HeroService = (function () {
             if (hero.hasItems())
                 hero.getItems().forEach(function (itemViewModel) {
                     if (itemViewModel && itemViewModel.item) {
-                        if (items.indexOf(itemViewModel.item.name) < 0) {
-                            items.push(itemViewModel.item.name);
+                        if (items.filter(function (x) { return x.name == itemViewModel.item.name; }).length == 0) {
+                            items.push(new attributes_1.ProfileItem(itemViewModel.item.name, itemViewModel.slotName));
                         }
                     }
                 });
         });
-        return items.sort();
+        return items;
     };
     HeroService.prototype.refresh = function (heroId) {
         this._localStorageService.removeItem("hero" + heroId);

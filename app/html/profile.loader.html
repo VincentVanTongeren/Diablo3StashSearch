@@ -7,14 +7,18 @@
         <div class="col col-xs-5" id="search-pane">
             <div class="row">
                 <div class="col col-xs-4">
+                    <select class="form-control input-sm" *ngIf="profileViewModel && profileViewModel.slotItems" #selectedSlot (change)="onSlotChange($event)">
+                        <option *ngFor="let slot of profileViewModel.slotItems" value="{{slot.slotValue}}">{{slot.slotName}}</option> 
+                    </select>
+                    <select class="form-control input-sm" #searchItem (change)="selectedItem=searchItem.value" *ngIf="profileViewModel && profileViewModel.profileItems">
+                        <option *ngFor="let item of profileViewModel.filteredProfileItems" value="{{item.name}}">{{item.name}}</option> 
+                    </select>
+                </div>
+
+                <div class="col col-xs-4">
                     <select class="form-control input-sm" #searchAttribute (change)="selectedAttribute=searchAttribute.value" *ngIf="profileViewModel && profileViewModel.itemAttributes">
                         <option *ngFor="let att of profileViewModel.itemAttributes" value="{{att.rawAttribute}}">{{att.attribute}}</option> 
                     </select>
-                    <select class="form-control input-sm" #searchItem (change)="selectedItem=searchItem.value" *ngIf="profileViewModel && profileViewModel.profileItems">
-                        <option *ngFor="let item of profileViewModel.profileItems" value="{{item}}">{{item}}</option> 
-                    </select>
-                </div>
-                <div class="col col-xs-4">
                     <button class="form-control btn btn-primary" (click)="search()">Search</button>
                 </div>
 

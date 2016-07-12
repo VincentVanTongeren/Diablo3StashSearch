@@ -10,12 +10,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var profile_1 = require('../interfaces/profile');
+var attributes_1 = require('../interfaces/attributes');
 var ProfileViewModel = (function () {
     function ProfileViewModel(profile) {
         this.profile = profile;
+        this._noSlot = "-- Select slot --";
         this.heroes = [];
         this.itemAttributes = [];
+        this.slotItems = [new attributes_1.SlotItem("", this._noSlot),
+            new attributes_1.SlotItem(" Hand", "Weapons/Off hands"), new attributes_1.SlotItem("Neck", "Amulets"), new attributes_1.SlotItem("Finger", "Rings"),
+            new attributes_1.SlotItem("Head", "Helmets"), new attributes_1.SlotItem("Hands", "Gloves"), new attributes_1.SlotItem("Torso", "Chests"), new attributes_1.SlotItem("Legs", "Pants"),
+            new attributes_1.SlotItem("Shoulders", "Shoulders"), new attributes_1.SlotItem("Feet", "Boots"), new attributes_1.SlotItem("Bracers", "Bracers"),
+            new attributes_1.SlotItem("Waist", "Belts"), new attributes_1.SlotItem("Special", "Follower Token")];
     }
+    ProfileViewModel.prototype.setFilter = function (filter) {
+        var items = filter ? this.profileItems.filter(function (item) { return !item.slot || item.slot.indexOf(filter) != -1; }) : this.profileItems;
+        this.filteredProfileItems = items.sort(function (a, b) {
+            return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+        });
+    };
     ProfileViewModel = __decorate([
         core_1.Component({
             selector: 'profile-viewmodel',

@@ -41,6 +41,7 @@ declare var $: any;
     background-color: #000;
     margin: auto;
     padding: 0;
+    min-height: 620px;
     border: 1px solid #888;
     width: 80%;
     height: 70%;
