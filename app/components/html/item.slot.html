@@ -14,4 +14,7 @@
             {{ itemSlot.item.name }}
         </li>
     </ul>
+    <div *ngIf="itemCardItem" class="item-tooltip" >
+        <item-card [itemViewModel]="itemCardItem"></item-card>
+    </div>
 </div>

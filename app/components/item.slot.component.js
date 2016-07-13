@@ -15,17 +15,35 @@ var item_card_component_1 = require('../components/item.card.component');
 var ItemSlotComponent = (function () {
     function ItemSlotComponent() {
     }
+    ItemSlotComponent.prototype.onMouseOver = function () {
+        this.itemCardItem = this.itemSlot.item ? this.itemSlot : null;
+    };
+    ItemSlotComponent.prototype.onMouseOut = function () {
+        this.itemCardItem = null;
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', itemviewmodel_1.ItemViewModel)
     ], ItemSlotComponent.prototype, "itemSlot", void 0);
+    __decorate([
+        core_1.HostListener('mouseover'), 
+        __metadata('design:type', Function), 
+        __metadata('design:paramtypes', []), 
+        __metadata('design:returntype', void 0)
+    ], ItemSlotComponent.prototype, "onMouseOver", null);
+    __decorate([
+        core_1.HostListener('mouseout'), 
+        __metadata('design:type', Function), 
+        __metadata('design:paramtypes', []), 
+        __metadata('design:returntype', void 0)
+    ], ItemSlotComponent.prototype, "onMouseOut", null);
     ItemSlotComponent = __decorate([
         core_1.Component({
             selector: 'item-slot',
             pipes: [safe_1.SafeUrlPipe, safe_1.SafeStylePipe],
             directives: [item_card_component_1.ItemCardComponent],
             styles: [
-                ".item-icon, .item-text {\n    padding-top: 3px;\n    height: 72px;\n}\n.d3-icon-item-white {\n    opacity: 0.4;\n}\n\n"
+                ".item-icon, .item-text {\n    padding-top: 3px;\n    height: 72px;\n}\n.d3-icon-item-white {\n    opacity: 0.4;\n}\n.item-tooltip {\n  border: 1px solid red;\n  width: 351px;\n  z-index:1000;\n  background-color: black;\n}\n"
             ],
             // styleUrls: ['/app/components/css/item.slot.css'],
             templateUrl: '/app/components/html/item.slot.html'
