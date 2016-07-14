@@ -1,4 +1,4 @@
-import { Component, Input, HostListener } from '@angular/core';
+import { Component, Input, Output, HostListener, EventEmitter } from '@angular/core';
 import { ItemViewModel } from '../viewmodels/itemviewmodel'
 import { SafeUrlPipe, SafeStylePipe } from '../pipes/safe'
 import { ItemCardComponent } from '../components/item.card.component'
@@ -15,12 +15,6 @@ import { ItemCardComponent } from '../components/item.card.component'
 .d3-icon-item-white {
     opacity: 0.4;
 }
-.item-tooltip {
-  border: 1px solid red;
-  width: 351px;
-  z-index:1000;
-  background-color: black;
-}
 `
   ],
   // styleUrls: ['/app/components/css/item.slot.css'],
@@ -29,18 +23,18 @@ import { ItemCardComponent } from '../components/item.card.component'
 export class ItemSlotComponent { 
   @Input()
   public itemSlot: ItemViewModel;
-
-public itemCardItem: ItemViewModel;
+  @Output()
+  public itemSelected = new EventEmitter<ItemViewModel>();
 
   mouseover:boolean;
 
   @HostListener('mouseover')
   onMouseOver() {
-    this.itemCardItem = this.itemSlot.item ? this.itemSlot : null;
+    this.itemSelected.emit(this.itemSlot.item ? this.itemSlot : null);
   }
 
   @HostListener('mouseout')
   onMouseOut() {
-    this.itemCardItem = null;
+    this.itemSelected.emit(null);
   }
 }

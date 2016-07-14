@@ -20,7 +20,7 @@ var HeroComponent = (function () {
         this.heroOutdated = new core_1.EventEmitter();
     }
     HeroComponent.prototype.selectItem = function (selectedItemViewModel) {
-        if (selectedItemViewModel.item)
+        if (selectedItemViewModel && selectedItemViewModel.item)
             this.itemSelected.emit(selectedItemViewModel);
     };
     HeroComponent.prototype.selectItems = function (characterType) {

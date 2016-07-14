@@ -6,8 +6,12 @@ import { SafeUrlPipe, SafeStylePipe } from '../pipes/safe'
   selector: 'item-card',
     pipes: [SafeUrlPipe, SafeStylePipe],
      styles: [`
-    .item-card {
-      max-width: 351px;
+    .item-card-container {
+      border: 2px solid #333;
+      width: 358px;
+    }
+    .item-card-container.ancient {
+      border: 2px solid gold;
     }
     `], templateUrl: '/app/components/html/item.card.html'
 })

@@ -1,4 +1,4 @@
-<div *ngIf="itemViewModel" class="d3-tooltip d3-tooltip-item">
+<div *ngIf="itemViewModel" [ngClass]="{ 'ancient':itemViewModel.isAncient }" class="d3-tooltip d3-tooltip-item item-card-container">
     <div [ngClass]="{ 'd3-tooltip-item-wrapper-AncientLegendary':itemViewModel.isAncient }" class="d3-tooltip-item-wrapper">
     <div class="d3-tooltip-item-border d3-tooltip-item-border-left"></div>
     <div class="d3-tooltip-item-border d3-tooltip-item-border-right"></div>

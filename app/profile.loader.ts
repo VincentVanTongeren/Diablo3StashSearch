@@ -55,7 +55,7 @@ import { HeroTabComponent } from './components/hero.tab.component';
     list-style-type:none
 }
 #search-pane select {
-    margin: 3px;
+    margin: 3px 0 3px 0;
 }
 
 #hero-pane {
@@ -65,7 +65,8 @@ import { HeroTabComponent } from './components/hero.tab.component';
     height: 100%;
 }
 #item-detail .item-card {
-    max-width: 351px;
+    max-width: 358px;
+    width: 358px;
     margin-right: 0;
 }
 

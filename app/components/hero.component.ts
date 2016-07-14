@@ -45,7 +45,7 @@ export class HeroComponent {
   public heroOutdated = new EventEmitter<HeroViewModel>(); 
 
     public selectItem(selectedItemViewModel: ItemViewModel): void {
-        if (selectedItemViewModel.item)
+        if (selectedItemViewModel && selectedItemViewModel.item)
             this.itemSelected.emit(selectedItemViewModel);
     }
 
