@@ -42,8 +42,11 @@ import { HeroTabComponent } from './components/hero.tab.component';
 #app-main {
     height: 90%;
 }
-#input-pane .input-row {
-    margin: 3px;
+#input-pane select {
+    margin: 3px 0 3px 0;
+}
+#input-pane input {
+    margin: 3px 0 3px 0;
 }
 #profile-pane {
     height: 100%;

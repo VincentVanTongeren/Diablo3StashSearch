@@ -1,12 +1,12 @@
 <div class="col col-xs-12">
 
     <div class="row app-header" id="app-header">
-        <div class="col col-xs-4">
+        <div class="col visible-lg col-lg-4">
             <h3>Diablo 3 Stash Search</h3>
         </div>
-        <div class="col col-xs-5" id="search-pane">
+        <div class="col col-xs-6 col-lg-5" id="search-pane">
             <div class="row">
-                <div class="col col-xs-4">
+                <div class="col col-xs-6 col-lg-4">
                     <select class="form-control input-sm" *ngIf="profileViewModel && profileViewModel.slotItems" #selectedSlot (change)="onSlotChange($event)">
                         <option *ngFor="let slot of profileViewModel.slotItems" value="{{slot.slotValue}}">{{slot.slotName}}</option> 
                     </select>
@@ -15,7 +15,7 @@
                     </select>
                 </div>
 
-                <div class="col col-xs-4">
+                <div class="col col-xs-6 col-lg-4">
                     <select class="form-control input-sm" #searchAttribute (change)="selectedAttribute=searchAttribute.value" *ngIf="profileViewModel && profileViewModel.itemAttributes">
                         <option *ngFor="let att of profileViewModel.itemAttributes" value="{{att.rawAttribute}}">{{att.attribute}}</option> 
                     </select>
@@ -24,12 +24,12 @@
 
             </div>
         </div>
-        <div class="col col-xs-3" id="input-pane">
+        <div class="col col-xs-6 col-lg-3" id="input-pane">
             <div class="row input-row">
-                <div class="col col-xs-6">
+                <div class="col col-xs-6 col-lg-6">
                     <input class="form-control input-sm" #apiKeyText [(value)]="apiKey" (blur)="apiKey=apiKeyText.value" placeholder="battle.net api key" required />
                 </div>
-                <div class="col col-xs-4">
+                <div class="col col-xs-6 col-lg-6">
                     <select class="form-control input-sm" [(value)]="locale" (change)="locale=($event.target.value)" >
                         <option value="eu">Europe</option>
                         <option value="us">US</option>
@@ -37,10 +37,10 @@
                 </div>
             </div>
             <div class="row input-row">
-                <div class="col col-xs-6">
+                <div class="col col-xs-6 col-lg-6">
                     <input class="form-control input-sm" #profileText [(value)]="profileKey" (blur)="profileKey=profileText.value" placeholder="pro-1234" required />
                 </div>
-                <div class="col col-xs-4">
+                <div class="col col-xs-6 col-lg-6">
                     <button class="form-control btn btn-primary" (click)="updateProfile()">Update profile</button>
                 </div>
             </div>
@@ -76,10 +76,10 @@
                 </div>
             </div>
         </div>-->
-        <div class="col col-xs-5" id="hero-main">
+        <div class="col col-xs-8 col-lg-5" id="hero-main">
             <hero [heroViewModel]="selectedHeroViewModel" (heroOutdated)="refreshHero($event)" (itemsSelected)="selectItems($event)" (itemSelected)="selectItem($event)"></hero>
         </div>
-        <div class="col col-xs-3" id="item-detail">
+        <div class="col col-lg-3 visible-lg" id="item-detail">
             <div class="row" *ngIf="selectedHeroViewModel">
                 <div class="col col-xs-12">
                     <span>
