@@ -137,9 +137,9 @@ export class HeroService
                     this.enrichHero(detailedHeroViewModel, battleNet);
 
                     var dummyFollower = new Follower();
-                    var templar = detailedHeroViewModel.hero.followers.templar ? heroViewModel.hero.followers.templar : dummyFollower;
-                    var scoundrel = detailedHeroViewModel.hero.followers.scoundrel ? heroViewModel.hero.followers.scoundrel : dummyFollower;
-                    var enchantress = detailedHeroViewModel.hero.followers.enchantress ? heroViewModel.hero.followers.enchantress : dummyFollower;
+                    var templar = detailedHeroViewModel.hero.followers.templar ? detailedHeroViewModel.hero.followers.templar : dummyFollower;
+                    var scoundrel = detailedHeroViewModel.hero.followers.scoundrel ? detailedHeroViewModel.hero.followers.scoundrel : dummyFollower;
+                    var enchantress = detailedHeroViewModel.hero.followers.enchantress ? detailedHeroViewModel.hero.followers.enchantress : dummyFollower;
 
                     var promises = new Array<Promise<void>>();
 

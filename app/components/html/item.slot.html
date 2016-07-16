@@ -1,11 +1,11 @@
-<div *ngIf="itemSlot.slotName" class="col col-xs-2 item-icon">
+<div *ngIf="itemSlot.slotName" class="col col-lg-2 visible-lg item-icon">
     <span class="d3-icon d3-icon-item d3-icon-item-small d3-icon-item-{{ itemSlot.item ? itemSlot.item.displayColor : 'white'}}">
         <span class="icon-item-gradient">
             <span class="icon-item-inner icon-item-default" [style.background-image]="itemSlot.item ? ('url(http://media.blizzard.com/d3/icons/items/small/' + itemSlot.item.icon + '.png)') : '' | safeStyle"></span>
         </span>
     </span>
 </div>
-<div class="col-xs-10 col item-text">
+<div class="col-xs-12 col-lg-10 col item-text">
     <ul>
         <li class="item-slot">
             <span [ngClass]="{'d3-color-yellow': itemSlot.isAncient}" class="text-right">{{ itemSlot.slotName }}</span>

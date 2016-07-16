@@ -76,7 +76,7 @@ var HeroComponent = (function () {
             selector: 'hero',
             directives: [item_slot_component_1.ItemSlotComponent, item_card_component_1.ItemCardComponent],
             styles: [
-                "\n.ancient {\n    color: #ad835a\n}\n.follower {\n    padding-left: 24px;\n    height: 21px;\n    margin-top: 10px;\n    display: inline-block;\n}\n\n.templar {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; \n}\n.scoundrel {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/scoundrel.png') no-repeat; \n}\n.enchantress {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; \n}\n\n"
+                "\n.ancient {\n    color: #ad835a\n}\n.follower {\n    padding-left: 24px;\n    height: 21px;\n    margin-top: 10px;\n    display: inline-block;\n}\n.item-slot:not(.empty-slot):hover {\n    background-color: #111;\n}\n.templar {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; \n}\n.scoundrel {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/scoundrel.png') no-repeat; \n}\n.enchantress {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; \n}\n\n"
             ],
             templateUrl: '/app/components/html/hero.html'
         }), 

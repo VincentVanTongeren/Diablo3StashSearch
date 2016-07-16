@@ -15,3 +15,8 @@ img.icon {
   height: 16px;
   width: 16px;
 }
+@media (max-width: 1200px) {
+  body {
+    font-size: 12px;
+  }
+}

@@ -27,6 +27,9 @@ import { HeroTabComponent } from './components/hero.tab.component';
     border: 1px solid #222;
     border-radius: 3px;
 }
+.hero-tab:hover {
+    background-color: #111;
+}
 .hero-tab.active {
     border: 1px solid #555;
 }
@@ -72,6 +75,7 @@ import { HeroTabComponent } from './components/hero.tab.component';
     width: 358px;
     margin-right: 0;
 }
+
 
 `],
   templateUrl: '../app/html/profile.loader.html'
@@ -177,7 +181,8 @@ export class ProfileLoader {
             hero.getItems().forEach(item => {
                 if (item.item &&
                     ((!this.selectedItem || this.selectedItem.indexOf("--") == 0 || item.item.name == this.selectedItem) && 
-                    (!this.selectedAttribute || this.selectedAttribute.indexOf("--") == 0 || Object.keys(item.item.attributesRaw).indexOf(this.selectedAttribute) >= 0))){
+                    (!this.selectedItemSlot || this.selectedItemSlot.indexOf("--") == 0 || item.slotName.indexOf(this.selectedItemSlot) >= 0 &&
+                    (!this.selectedAttribute || this.selectedAttribute.indexOf("--") == 0 || Object.keys(item.item.attributesRaw).indexOf(this.selectedAttribute) >= 0)))){
                         var result = new SearchResultViewModel(item, hero.hero, hero.getCharacterType(item))
                         selectedItems.push(result);
                     }
@@ -192,6 +197,7 @@ export class ProfileLoader {
 
     public onSlotChange(event){
         this.profileViewModel.setFilter(event.currentTarget.value);
+        this.selectedItemSlot = event.currentTarget.value;
     }
 
     public show(obj: any){

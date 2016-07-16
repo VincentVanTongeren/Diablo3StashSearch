@@ -22,7 +22,7 @@ var ItemCardComponent = (function () {
         core_1.Component({
             selector: 'item-card',
             pipes: [safe_1.SafeUrlPipe, safe_1.SafeStylePipe],
-            styles: ["\n    .item-card-container {\n      border: 2px solid #333;\n      width: 358px;\n    }\n    .item-card-container.ancient {\n      border: 2px solid gold;\n    }\n    "], templateUrl: '/app/components/html/item.card.html'
+            styles: ["\n    .item-card-container {\n      border: 2px solid #333;\n      width: 358px;\n    }\n    .item-card-container.ancient {\n      border: 2px solid gold;\n    }\n\n    "], templateUrl: '/app/components/html/item.card.html'
         }), 
         __metadata('design:paramtypes', [])
     ], ItemCardComponent);

@@ -113,9 +113,9 @@ var HeroService = (function () {
                 detailedHeroViewModel.items = itemViewModels;
                 _this.enrichHero(detailedHeroViewModel, battleNet);
                 var dummyFollower = new profile_1.Follower();
-                var templar = detailedHeroViewModel.hero.followers.templar ? heroViewModel.hero.followers.templar : dummyFollower;
-                var scoundrel = detailedHeroViewModel.hero.followers.scoundrel ? heroViewModel.hero.followers.scoundrel : dummyFollower;
-                var enchantress = detailedHeroViewModel.hero.followers.enchantress ? heroViewModel.hero.followers.enchantress : dummyFollower;
+                var templar = detailedHeroViewModel.hero.followers.templar ? detailedHeroViewModel.hero.followers.templar : dummyFollower;
+                var scoundrel = detailedHeroViewModel.hero.followers.scoundrel ? detailedHeroViewModel.hero.followers.scoundrel : dummyFollower;
+                var enchantress = detailedHeroViewModel.hero.followers.enchantress ? detailedHeroViewModel.hero.followers.enchantress : dummyFollower;
                 var promises = new Array();
                 var templarItemsPromise = _this.setFollowerItems(templar, ["offHand"], battleNet).then(function (items) {
                     detailedHeroViewModel.templarItems = items;

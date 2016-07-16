@@ -72,10 +72,22 @@ declare var $: any;
 }
 .gallery-cell {
     height: 100%;
-    width: 351px;
+    width: 358px;
     margin-right: 40px;
     float: left;
-}`
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  .content {
+    transform: scale(0.8);
+  }
+}
+@media (max-width: 767px) {
+  .content {
+    transform: scale(0.66);
+  }
+}
+`
   ]
 })
 export class ItemCarouselComponent { 

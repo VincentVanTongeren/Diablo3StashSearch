@@ -19,7 +19,9 @@ import { ItemCardComponent } from '../components/item.card.component';
     margin-top: 10px;
     display: inline-block;
 }
-
+.item-slot:not(.empty-slot):hover {
+    background-color: #111;
+}
 .templar {
     background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; 
 }

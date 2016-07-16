@@ -102,7 +102,8 @@ var ProfileLoader = (function () {
             hero.getItems().forEach(function (item) {
                 if (item.item &&
                     ((!_this.selectedItem || _this.selectedItem.indexOf("--") == 0 || item.item.name == _this.selectedItem) &&
-                        (!_this.selectedAttribute || _this.selectedAttribute.indexOf("--") == 0 || Object.keys(item.item.attributesRaw).indexOf(_this.selectedAttribute) >= 0))) {
+                        (!_this.selectedItemSlot || _this.selectedItemSlot.indexOf("--") == 0 || item.slotName.indexOf(_this.selectedItemSlot) >= 0 &&
+                            (!_this.selectedAttribute || _this.selectedAttribute.indexOf("--") == 0 || Object.keys(item.item.attributesRaw).indexOf(_this.selectedAttribute) >= 0)))) {
                     var result = new searchresultviewmodel_1.SearchResultViewModel(item, hero.hero, hero.getCharacterType(item));
                     selectedItems.push(result);
                 }
@@ -115,6 +116,7 @@ var ProfileLoader = (function () {
     };
     ProfileLoader.prototype.onSlotChange = function (event) {
         this.profileViewModel.setFilter(event.currentTarget.value);
+        this.selectedItemSlot = event.currentTarget.value;
     };
     ProfileLoader.prototype.show = function (obj) {
         alert(JSON.stringify(obj));
@@ -127,7 +129,7 @@ var ProfileLoader = (function () {
         core_1.Component({
             directives: [profileviewmodel_1.ProfileViewModel, item_card_component_1.ItemCardComponent, hero_component_1.HeroComponent, hero_tab_component_1.HeroTabComponent, item_carousel_component_1.ItemCarouselComponent],
             selector: 'profile-loader',
-            styles: ["\n.hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n.hero-tab.active {\n    border: 1px solid #555;\n}\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane select {\n    margin: 3px 0 3px 0;\n}\n#input-pane input {\n    margin: 3px 0 3px 0;\n}\n#profile-pane {\n    height: 100%;\n}\n#profile-pane ul {\n    padding: 0;\n}\n#profile-pane li {\n    list-style-type:none\n}\n#search-pane select {\n    margin: 3px 0 3px 0;\n}\n\n#hero-pane {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n#item-detail .item-card {\n    max-width: 358px;\n    width: 358px;\n    margin-right: 0;\n}\n\n"],
+            styles: ["\n.hero-tab {\n    height: 44px;\n    margin: 3px;\n    border: 1px solid #222;\n    border-radius: 3px;\n}\n.hero-tab:hover {\n    background-color: #111;\n}\n.hero-tab.active {\n    border: 1px solid #555;\n}\n.bold {\n    font-weight: bold;\n}\n.white {\n    color: #eee;\n}\n#app-header {\n    height: 10%;\n}\n#app-main {\n    height: 90%;\n}\n#input-pane select {\n    margin: 3px 0 3px 0;\n}\n#input-pane input {\n    margin: 3px 0 3px 0;\n}\n#profile-pane {\n    height: 100%;\n}\n#profile-pane ul {\n    padding: 0;\n}\n#profile-pane li {\n    list-style-type:none\n}\n#search-pane select {\n    margin: 3px 0 3px 0;\n}\n\n#hero-pane {\n    height: 100%;\n}\n#item-detail {\n    height: 100%;\n}\n#item-detail .item-card {\n    max-width: 358px;\n    width: 358px;\n    margin-right: 0;\n}\n\n\n"],
             templateUrl: '../app/html/profile.loader.html'
         }), 
         __metadata('design:paramtypes', [profile_service_1.ProfileService, item_service_1.ItemService, hero_service_1.HeroService, attribute_service_1.AttributeService, localstorageservice_1.LocalStorageService])

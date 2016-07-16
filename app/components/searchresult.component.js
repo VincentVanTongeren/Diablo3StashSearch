@@ -27,7 +27,7 @@ var SearchResultComponent = (function () {
             pipes: [safe_1.SafeUrlPipe, safe_1.SafeStylePipe, hero_1.ClassPipe, hero_1.GenderPipe, strings_1.ConcatPipe],
             directives: [item_card_component_1.ItemCardComponent],
             styles: [
-                ".item-icon, .item-text {\n    padding-top: 3px;\n    height: 72px;\n}\n.d3-icon-item-white {\n    opacity: 0.4;\n}\n\n.templar {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; \n}\n.scoundrel {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/scoundrel.png') no-repeat; \n}\n.enchantress {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; \n}\n"
+                ".item-icon, .item-text {\n    padding-top: 3px;\n    height: 72px;\n}\n.d3-icon-item-white {\n    opacity: 0.4;\n}\n.search-container {\n    margin: 3px;\n}\n    \n.hero-portrait{\n    float: left;\n}\n.search-hero {\n    height: 50px;\n}\n.follower {\n    display: inline-block;\n    height: 21px;\n    width: 21px;\n}\n.templar {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; \n}\n.scoundrel {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/scoundrel.png') no-repeat; \n}\n.enchantress {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; \n}\n\n"
             ],
             // styleUrls: ['/app/components/css/item.slot.css'],
             templateUrl: '/app/components/html/search.result.html'

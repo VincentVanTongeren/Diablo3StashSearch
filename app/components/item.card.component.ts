@@ -13,6 +13,7 @@ import { SafeUrlPipe, SafeStylePipe } from '../pipes/safe'
     .item-card-container.ancient {
       border: 2px solid gold;
     }
+
     `], templateUrl: '/app/components/html/item.card.html'
 })
 export class ItemCardComponent { 

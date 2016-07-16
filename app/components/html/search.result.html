@@ -1,6 +1,12 @@
-<div *ngIf="searchResult">
+<div class="search-container" *ngIf="searchResult">
     <img class="hero-portrait" [src]="'http://media.blizzard.com/d3/icons/portraits/42/' + (searchResult.hero.class | mediaclass | concat) + '_' + (searchResult.hero.gender | gender) + '.png' | safeUrl" />
-    {{searchResult.hero.name}}
-    <span *ngIf="searchResult.type != 'player'" class="{{searchResult.type}}">{{searchResult.type}}</span>
+    <ul class="search-hero">
+        <li>
+            {{searchResult.hero.name}}
+        </li>
+        <li>
+            <span *ngIf="searchResult.type != 'player'" class="follower {{searchResult.type}}"></span>
+        </li>
+    </ul>
     <item-card [itemViewModel]="searchResult.item"></item-card>
 </div>

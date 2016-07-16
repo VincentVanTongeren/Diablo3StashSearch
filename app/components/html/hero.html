@@ -9,7 +9,7 @@
 <div *ngIf="heroViewModel && heroViewModel.hasDetails" class="row">
     
     <div *ngFor="let itemSlot of heroViewModel.items" class="col col-xs-4" (click)="selectItem(itemSlot)">
-        <div class="row">
+        <div class="row item-slot" [ngClass]="{'empty-slot': !itemSlot.slotName}">
             <item-slot [itemSlot]="itemSlot" (itemSelected)="selectItem($event)"></item-slot>
         </div>
     </div>
@@ -37,7 +37,7 @@
 <div *ngIf="heroViewModel && heroViewModel.hasDetails" class="row">
 
     <div *ngFor="let followerItems of [heroViewModel.templarItems, heroViewModel.scoundrelItems, heroViewModel.enchantressItems]" class="col col-xs-4">
-        <div class="row" *ngFor="let itemSlot of followerItems" (click)="selectItem(itemSlot)">
+        <div class="row item-slot" *ngFor="let itemSlot of followerItems" (click)="selectItem(itemSlot)">
             <item-slot [itemSlot]="itemSlot" (itemSelected)="selectItem($event)"></item-slot>
         </div>
     </div>

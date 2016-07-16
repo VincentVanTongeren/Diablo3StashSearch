@@ -18,7 +18,21 @@ import { ItemCardComponent } from '../components/item.card.component'
 .d3-icon-item-white {
     opacity: 0.4;
 }
-
+.search-container {
+    margin: 3px;
+}
+    
+.hero-portrait{
+    float: left;
+}
+.search-hero {
+    height: 50px;
+}
+.follower {
+    display: inline-block;
+    height: 21px;
+    width: 21px;
+}
 .templar {
     background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; 
 }
@@ -28,6 +42,7 @@ import { ItemCardComponent } from '../components/item.card.component'
 .enchantress {
     background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; 
 }
+
 `
   ],
   // styleUrls: ['/app/components/css/item.slot.css'],
