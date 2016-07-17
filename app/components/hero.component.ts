@@ -22,7 +22,7 @@ import { HeroService } from '../services/hero.service';
 .item-slots .empty-slot {
     height: 0px;
 }
-.item-slot:not(.empty-slot):hover {
+.item-slots :not(.empty-slot) .item-slot:hover {
     background-color: #111;
 }
 .templar {

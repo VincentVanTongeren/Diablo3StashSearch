@@ -63,7 +63,7 @@ var HeroComponent = (function () {
             selector: 'hero',
             directives: [item_slot_component_1.ItemSlotComponent],
             styles: [
-                "\n.ancient {\n    color: #ad835a\n}\n.follower {\n    padding-left: 24px;\n    height: 21px;\n    margin-top: 10px;\n    display: inline-block;\n}\n.item-slots .empty-slot {\n    height: 0px;\n}\n.item-slot:not(.empty-slot):hover {\n    background-color: #111;\n}\n.templar {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; \n}\n.scoundrel {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/scoundrel.png') no-repeat; \n}\n.enchantress {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; \n}\n@media (min-width: 768px) and (max-width: 1200px) {\n    .item-slot {\n        padding-top: 3px;\n    }\n}\n\n"
+                "\n.ancient {\n    color: #ad835a\n}\n.follower {\n    padding-left: 24px;\n    height: 21px;\n    margin-top: 10px;\n    display: inline-block;\n}\n.item-slots .empty-slot {\n    height: 0px;\n}\n.item-slots :not(.empty-slot) .item-slot:hover {\n    background-color: #111;\n}\n.templar {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; \n}\n.scoundrel {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/scoundrel.png') no-repeat; \n}\n.enchantress {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; \n}\n@media (min-width: 768px) and (max-width: 1200px) {\n    .item-slot {\n        padding-top: 3px;\n    }\n}\n\n"
             ],
             templateUrl: '/app/components/html/hero.html'
         }), 
