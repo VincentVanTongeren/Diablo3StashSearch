@@ -3,11 +3,11 @@ import { HeroViewModel } from '../viewmodels/heroviewmodel'
 import { ItemViewModel } from '../viewmodels/itemviewmodel'
 import { SearchResultViewModel } from '../viewmodels/searchresultviewmodel'
 import { ItemSlotComponent } from '../components/item.slot.component';
-import { ItemCardComponent } from '../components/item.card.component';
+import { HeroService } from '../services/hero.service';
 
 @Component({
   selector: 'hero',
-  directives: [ItemSlotComponent, ItemCardComponent],
+  directives: [ItemSlotComponent],
   styles: [
     `
 .ancient {
@@ -46,36 +46,18 @@ export class HeroComponent {
   @Output()
   public heroOutdated = new EventEmitter<HeroViewModel>(); 
 
+constructor(private heroService: HeroService){
+
+}
+
     public selectItem(selectedItemViewModel: ItemViewModel): void {
         if (selectedItemViewModel && selectedItemViewModel.item)
             this.itemSelected.emit(selectedItemViewModel);
     }
 
     public selectItems(characterType: string): void{
-        var items = new Array<ItemViewModel>();
-        switch(characterType){
-            case "player":
-                items = this.heroViewModel.items;
-                break;
-            case "templar":
-                items = this.heroViewModel.templarItems;
-                break;
-            case "scoundrel":
-                items = this.heroViewModel.scoundrelItems;
-                break;
-            case "enchantress":
-                items = this.heroViewModel.enchantressItems;
-                break;
-        }
-        if (items){
-            items = items.filter(x => Boolean(x.item));
-        }
-        if (items){
-            var results = new Array<SearchResultViewModel>();
-            items.forEach(x => {
-                var result = new SearchResultViewModel(x, this.heroViewModel.hero, characterType);
-                results.push(result)
-            })
+        var results = this.heroService.getSearchResults(this.heroViewModel, characterType);
+        if (results){
             this.itemsSelected.emit(results);
         }
     }

@@ -96,7 +96,7 @@ var ProfileLoader = (function () {
     ProfileLoader.prototype.search = function () {
         var _this = this;
         var selectedItems = new Array();
-        if (!this.selectedItem && !this.selectedAttribute)
+        if (!this.selectedItem && !this.selectedAttribute && !this.selectedItemSlot)
             return;
         this.profileViewModel.heroes.forEach(function (hero) {
             hero.getItems().forEach(function (item) {
@@ -111,6 +111,8 @@ var ProfileLoader = (function () {
         });
         if (selectedItems.length == 0)
             alert("No items found");
+        else if (selectedItems.length > 30)
+            alert("Too many results");
         else
             this.searchResults = selectedItems;
     };

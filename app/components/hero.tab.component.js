@@ -10,14 +10,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var heroviewmodel_1 = require('../viewmodels/heroviewmodel');
+var hero_service_1 = require('../services/hero.service');
 var safe_1 = require('../pipes/safe');
 var strings_1 = require('../pipes/strings');
 var hero_1 = require('../pipes/hero');
 var math_1 = require('../pipes/math');
 var battlenet_1 = require('../pipes/battlenet');
 var HeroTabComponent = (function () {
-    function HeroTabComponent() {
+    function HeroTabComponent(heroService) {
+        this.heroService = heroService;
+        this.itemsSelected = new core_1.EventEmitter();
     }
+    HeroTabComponent.prototype.select = function (selected) {
+        var results = this.heroService.getSearchResults(this.heroViewModel, selected);
+        this.itemsSelected.emit(results);
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', heroviewmodel_1.HeroViewModel)
@@ -26,6 +33,10 @@ var HeroTabComponent = (function () {
         core_1.Input(), 
         __metadata('design:type', Boolean)
     ], HeroTabComponent.prototype, "isSelected", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], HeroTabComponent.prototype, "itemsSelected", void 0);
     HeroTabComponent = __decorate([
         core_1.Component({
             selector: 'hero-tab',
@@ -34,7 +45,7 @@ var HeroTabComponent = (function () {
             ],
             templateUrl: '/app/components/html/hero.tab.html'
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [hero_service_1.HeroService])
     ], HeroTabComponent);
     return HeroTabComponent;
 }());

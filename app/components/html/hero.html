@@ -8,7 +8,7 @@
 
 <div *ngIf="heroViewModel && heroViewModel.hasDetails" class="row">
     
-    <div *ngFor="let itemSlot of heroViewModel.items" class="col col-xs-4" (click)="selectItem(itemSlot)">
+    <div *ngFor="let itemSlot of heroViewModel.items" class="col col-xs-12 col-lg-4" (click)="selectItem(itemSlot)">
         <div class="row item-slot" [ngClass]="{'empty-slot': !itemSlot.slotName}">
             <item-slot [itemSlot]="itemSlot" (itemSelected)="selectItem($event)"></item-slot>
         </div>

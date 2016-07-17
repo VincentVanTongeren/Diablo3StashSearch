@@ -13,6 +13,7 @@ var profile_1 = require('../interfaces/profile');
 var attributes_1 = require('../interfaces/attributes');
 var http_1 = require('@angular/http');
 var heroviewmodel_1 = require('../viewmodels/heroviewmodel');
+var searchresultviewmodel_1 = require('../viewmodels/searchresultviewmodel');
 var item_service_1 = require('./item.service');
 var localstorageservice_1 = require('./localstorageservice');
 require('rxjs/add/operator/toPromise');
@@ -146,6 +147,39 @@ var HeroService = (function () {
                 });
         });
         return items;
+    };
+    HeroService.prototype.getSearchResults = function (heroViewModel, characterType) {
+        var items = new Array();
+        switch (characterType) {
+            case "player":
+                items = heroViewModel.items;
+                break;
+            case "templar":
+                items = heroViewModel.templarItems;
+                break;
+            case "scoundrel":
+                items = heroViewModel.scoundrelItems;
+                break;
+            case "enchantress":
+                items = heroViewModel.enchantressItems;
+                break;
+            case "followers":
+                [heroViewModel.templarItems, heroViewModel.scoundrelItems, heroViewModel.enchantressItems].forEach(function (array) {
+                    array.forEach(function (item) { return items.push(item); });
+                });
+                break;
+        }
+        if (items) {
+            items = items.filter(function (x) { return Boolean(x.item); });
+        }
+        if (items) {
+            var results = new Array();
+            items.forEach(function (x) {
+                var result = new searchresultviewmodel_1.SearchResultViewModel(x, heroViewModel.hero, characterType);
+                results.push(result);
+            });
+        }
+        return results;
     };
     HeroService.prototype.refresh = function (heroId) {
         this._localStorageService.removeItem("hero" + heroId);

@@ -10,11 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var heroviewmodel_1 = require('../viewmodels/heroviewmodel');
-var searchresultviewmodel_1 = require('../viewmodels/searchresultviewmodel');
 var item_slot_component_1 = require('../components/item.slot.component');
-var item_card_component_1 = require('../components/item.card.component');
+var hero_service_1 = require('../services/hero.service');
 var HeroComponent = (function () {
-    function HeroComponent() {
+    function HeroComponent(heroService) {
+        this.heroService = heroService;
         this.itemSelected = new core_1.EventEmitter();
         this.itemsSelected = new core_1.EventEmitter();
         this.heroOutdated = new core_1.EventEmitter();
@@ -24,31 +24,8 @@ var HeroComponent = (function () {
             this.itemSelected.emit(selectedItemViewModel);
     };
     HeroComponent.prototype.selectItems = function (characterType) {
-        var _this = this;
-        var items = new Array();
-        switch (characterType) {
-            case "player":
-                items = this.heroViewModel.items;
-                break;
-            case "templar":
-                items = this.heroViewModel.templarItems;
-                break;
-            case "scoundrel":
-                items = this.heroViewModel.scoundrelItems;
-                break;
-            case "enchantress":
-                items = this.heroViewModel.enchantressItems;
-                break;
-        }
-        if (items) {
-            items = items.filter(function (x) { return Boolean(x.item); });
-        }
-        if (items) {
-            var results = new Array();
-            items.forEach(function (x) {
-                var result = new searchresultviewmodel_1.SearchResultViewModel(x, _this.heroViewModel.hero, characterType);
-                results.push(result);
-            });
+        var results = this.heroService.getSearchResults(this.heroViewModel, characterType);
+        if (results) {
             this.itemsSelected.emit(results);
         }
     };
@@ -74,13 +51,13 @@ var HeroComponent = (function () {
     HeroComponent = __decorate([
         core_1.Component({
             selector: 'hero',
-            directives: [item_slot_component_1.ItemSlotComponent, item_card_component_1.ItemCardComponent],
+            directives: [item_slot_component_1.ItemSlotComponent],
             styles: [
                 "\n.ancient {\n    color: #ad835a\n}\n.follower {\n    padding-left: 24px;\n    height: 21px;\n    margin-top: 10px;\n    display: inline-block;\n}\n.item-slot:not(.empty-slot):hover {\n    background-color: #111;\n}\n.templar {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/templar.png') no-repeat; \n}\n.scoundrel {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/scoundrel.png') no-repeat; \n}\n.enchantress {\n    background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; \n}\n\n"
             ],
             templateUrl: '/app/components/html/hero.html'
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [hero_service_1.HeroService])
     ], HeroComponent);
     return HeroComponent;
 }());

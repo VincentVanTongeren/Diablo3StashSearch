@@ -48,7 +48,7 @@ var ItemSlotComponent = (function () {
             pipes: [safe_1.SafeUrlPipe, safe_1.SafeStylePipe],
             directives: [item_card_component_1.ItemCardComponent],
             styles: [
-                ".item-icon, .item-text {\n    padding-top: 3px;\n    height: 72px;\n}\n.d3-icon-item-white {\n    opacity: 0.4;\n}\n"
+                ".item-icon, .item-text {\n    padding-top: 3px;\n    height: 72px;\n}\n.d3-icon-item-white {\n    opacity: 0.4;\n}\n\n"
             ],
             // styleUrls: ['/app/components/css/item.slot.css'],
             templateUrl: '/app/components/html/item.slot.html'

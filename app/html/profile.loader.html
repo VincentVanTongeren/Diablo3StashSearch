@@ -4,7 +4,7 @@
         <div class="col visible-lg col-lg-4">
             <h3>Diablo 3 Stash Search</h3>
         </div>
-        <div class="col col-xs-6 col-lg-5" id="search-pane">
+        <div class="col col-xs-12 col-sm-6 col-lg-5" id="search-pane">
             <div class="row">
                 <div class="col col-xs-6 col-lg-4">
                     <select class="form-control input-sm" *ngIf="profileViewModel && profileViewModel.slotItems" #selectedSlot (change)="onSlotChange($event)">
@@ -24,7 +24,7 @@
 
             </div>
         </div>
-        <div class="col col-xs-6 col-lg-3" id="input-pane">
+        <div class="col col-xs-12 col-sm-6 col-lg-3" id="input-pane">
             <div class="row input-row">
                 <div class="col col-xs-6 col-lg-6">
                     <input class="form-control input-sm" #apiKeyText [(value)]="apiKey" (blur)="apiKey=apiKeyText.value" placeholder="battle.net api key" required />
@@ -48,7 +48,7 @@
     </div>
 
     <div class="row" id="app-main">
-        <div *ngIf="profileViewModel" class="col col-xs-4" id="profile-pane">
+        <div *ngIf="profileViewModel" class="col hidden-xs col-sm-4" id="profile-pane">
             <div class="row">
                 <div class="col col-xs-12">
                     <span>{{ profileViewModel.profile.battleTag }}</span><span>{{ profileViewModel.profile.guildName }}</span><img class="icon" src="/images/refresh.png" (click)="refresh()" />
@@ -58,7 +58,22 @@
             <ul *ngIf="profileViewModel.heroes">
                 <li *ngFor="let heroViewModel of profileViewModel.heroes" class="hero-tab" [ngClass]="{'active':heroViewModel == selectedHeroViewModel }" (click)="selectHero(heroViewModel)">
                     <div class="row">
-                        <hero-tab [heroViewModel]="heroViewModel" [isSelected]="heroViewModel == selectedHeroViewModel"></hero-tab>
+                        <hero-tab [heroViewModel]="heroViewModel" [isSelected]="heroViewModel == selectedHeroViewModel" ></hero-tab>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="profileViewModel" class="col visible-xs col-xs-12" id="profile-pane">
+            <div class="row">
+                <div class="col col-xs-12">
+                    <span>{{ profileViewModel.profile.battleTag }}</span><span>{{ profileViewModel.profile.guildName }}</span><img class="icon" src="/images/refresh.png" (click)="refresh()" />
+                </div>
+            </div>
+
+            <ul *ngIf="profileViewModel.heroes">
+                <li *ngFor="let heroViewModel of profileViewModel.heroes" class="hero-tab" >
+                    <div class="row">
+                        <hero-tab [heroViewModel]="heroViewModel" (itemsSelected)="selectItems($event)"></hero-tab>
                     </div>
                 </li>
             </ul>
@@ -76,7 +91,7 @@
                 </div>
             </div>
         </div>-->
-        <div class="col col-xs-8 col-lg-5" id="hero-main">
+        <div class="col hidden-xs col-sm-6 col-lg-5" id="hero-main">
             <hero [heroViewModel]="selectedHeroViewModel" (heroOutdated)="refreshHero($event)" (itemsSelected)="selectItems($event)" (itemSelected)="selectItem($event)"></hero>
         </div>
         <div class="col col-lg-3 visible-lg" id="item-detail">

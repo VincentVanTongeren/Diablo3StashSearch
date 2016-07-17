@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HeroViewModel } from '../viewmodels/heroviewmodel'
+import { SearchResultViewModel } from '../viewmodels/searchresultviewmodel'
+import { HeroService } from '../services/hero.service'
 import { SafeUrlPipe, SafeStylePipe } from '../pipes/safe'
 import { ConcatPipe, ShortenPipe } from '../pipes/strings'
 import { ClassPipe, GenderPipe } from '../pipes/hero'
@@ -106,4 +108,15 @@ export class HeroTabComponent {
   public heroViewModel: HeroViewModel;
   @Input()
   public isSelected: boolean;
+  @Output()
+  public itemsSelected = new EventEmitter<Array<SearchResultViewModel>>();
+
+public constructor(private heroService: HeroService){
+
+}
+
+  public select(selected: string): void {
+      var results = this.heroService.getSearchResults(this.heroViewModel, selected);
+        this.itemsSelected.emit(results);
+  }
 }

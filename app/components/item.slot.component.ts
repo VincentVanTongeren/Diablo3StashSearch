@@ -15,6 +15,7 @@ import { ItemCardComponent } from '../components/item.card.component'
 .d3-icon-item-white {
     opacity: 0.4;
 }
+
 `
   ],
   // styleUrls: ['/app/components/css/item.slot.css'],

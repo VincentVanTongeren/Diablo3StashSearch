@@ -7,6 +7,7 @@ import { Headers, Http } from '@angular/http';
 
 import { HeroViewModel } from '../viewmodels/heroviewmodel'
 import { ItemViewModel } from '../viewmodels/itemviewmodel'
+import { SearchResultViewModel } from '../viewmodels/searchresultviewmodel'
 
 import { ItemService } from './item.service'
 
@@ -178,6 +179,40 @@ export class HeroService
         });
 
         return items;
+    }
+
+    public getSearchResults(heroViewModel: HeroViewModel, characterType: string): Array<SearchResultViewModel>{
+          var items = new Array<ItemViewModel>();
+        switch(characterType){
+            case "player":
+                items = heroViewModel.items;
+                break;
+            case "templar":
+                items = heroViewModel.templarItems;
+                break;
+            case "scoundrel":
+                items = heroViewModel.scoundrelItems;
+                break;
+            case "enchantress":
+                items = heroViewModel.enchantressItems;
+                break;
+            case "followers":
+                [heroViewModel.templarItems, heroViewModel.scoundrelItems, heroViewModel.enchantressItems].forEach(array => {
+                    array.forEach(item => items.push(item));
+                });
+                break;
+        }
+        if (items){
+            items = items.filter(x => Boolean(x.item));
+        }
+        if (items){
+            var results = new Array<SearchResultViewModel>();
+            items.forEach(x => {
+                var result = new SearchResultViewModel(x, heroViewModel.hero, characterType);
+                results.push(result)
+            });
+        }
+        return results;
     }
 
     public refresh(heroId: number): void {
