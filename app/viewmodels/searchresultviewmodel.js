@@ -4,6 +4,7 @@ var SearchResultViewModel = (function () {
         this.item = item;
         this.hero = hero;
         this.type = type;
+        this.isSelected = false;
     }
     return SearchResultViewModel;
 }());

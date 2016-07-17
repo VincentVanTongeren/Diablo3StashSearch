@@ -148,37 +148,36 @@ var HeroService = (function () {
         });
         return items;
     };
-    HeroService.prototype.getSearchResults = function (heroViewModel, characterType) {
-        var items = new Array();
-        switch (characterType) {
-            case "player":
-                items = heroViewModel.items;
-                break;
-            case "templar":
-                items = heroViewModel.templarItems;
-                break;
-            case "scoundrel":
-                items = heroViewModel.scoundrelItems;
-                break;
-            case "enchantress":
-                items = heroViewModel.enchantressItems;
-                break;
-            case "followers":
-                [heroViewModel.templarItems, heroViewModel.scoundrelItems, heroViewModel.enchantressItems].forEach(function (array) {
-                    array.forEach(function (item) { return items.push(item); });
+    HeroService.prototype.getSearchResults = function (heroViewModel, selectedItemViewModel, characterType) {
+        var results = new Array();
+        var chars = characterType == "follower" ? ["templar", "scoundrel", "enchantress"] : [characterType];
+        chars.forEach(function (character) {
+            var items = new Array();
+            switch (characterType) {
+                case "player":
+                    items = heroViewModel.items;
+                    break;
+                case "templar":
+                    items = heroViewModel.templarItems;
+                    break;
+                case "scoundrel":
+                    items = heroViewModel.scoundrelItems;
+                    break;
+                case "enchantress":
+                    items = heroViewModel.enchantressItems;
+                    break;
+            }
+            if (items) {
+                items = items.filter(function (x) { return Boolean(x.item); });
+            }
+            if (items) {
+                items.forEach(function (x) {
+                    var result = new searchresultviewmodel_1.SearchResultViewModel(x, heroViewModel.hero, characterType);
+                    result.isSelected = x == selectedItemViewModel;
+                    results.push(result);
                 });
-                break;
-        }
-        if (items) {
-            items = items.filter(function (x) { return Boolean(x.item); });
-        }
-        if (items) {
-            var results = new Array();
-            items.forEach(function (x) {
-                var result = new searchresultviewmodel_1.SearchResultViewModel(x, heroViewModel.hero, characterType);
-                results.push(result);
-            });
-        }
+            }
+        });
         return results;
     };
     HeroService.prototype.refresh = function (heroId) {

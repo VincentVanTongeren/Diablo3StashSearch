@@ -124,17 +124,25 @@ private _flickity: any;
         return items;
     }
 
+    private getInitialIndex(items: Array<SearchResultViewModel>): number{
+        var selectedItem = items.filter(x => x.isSelected);
+        if (selectedItem && selectedItem.length > 0)
+            return items.indexOf(selectedItem[0]);
+        return 0;
+    }
+
     ngOnChanges(changes){
         if (changes.items.currentValue)
         {
+            var index = this.getInitialIndex(this.getItems());
             if (this._flickity)
                 // $(this._flickity).flickity('reloadCells');
                 $(this._flickity).flickity('destroy');
-            this.startFlickity();
+            this.startFlickity(index);
         }
     }
 
-    startFlickity(){
+    startFlickity(initialIndex: number){
         setTimeout(() => 
         this._flickity = $('.gallery').flickity({
                         cellAlign: 'left', 
@@ -142,7 +150,8 @@ private _flickity: any;
                         freeScroll: true, 
                         cellSelector: '.gallery-cell',
                         setGallerySize: false,
-                        wrapAround: false
+                        wrapAround: false,
+                        initialIndex: initialIndex
                     }), 200);
     }
 }

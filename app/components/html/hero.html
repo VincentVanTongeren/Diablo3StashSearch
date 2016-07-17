@@ -24,7 +24,7 @@
             <item-slot [itemSlot]="itemSlot" (itemSelected)="selectItem($event)"></item-slot>
         </div>
     </div>
-    <div *ngFor="let itemSlot of heroViewModel.items" class="col col-sm-12 hidden-lg" [ngClass]="{'empty-slot': !itemSlot.slotName}" (click)="showItem(itemSlot)">
+    <div *ngFor="let itemSlot of heroViewModel.items" class="col col-sm-12 hidden-lg" [ngClass]="{'empty-slot': !itemSlot.slotName}" (click)="showItem(itemSlot, 'player')">
         <div class="row item-slot">
             <item-slot [itemSlot]="itemSlot" (itemSelected)="selectItem($event)"></item-slot>
         </div>
@@ -54,17 +54,17 @@
         </div>
     </div>
     <div *ngIf="selected == 'templar'" class="col hidden-lg col-sm-12">
-        <div class="row item-slot" *ngFor="let itemSlot of heroViewModel.templarItems" (click)="showItem(itemSlot)">
+        <div class="row item-slot" *ngFor="let itemSlot of heroViewModel.templarItems" (click)="showItem(itemSlot, 'templar')">
             <item-slot [itemSlot]="itemSlot" (itemSelected)="selectItem($event)"></item-slot>
         </div>
     </div>
     <div *ngIf="selected == 'scoundrel'" class="col hidden-lg col-sm-12">
-        <div class="row item-slot" *ngFor="let itemSlot of heroViewModel.scoundrelItems" (click)="showItem(itemSlot)">
+        <div class="row item-slot" *ngFor="let itemSlot of heroViewModel.scoundrelItems" (click)="showItem(itemSlot, 'scoundrel')">
             <item-slot [itemSlot]="itemSlot" (itemSelected)="selectItem($event)"></item-slot>
         </div>
     </div>
     <div *ngIf="selected == 'enchantress'" class="col hidden-lg col-sm-12">
-        <div class="row item-slot" *ngFor="let itemSlot of heroViewModel.enchantressItems" (click)="showItem(itemSlot)">
+        <div class="row item-slot" *ngFor="let itemSlot of heroViewModel.enchantressItems" (click)="showItem(itemSlot, 'enchantress')">
             <item-slot [itemSlot]="itemSlot" (itemSelected)="selectItem($event)"></item-slot>
         </div>
     </div>

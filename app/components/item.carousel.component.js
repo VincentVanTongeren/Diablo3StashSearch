@@ -36,15 +36,22 @@ var ItemCarouselComponent = (function () {
         });
         return items;
     };
+    ItemCarouselComponent.prototype.getInitialIndex = function (items) {
+        var selectedItem = items.filter(function (x) { return x.isSelected; });
+        if (selectedItem && selectedItem.length > 0)
+            return items.indexOf(selectedItem[0]);
+        return 0;
+    };
     ItemCarouselComponent.prototype.ngOnChanges = function (changes) {
         if (changes.items.currentValue) {
+            var index = this.getInitialIndex(this.getItems());
             if (this._flickity)
                 // $(this._flickity).flickity('reloadCells');
                 $(this._flickity).flickity('destroy');
-            this.startFlickity();
+            this.startFlickity(index);
         }
     };
-    ItemCarouselComponent.prototype.startFlickity = function () {
+    ItemCarouselComponent.prototype.startFlickity = function (initialIndex) {
         var _this = this;
         setTimeout(function () {
             return _this._flickity = $('.gallery').flickity({
@@ -53,7 +60,8 @@ var ItemCarouselComponent = (function () {
                 freeScroll: true,
                 cellSelector: '.gallery-cell',
                 setGallerySize: false,
-                wrapAround: false
+                wrapAround: false,
+                initialIndex: initialIndex
             });
         }, 200);
     };

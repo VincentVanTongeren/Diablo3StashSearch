@@ -23,8 +23,15 @@ var HeroComponent = (function () {
         if (selectedItemViewModel && selectedItemViewModel.item)
             this.itemSelected.emit(selectedItemViewModel);
     };
-    HeroComponent.prototype.selectItems = function (characterType) {
-        var results = this.heroService.getSearchResults(this.heroViewModel, characterType);
+    HeroComponent.prototype.selectItems = function (characterType, selectedItemViewModel) {
+        if (selectedItemViewModel === void 0) { selectedItemViewModel = null; }
+        var results = this.heroService.getSearchResults(this.heroViewModel, selectedItemViewModel, characterType);
+        if (results) {
+            this.itemsSelected.emit(results);
+        }
+    };
+    HeroComponent.prototype.showItem = function (selectedItemViewModel, characterType) {
+        var results = this.heroService.getSearchResults(this.heroViewModel, selectedItemViewModel, characterType);
         if (results) {
             this.itemsSelected.emit(results);
         }

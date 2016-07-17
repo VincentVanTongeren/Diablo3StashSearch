@@ -65,8 +65,15 @@ constructor(private heroService: HeroService){
             this.itemSelected.emit(selectedItemViewModel);
     }
 
-    public selectItems(characterType: string): void{
-        var results = this.heroService.getSearchResults(this.heroViewModel, characterType);
+    public selectItems(characterType: string, selectedItemViewModel: ItemViewModel = null): void{
+        var results = this.heroService.getSearchResults(this.heroViewModel, selectedItemViewModel, characterType);
+        if (results){
+            this.itemsSelected.emit(results);
+        }
+    }
+
+    public showItem(selectedItemViewModel: ItemViewModel, characterType: string){
+        var results = this.heroService.getSearchResults(this.heroViewModel, selectedItemViewModel, characterType);
         if (results){
             this.itemsSelected.emit(results);
         }
