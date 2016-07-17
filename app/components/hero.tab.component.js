@@ -22,7 +22,7 @@ var HeroTabComponent = (function () {
         this.itemsSelected = new core_1.EventEmitter();
     }
     HeroTabComponent.prototype.select = function (selected) {
-        var results = this.heroService.getSearchResults(this.heroViewModel, selected);
+        var results = this.heroService.getSearchResults(this.heroViewModel, null, selected);
         this.itemsSelected.emit(results);
     };
     __decorate([

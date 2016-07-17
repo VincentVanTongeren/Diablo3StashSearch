@@ -116,7 +116,7 @@ public constructor(private heroService: HeroService){
 }
 
   public select(selected: string): void {
-      var results = this.heroService.getSearchResults(this.heroViewModel, selected);
+      var results = this.heroService.getSearchResults(this.heroViewModel, null, selected);
         this.itemsSelected.emit(results);
   }
 }
