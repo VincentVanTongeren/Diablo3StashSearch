@@ -48,7 +48,7 @@
     </div>
 
     <div class="row" id="app-main">
-        <div *ngIf="profileViewModel" class="col hidden-xs col-sm-4" id="profile-pane">
+        <div *ngIf="profileViewModel" class="col hidden-xs col-sm-6 col-lg-4" id="profile-pane">
             <div class="row">
                 <div class="col col-xs-12">
                     <span>{{ profileViewModel.profile.battleTag }}</span><span>{{ profileViewModel.profile.guildName }}</span><img class="icon" src="/images/refresh.png" (click)="refresh()" />

@@ -19,6 +19,9 @@ import { HeroService } from '../services/hero.service';
     margin-top: 10px;
     display: inline-block;
 }
+.item-slots .empty-slot {
+    height: 0px;
+}
 .item-slot:not(.empty-slot):hover {
     background-color: #111;
 }
@@ -30,6 +33,11 @@ import { HeroService } from '../services/hero.service';
 }
 .enchantress {
     background: url('http://media.blizzard.com/d3/icons/portraits/21/enchantress.png') no-repeat; 
+}
+@media (min-width: 768px) and (max-width: 1200px) {
+    .item-slot {
+        padding-top: 3px;
+    }
 }
 
 `
@@ -46,6 +54,8 @@ export class HeroComponent {
   @Output()
   public heroOutdated = new EventEmitter<HeroViewModel>(); 
 
+public selected: string;
+
 constructor(private heroService: HeroService){
 
 }
@@ -60,6 +70,10 @@ constructor(private heroService: HeroService){
         if (results){
             this.itemsSelected.emit(results);
         }
+    }
+
+    public showItems(selected: string){
+        this.selected = selected;
     }
 
     public refresh(): void{

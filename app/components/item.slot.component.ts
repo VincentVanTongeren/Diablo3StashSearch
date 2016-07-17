@@ -15,7 +15,20 @@ import { ItemCardComponent } from '../components/item.card.component'
 .d3-icon-item-white {
     opacity: 0.4;
 }
-
+@media (min-width: 768px) and (max-width: 1200px) {
+  .item-text, .item-icon {
+    padding-top: 0px;
+    height: 44px;
+  }
+  .item-text {
+    padding-top: 6px;
+  }
+  .d3-icon-item-small .icon-item-default 
+  { 
+    width: 32px; 
+    height: 39px; 
+  }
+}
 `
   ],
   // styleUrls: ['/app/components/css/item.slot.css'],
